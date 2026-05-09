@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<!-- saved from url=(0076)file:///C:/Users/Osama%20Haroon/Downloads/icd_simulation/icd_simulation.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ICD Productivity &amp; Financial Simulation v2.6</title>
+<link href="./ICD Productivity &amp; Financial Simulation v2.6_files/css2" rel="stylesheet">
+<script src="./ICD Productivity &amp; Financial Simulation v2.6_files/chart.umd.js.download"></script>
+<style>
+  :root {
+    --bg:#0d0f14; --bg2:#13161e; --bg3:#1a1e2a; --bg4:#212636;
+    --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.12);
+    --text:#e8eaf0; --text2:#8b90a0; --text3:#555b6e;
+    --accent:#00d4aa; --accent2:#0097ff; --warn:#ffb340;
+    --danger:#ff5757; --purple:#a78bfa;
+    --mono:'Space Mono',monospace; --sans:'DM Sans',sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;}
+  body{min-height:100vh;}
+
+  .header{background:var(--bg2);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:8px;}
+  .header-left{display:flex;align-items:center;gap:12px;}
+  .logo-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:700;color:#000;}
+  .header h1{font-size:13px;font-weight:600;}
+  .header-sub{font-size:10px;color:var(--text3);font-family:var(--mono);}
+  .header-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+  .autosave-dot{width:6px;height:6px;border-radius:50%;background:var(--text3);transition:background 0.4s;flex-shrink:0;}
+  .autosave-dot.saved{background:var(--accent);}
+  .autosave-dot.saving{background:var(--warn);}
+  .save-status{font-size:10px;color:var(--text3);font-family:var(--mono);}
+
+  .layout{display:grid;grid-template-columns:360px 1fr;min-height:calc(100vh - 60px);}
+  .sidebar{background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;}
+  .main{padding:20px;overflow-y:auto;}
+
+  .sidebar-section{border-bottom:1px solid var(--border);}
+  .sidebar-section-header{display:flex;align-items:center;gap:8px;padding:12px 16px;cursor:pointer;user-select:none;}
+  .sidebar-section-header:hover{background:rgba(255,255,255,0.02);}
+  .sidebar-section-header h3{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);flex:1;}
+  .section-icon{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;}
+  .section-icon.ops{background:rgba(0,212,170,.15);color:var(--accent);}
+  .section-icon.cost{background:rgba(0,151,255,.15);color:var(--accent2);}
+  .section-icon.zone{background:rgba(167,139,250,.15);color:var(--purple);}
+  .section-icon.scen{background:rgba(255,179,64,.15);color:var(--warn);}
+  .section-icon.save{background:rgba(255,255,255,.06);color:var(--text2);}
+  .section-icon.fin{background:rgba(255,87,87,.15);color:var(--danger);}
+  .chevron{color:var(--text3);font-size:9px;transition:transform .2s;}
+  .collapsed .chevron{transform:rotate(-90deg);}
+  .collapsed .section-body{display:none;}
+  .section-body{padding:4px 16px 14px;}
+
+  .slider-row{margin-bottom:12px;}
+  .slider-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
+  .slider-name{font-size:12px;color:var(--text2);}
+  .num-input{font-family:var(--mono);font-size:11px;color:var(--accent);background:rgba(0,212,170,.08);border:1px solid transparent;padding:2px 6px;border-radius:4px;min-width:72px;text-align:right;outline:none;cursor:text;-moz-appearance:textfield;}
+  .num-input::-webkit-outer-spin-button,.num-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+  .num-input:focus{border-color:var(--accent);background:rgba(0,212,170,.14);}
+  .num-input.blue{color:var(--accent2);background:rgba(0,151,255,.08);}
+  .num-input.blue:focus{border-color:var(--accent2);background:rgba(0,151,255,.14);}
+  .num-input.warn-inp{color:var(--warn);background:rgba(255,179,64,.08);}
+  .num-input.warn-inp:focus{border-color:var(--warn);background:rgba(255,179,64,.14);}
+  input[type=range]{width:100%;height:3px;appearance:none;background:var(--bg4);border-radius:3px;outline:none;cursor:pointer;}
+  input[type=range]::-webkit-slider-thumb{appearance:none;width:13px;height:13px;border-radius:50%;background:var(--accent);border:2px solid var(--bg2);cursor:pointer;box-shadow:0 0 5px rgba(0,212,170,.35);}
+  input[type=range].blue::-webkit-slider-thumb{background:var(--accent2);box-shadow:0 0 5px rgba(0,151,255,.35);}
+  input[type=range].warn-sl::-webkit-slider-thumb{background:var(--warn);box-shadow:0 0 5px rgba(255,179,64,.35);}
+  .slider-hint{font-size:10px;color:var(--text3);margin-top:3px;line-height:1.4;}
+
+  .rs-split-row{margin-bottom:12px;}
+  .rs-split-title{font-size:12px;color:var(--text2);margin-bottom:6px;}
+  .rs-split-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .rs-split-cell{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 10px;}
+  .rs-split-label{font-size:10px;color:var(--text3);margin-bottom:5px;}
+  .rs-split-total{font-size:10px;color:var(--text3);margin-top:6px;text-align:right;font-family:var(--mono);}
+  .rs-split-total span{color:var(--accent);}
+
+  .metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+  .metric-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:13px 15px;}
+  .metric-card.hl{border-color:var(--accent);}
+  .metric-card.hl-finance{border-color:rgba(167,139,250,.5);}
+  .metric-label{font-size:10px;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;font-family:var(--mono);}
+  .metric-value{font-family:var(--mono);font-size:17px;font-weight:700;}
+  .metric-value.green{color:var(--accent);}
+  .metric-value.blue{color:var(--accent2);}
+  .metric-value.warn{color:var(--warn);}
+  .metric-value.purple{color:var(--purple);}
+  .metric-value.danger{color:var(--danger);}
+  .metric-sub{font-size:10px;color:var(--text3);margin-top:3px;}
+
+  .bottleneck-bar{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:11px 15px;margin-bottom:16px;display:flex;align-items:center;gap:12px;}
+  .bn-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+
+  .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:16px;}
+  .chart-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:15px;}
+  .chart-title{font-size:10px;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:11px;font-family:var(--mono);}
+
+  .zone-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px;}
+  .zone-title{font-size:10px;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px;font-family:var(--mono);}
+  .zone-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:10px;}
+  .zone-tile{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:9px 11px;border-left:3px solid var(--accent);}
+  .zone-tile.warn-zone{border-left-color:var(--warn);}
+  .zone-tile.purple-zone{border-left-color:var(--purple);}
+  .zone-tile-label{font-size:10px;color:var(--text3);margin-bottom:3px;}
+  .zone-tile-val{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--text);}
+  .zone-tile-sub{font-size:9px;color:var(--text3);margin-top:2px;}
+  .zone-total-row{background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:9px 13px;display:flex;justify-content:space-between;align-items:center;}
+  .zone-total-val{font-family:var(--mono);font-size:17px;font-weight:700;color:var(--accent2);}
+
+  .bq-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px;}
+  .bq-title{font-size:10px;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px;font-family:var(--mono);}
+  table{width:100%;border-collapse:collapse;}
+  thead tr{border-bottom:1px solid var(--border2);}
+  th{font-size:10px;color:var(--text3);text-align:left;padding:5px 9px;letter-spacing:.05em;text-transform:uppercase;font-weight:500;}
+  td{font-size:12px;padding:7px 9px;border-bottom:1px solid var(--border);}
+  td.amt{font-family:var(--mono);text-align:right;}
+  td.item-num{font-family:var(--mono);color:var(--text3);font-size:10px;}
+  .bq-subtotal td{background:var(--bg3);color:var(--text2);font-size:11px;}
+  .bq-total td{background:var(--bg3);font-weight:600;border-top:1px solid var(--border2);}
+  .bq-total td.amt{color:var(--warn);font-size:14px;}
+  .tag-warn{font-size:9px;color:var(--warn);background:rgba(255,179,64,.1);padding:1px 5px;border-radius:3px;margin-left:4px;}
+  .tag-unc{font-size:9px;color:var(--danger);background:rgba(255,87,87,.1);padding:1px 5px;border-radius:3px;margin-left:4px;}
+
+  .soft-costs-panel{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:11px 13px;margin-bottom:16px;}
+  .soft-costs-title{font-size:10px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;margin-bottom:9px;}
+  .sc-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border);font-size:11px;}
+  .sc-row:last-child{border-bottom:none;font-weight:600;}
+  .sc-src{font-size:10px;color:var(--text3);margin-left:6px;}
+
+  /* Finance module card */
+  .finance-card{background:var(--bg2);border:1px solid rgba(167,139,250,.3);border-radius:10px;padding:16px;margin-bottom:16px;}
+  .finance-title{font-size:10px;color:var(--purple);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px;font-family:var(--mono);}
+  .finance-divider{border:none;border-top:1px solid var(--border);margin:12px 0;}
+
+  /* IRR viability badge */
+  .irr-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-family:var(--mono);font-size:10px;font-weight:700;margin-left:8px;}
+  .irr-badge.viable{background:rgba(0,212,170,.15);color:var(--accent);border:1px solid var(--accent);}
+  .irr-badge.marginal{background:rgba(255,179,64,.15);color:var(--warn);border:1px solid var(--warn);}
+  .irr-badge.poor{background:rgba(255,87,87,.15);color:var(--danger);border:1px solid var(--danger);}
+
+  .scenario-input-row{display:flex;gap:7px;margin-bottom:9px;}
+  .scenario-input-row input[type=text]{flex:1;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:6px 9px;border-radius:6px;font-family:var(--sans);font-size:12px;outline:none;}
+  .btn{padding:6px 12px;border-radius:6px;border:1px solid var(--border2);background:var(--bg3);color:var(--text);font-family:var(--sans);font-size:11px;cursor:pointer;transition:all .15s;white-space:nowrap;}
+  .btn:hover{background:var(--bg4);}
+  .btn.accent{background:rgba(0,212,170,.1);border-color:var(--accent);color:var(--accent);}
+  .btn.accent:hover{background:rgba(0,212,170,.2);}
+  .btn.danger{background:rgba(255,87,87,.1);border-color:var(--danger);color:var(--danger);}
+  .btn.danger:hover{background:rgba(255,87,87,.2);}
+  .btn-xs{padding:3px 7px;font-size:10px;border-radius:4px;border:1px solid var(--border2);background:var(--bg4);color:var(--text2);cursor:pointer;}
+  .btn-xs.load{color:var(--accent2);border-color:rgba(0,151,255,.3);}
+  .btn-xs.del{color:var(--danger);border-color:rgba(255,87,87,.3);}
+
+  .scenario-chart-wrap{display:none;margin-bottom:16px;}
+  .scenario-chart-wrap.visible{display:block;}
+  .flow-row{display:flex;gap:5px;margin-bottom:14px;font-size:10px;font-family:var(--mono);align-items:center;flex-wrap:wrap;}
+  .flow-step{background:var(--bg4);border:1px solid var(--border);padding:4px 9px;border-radius:5px;color:var(--text2);}
+  .flow-step.active{border-color:var(--accent);color:var(--accent);}
+  .flow-arrow{color:var(--text3);}
+  .toast{position:fixed;bottom:18px;right:18px;z-index:999;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:9px 15px;font-size:12px;font-family:var(--mono);transform:translateY(60px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;}
+  .toast.show{transform:translateY(0);opacity:1;}
+  .toast.ok{border-color:var(--accent);color:var(--accent);}
+  .toast.err{border-color:var(--danger);color:var(--danger);}
+  .toast.info{border-color:var(--accent2);color:var(--accent2);}
+  .slot-row{display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid var(--border);font-size:11px;}
+  .slot-row:last-child{border-bottom:none;}
+  .slot-name{flex:1;color:var(--text2);font-family:var(--mono);font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .slot-date{font-size:10px;color:var(--text3);}
+  .checkbox-row{display:flex;align-items:center;gap:7px;margin-bottom:10px;cursor:pointer;font-size:11px;color:var(--text2);}
+  .checkbox-row input{cursor:pointer;accent-color:var(--warn);}
+  .toggle-box{display:flex;align-items:center;gap:8px;cursor:pointer;background:rgba(255,87,87,.08);border:1px solid rgba(255,87,87,.3);padding:8px 10px;border-radius:6px;margin-bottom:10px;}
+  .toggle-box input{cursor:pointer;accent-color:var(--danger);}
+  .toggle-box span{font-size:10px;color:var(--danger);font-weight:700;font-family:var(--mono);}
+
+  @media(max-width:900px){
+    .layout{grid-template-columns:1fr;}
+    .sidebar{border-right:none;border-bottom:1px solid var(--border);}
+    .metrics-grid{grid-template-columns:1fr 1fr;}
+    .charts-row{grid-template-columns:1fr;}
+    .zone-grid{grid-template-columns:repeat(2,1fr);}
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <div class="logo-mark">ICD</div>
+    <div>
+      <h1>Inland Container Depot — Productivity &amp; Financial Simulation</h1>
+      <div class="header-sub">Equipment → Throughput → 8-Zone Acreage → CAPEX → DCF / ROI &nbsp;|&nbsp; v2.6 — Ramp-up · Breakeven · CF Chart</div>
+    </div>
+  </div>
+  <div class="header-actions">
+    <button class="btn" onclick="exportJSON()" style="font-size:10px;padding:4px 9px;">↓ Export JSON</button>
+    <button class="btn accent" onclick="document.getElementById(&#39;importFile&#39;).click()" style="font-size:10px;padding:4px 9px;">↑ Import JSON</button>
+    <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
+    <button class="btn" id="resetBtn" onclick="confirmReset()" style="font-size:10px;padding:4px 9px;border-color:rgba(255,87,87,.4);color:var(--danger);">↺ Reset</button>
+    <div class="autosave-dot saved" id="autosaveDot"></div>
+    <span class="save-status" id="saveStatus">auto-saved</span>
+  </div>
+</header>
+
+<div id="toast" class="toast"></div>
+
+<div class="layout">
+<aside class="sidebar">
+
+  <!-- ── OPERATIONS ── -->
+  <div class="sidebar-section" id="sec-ops">
+    <div class="sidebar-section-header" onclick="toggleSection(&#39;sec-ops&#39;)">
+      <div class="section-icon ops">⚙</div><h3>Operations &amp; Productivity</h3><span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Rail Sidings</span>
+          <input class="num-input" id="val-rail_lines" type="number" min="1" max="6" step="1" value="3">
+        </div>
+        <input type="range" id="rail_lines" min="1" max="6" step="1" value="3">
+        <div class="slider-hint">PCE Pulau Indah Draft — Tracks 1, 2, 3</div>
+      </div>
+
+      <div class="rs-split-row">
+        <div class="rs-split-title">Reach Stackers (RS)</div>
+        <div class="rs-split-grid">
+          <div class="rs-split-cell">
+            <div class="rs-split-label">Train Unloading</div>
+            <div class="slider-label" style="margin-bottom:4px;">
+              <span style="font-size:10px;color:var(--text3);">units</span>
+              <input class="num-input" id="val-num_rs_train" type="number" min="0" max="24" step="1" value="3">
+            </div>
+            <input type="range" id="num_rs_train" min="0" max="24" step="1" value="3">
+            <div style="font-size:10px;color:var(--text3);margin-top:3px;">RS serving train sidings directly</div>
+          </div>
+          <div class="rs-split-cell">
+            <div class="rs-split-label">Yard / Other Ops</div>
+            <div class="slider-label" style="margin-bottom:4px;">
+              <span style="font-size:10px;color:var(--text3);">units</span>
+              <input class="num-input" id="val-num_rs_yard" type="number" min="0" max="24" step="1" value="0">
+            </div>
+            <input type="range" id="num_rs_yard" min="0" max="24" step="1" value="0">
+            <div style="font-size:10px;color:var(--text3);margin-top:3px;">RS for stacking, delivery, gate ops</div>
+          </div>
+        </div>
+        <div class="rs-split-total">Total RS: <span id="rs-total-display">12</span> units &nbsp;|&nbsp; Cost: <span id="rs-cost-display">RM 36,000,000</span></div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">RMG Cranes</span>
+          <input class="num-input" id="val-num_rmg" type="number" min="0" max="4" step="1" value="0">
+        </div>
+        <input type="range" id="num_rmg" min="0" max="4" step="1" value="0">
+        <div class="slider-hint">Rail Mounted Gantry. When RMG &gt; 0, train-side RS can be 0.</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">RS Moves/Hr (train)</span>
+          <input class="num-input" id="val-mhp_rs" type="number" min="8" max="15" step="1" value="12">
+        </div>
+        <input type="range" id="mhp_rs" min="8" max="15" step="1" value="12">
+        <div class="slider-hint">Malaysian Port standard</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">RMG Moves/Hr</span>
+          <input class="num-input warn-inp" id="val-mhp_rmg" type="number" min="15" max="50" step="1" value="22">
+        </div>
+        <input type="range" class="warn-sl" id="mhp_rmg" min="15" max="50" step="1" value="22">
+        <div class="slider-hint">Standard RMG cycle speed. Default = 22.</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Daily Op Hours</span>
+          <input class="num-input" id="val-op_hours" type="number" min="8" max="24" step="8" value="16">
+        </div>
+        <input type="range" id="op_hours" min="8" max="24" step="8" value="16">
+        <div class="slider-hint">Two-shift standard = 16 hrs</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Dwell Time (Days)</span>
+          <input class="num-input" id="val-dwell_time" type="number" min="1" max="30" step="1" value="7">
+        </div>
+        <input type="range" id="dwell_time" min="1" max="30" step="1" value="7">
+        <div class="slider-hint">Port Klang average. Affects storage bottleneck check.</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Train Load (TEU)</span>
+          <input class="num-input" id="val-train_load" type="number" min="40" max="120" step="5" value="85">
+        </div>
+        <input type="range" id="train_load" min="40" max="120" step="5" value="85">
+        <div class="slider-hint">KTM Kargo block train average</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Moves per Train</span>
+          <input class="num-input" id="val-moves_per_cycle" type="number" min="50" max="200" step="2" value="114">
+        </div>
+        <input type="range" id="moves_per_cycle" min="50" max="200" step="2" value="114">
+        <div class="slider-hint">1.3× TEU factor, 50/50 mix 20/40ft</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Revenue / TEU (RM)</span>
+          <input class="num-input" id="val-rev_per_teu" type="number" min="140" max="1000" step="10" value="450">
+        </div>
+        <input type="range" id="rev_per_teu" min="140" max="1000" step="10" value="450">
+        <div class="slider-hint">Port Klang benchmark</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Stack Density (TEU/Ac)</span>
+          <input class="num-input" id="val-stack_density" type="number" min="200" max="800" step="10" value="500">
+        </div>
+        <input type="range" id="stack_density" min="200" max="800" step="10" value="500">
+        <div class="slider-hint">500 TEU/Acre standard high-density assumption</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── ZONE INPUTS ── -->
+  <div class="sidebar-section" id="sec-zone">
+    <div class="sidebar-section-header" onclick="toggleSection(&#39;sec-zone&#39;)">
+      <div class="section-icon zone">▦</div><h3>Zone Area Inputs</h3><span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Min Stacking Yard (Acres)</span>
+          <input class="num-input" id="val-min_stacking_acres" type="number" min="0" max="30" step="0.5" value="0">
+        </div>
+        <input type="range" id="min_stacking_acres" min="0" max="30" step="0.5" value="0">
+        <div class="slider-hint">Zone 2 floor. 0 = derived from throughput.</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Warehouse / CFS (Acres)</span>
+          <input class="num-input warn-inp" id="val-warehouse_acres" type="number" min="0" max="10" step="0.5" value="2">
+        </div>
+        <input type="range" class="warn-sl" id="warehouse_acres" min="0" max="10" step="0.5" value="2">
+        <div class="slider-hint">Zone 4 — CFS / warehouse footprint</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Reefer Plug Zone (Acres)</span>
+          <input class="num-input warn-inp" id="val-reefer_acres" type="number" min="0" max="5" step="0.25" value="0.5">
+        </div>
+        <input type="range" class="warn-sl" id="reefer_acres" min="0" max="5" step="0.25" value="0.5">
+        <div class="slider-hint">Zone 5 — reefer plug point area</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── UNIT COSTS ── -->
+  <div class="sidebar-section" id="sec-cost">
+    <div class="sidebar-section-header" onclick="toggleSection(&#39;sec-cost&#39;)">
+      <div class="section-icon cost">RM</div><h3>Unit Cost Assumptions</h3><span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Land &amp; Conversion (RM M)</span>
+          <input class="num-input blue" id="val-land_cost" type="number" min="0" max="150" step="1" value="15">
+        </div>
+        <input type="range" class="blue" id="land_cost" min="0" max="150" step="1" value="15">
+        <div class="slider-hint">Land acquisition + conversion cost (millions RM). Set 0 if govt-provided.</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Site Prep (RM/Ac)</span>
+          <input class="num-input blue" id="val-u_site_prep" type="number" min="500000" max="1500000" step="10000" value="785663">
+        </div>
+        <input type="range" class="blue" id="u_site_prep" min="500000" max="1500000" step="10000" value="785663">
+        <div class="slider-hint">PCE BQ Item 5.0 — Earthworks &amp; clearing</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Infrastructure (RM/Ac)</span>
+          <input class="num-input blue" id="val-u_infra_acre" type="number" min="100000" max="500000" step="5000" value="206125">
+        </div>
+        <input type="range" class="blue" id="u_infra_acre" min="100000" max="500000" step="5000" value="206125">
+        <div class="slider-hint">PCE BQ Item 6.0 — Pavement, drainage, utilities</div>
+      </div>
+
+      <!-- RMG Foundation toggle: checkbox switches between 20% rule vs RM/m -->
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:12px;">
+        <div style="font-size:11px;color:var(--warn);font-weight:600;margin-bottom:8px;">RMG Foundation Method</div>
+        <label class="checkbox-row">
+          <input type="checkbox" id="rmg_found_pct" checked="" onchange="syncControls()">
+          <span>Use UNCTAD 20% rule (20% of RMG value) <span style="color:var(--accent);font-size:9px;">— Adam confirmed</span></span>
+        </label>
+        <div id="rmg_perm_row">
+          <div class="slider-label" style="margin-top:6px;">
+            <span class="slider-name" id="lbl_rmg_runway" style="font-size: 11px; opacity: 0.35;">Alternative: Cost per metre (RM/m)</span>
+            <input class="num-input warn-inp" id="val-u_rmg_runway" type="number" min="5000" max="40000" step="1000" value="15000" disabled="" style="opacity: 0.35;">
+          </div>
+          <input type="range" class="warn-sl" id="u_rmg_runway" min="5000" max="40000" step="1000" value="15000" disabled="" style="opacity: 0.35;">
+          <div class="slider-hint" id="hint_rmg_runway" style="color: var(--text3);">Inactive — using 20% of RMG value (Adam QS confirmed)</div>
+        </div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Rail Cost (RM/Line)</span>
+          <input class="num-input blue" id="val-u_rail_line" type="number" min="5000000" max="20000000" step="100000" value="10935000">
+        </div>
+        <input type="range" class="blue" id="u_rail_line" min="5000000" max="20000000" step="100000" value="10935000">
+        <div class="slider-hint">PCE BQ Item 4.0: RM 32.8M ÷ 3 lines</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Boom Gate (RM/unit)</span>
+          <input class="num-input blue" id="val-u_boom_gate" type="number" min="10000" max="200000" step="5000" value="50000">
+        </div>
+        <input type="range" class="blue" id="u_boom_gate" min="10000" max="200000" step="5000" value="50000">
+        <div class="slider-hint">2 gates per siding</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Cost per RS (RM)</span>
+          <input class="num-input blue" id="val-u_cost_rs" type="number" min="2000000" max="5000000" step="100000" value="3000000">
+        </div>
+        <input type="range" class="blue" id="u_cost_rs" min="2000000" max="5000000" step="100000" value="3000000">
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Cost per RMG (RM)</span>
+          <input class="num-input blue" id="val-u_cost_rmg" type="number" min="10000000" max="30000000" step="500000" value="18000000">
+        </div>
+        <input type="range" class="blue" id="u_cost_rmg" min="10000000" max="30000000" step="500000" value="18000000">
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Warehouse Build (RM/m²)</span>
+          <input class="num-input warn-inp" id="val-u_warehouse_sqm" type="number" min="500" max="3000" step="50" value="1200">
+        </div>
+        <input type="range" class="warn-sl" id="u_warehouse_sqm" min="500" max="3000" step="50" value="1200">
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Reefer Plug (RM/point)</span>
+          <input class="num-input warn-inp" id="val-u_reefer_plug" type="number" min="5000" max="50000" step="1000" value="15000">
+        </div>
+        <input type="range" class="warn-sl" id="u_reefer_plug" min="5000" max="50000" step="1000" value="15000">
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Reefer Plugs / Acre</span>
+          <input class="num-input warn-inp" id="val-reefer_plugs_per_acre" type="number" min="5" max="50" step="1" value="20">
+        </div>
+        <input type="range" class="warn-sl" id="reefer_plugs_per_acre" min="5" max="50" step="1" value="20">
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Soft Costs (%)</span>
+          <input class="num-input blue" id="val-overhead_pct" type="number" min="10" max="50" step="1" value="29">
+        </div>
+        <input type="range" class="blue" id="overhead_pct" min="10" max="50" step="1" value="29">
+        <div class="slider-hint">7% Prelims + 10% Prof Fees + 2% Regulatory (Adam confirmed) + 10% Contingency = 29%</div>
+      </div>
+
+      <!-- Middle East war factor toggle -->
+      <label class="toggle-box">
+        <input type="checkbox" id="war_factor" onchange="syncControls()">
+        <span>⚠ MIDDLE EAST WAR COST FACTOR (+12.6% on civil — Ministry of Economic)</span>
+      </label>
+
+    </div>
+  </div>
+
+  <!-- ── FINANCE & ROI ── -->
+  <div class="sidebar-section" id="sec-finance">
+    <div class="sidebar-section-header" onclick="toggleSection(&#39;sec-finance&#39;)">
+      <div class="section-icon fin">₿</div><h3>Finance &amp; ROI (DCF)</h3><span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Project Lifetime (Years)</span>
+          <input class="num-input warn-inp" id="val-project_years" type="number" min="10" max="30" step="1" value="15">
+        </div>
+        <input type="range" class="warn-sl" id="project_years" min="10" max="30" step="1" value="15">
+        <div class="slider-hint">DCF horizon for NPV, IRR, and cash flow table</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Ramp-Up Period (Years)</span>
+          <input class="num-input warn-inp" id="val-rampup_years" type="number" min="1" max="10" step="1" value="5">
+        </div>
+        <input type="range" class="warn-sl" id="rampup_years" min="1" max="10" step="1" value="5">
+        <div class="slider-hint">Years to reach full utilization. Yr 1 = 1/N of target util, rising linearly. Affects IRR, NPV, payback significantly.</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Discount Rate / WACC (%)</span>
+          <input class="num-input warn-inp" id="val-discount_rate" type="number" min="1" max="25" step="0.5" value="10">
+        </div>
+        <input type="range" class="warn-sl" id="discount_rate" min="1" max="25" step="0.5" value="10">
+        <div class="slider-hint">Required rate of return / cost of capital. Shariff rule of thumb: IRR must exceed 15%.</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Utilization Rate (%)</span>
+          <input class="num-input warn-inp" id="val-util_rate" type="number" min="10" max="100" step="5" value="80">
+        </div>
+        <input type="range" class="warn-sl" id="util_rate" min="10" max="100" step="5" value="80">
+        <div class="slider-hint">% of annual capacity actually used. Conservative = 80%.</div>
+      </div>
+
+      <div style="font-size:10px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;margin:10px 0 6px;">OPEX Structure</div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Fixed OPEX (% of Civil+Eqpt/yr)</span>
+          <input class="num-input warn-inp" id="val-opex_rate" type="number" min="0" max="15" step="0.5" value="5">
+        </div>
+        <input type="range" class="warn-sl" id="opex_rate" min="0" max="15" step="0.5" value="5">
+        <div class="slider-hint">Calculated on civil + machinery only (NOT land or financing). Port rule-of-thumb: 3–6%.</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Variable OPEX (RM/TEU)</span>
+          <input class="num-input warn-inp" id="val-opex_per_teu" type="number" min="50" max="150" step="1" value="80">
+        </div>
+        <input type="range" class="warn-sl" id="opex_per_teu" min="50" max="150" step="1" value="80">
+        <div class="slider-hint">Linked to actual handled TEUs (capacity × utilization). Default RM 80/TEU.</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Financing Cost (%)</span>
+          <input class="num-input warn-inp" id="val-financing_rate" type="number" min="0" max="15" step="0.5" value="5">
+        </div>
+        <input type="range" class="warn-sl" id="financing_rate" min="0" max="15" step="0.5" value="5">
+        <div class="slider-hint">Adam: 0–10%, default 5%. Applied to (Construction + Soft Costs). Added to CAPEX, excluded from OPEX base.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── SCENARIO LOGGER ── -->
+  <div class="sidebar-section" id="sec-scen">
+    <div class="sidebar-section-header" onclick="toggleSection(&#39;sec-scen&#39;)">
+      <div class="section-icon scen">◈</div><h3>Scenario Logger</h3><span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <div class="scenario-input-row">
+        <input type="text" id="scenLabel" value="Scenario 1" placeholder="Scenario name">
+        <button class="btn accent" onclick="logScenario()">Log</button>
+      </div>
+      <div style="display:flex;gap:6px;margin-bottom:10px;">
+        <button class="btn" onclick="plotScenarios()" style="flex:1">Plot Scenarios</button>
+        <button class="btn danger" onclick="clearScenarios()">Clear</button>
+      </div>
+      <div id="scenTableWrap"><div style="font-size:11px;color:var(--text3);text-align:center;padding:14px;font-family:var(--mono);">No scenarios logged yet</div></div>
+    </div>
+  </div>
+
+  <!-- ── SAVED CONFIGS ── -->
+  <div class="sidebar-section" id="sec-save">
+    <div class="sidebar-section-header" onclick="toggleSection(&#39;sec-save&#39;)">
+      <div class="section-icon save">▣</div><h3>Saved Configurations</h3><span class="chevron">▼</span>
+    </div>
+    <div class="section-body">
+      <div style="font-size:10px;color:var(--text3);margin-bottom:9px;line-height:1.6;">Saves to browser. Use Export/Import JSON to share across devices.</div>
+      <div style="display:flex;gap:6px;margin-bottom:9px;">
+        <input type="text" id="saveSlotName" placeholder="Config name…" style="flex:1;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:5px 9px;border-radius:6px;font-size:11px;font-family:var(--sans);outline:none;">
+        <button class="btn accent" onclick="saveSlot()" style="font-size:10px;padding:5px 10px;">Save</button>
+      </div>
+      <div id="slotList"><div style="font-size:11px;color:var(--text3);text-align:center;padding:12px;font-family:var(--mono);">No saved configs</div></div>
+    </div>
+  </div>
+
+</aside>
+
+<main class="main">
+
+  <div class="flow-row">
+    <div class="flow-step active">Equipment</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step active">Throughput</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step active">8-Zone Acreage</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step active">CAPEX</div>
+    <span class="flow-arrow">→</span>
+    <div class="flow-step active" style="border-color:var(--purple);color:var(--purple);">DCF / ROI</div>
+  </div>
+
+  <!-- KPI grid — operational -->
+  <div class="metrics-grid">
+    <div class="metric-card hl">
+      <div class="metric-label">Total GDC</div>
+      <div class="metric-value warn" id="kpi-gdc">RM 159,381,192</div>
+      <div class="metric-sub">Gross Development Cost</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Annual Capacity</div>
+      <div class="metric-value green" id="kpi-cap">312,636 TEU</div>
+      <div class="metric-sub">Min(Rail, Storage)</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Total Site Area</div>
+      <div class="metric-value blue" id="kpi-acres">39.6 ac</div>
+      <div class="metric-sub">8-zone sum</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Investment / TEU</div>
+      <div class="metric-value" id="kpi-inv-teu">RM 510</div>
+      <div class="metric-sub">CAPEX efficiency</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Est. Annual Revenue</div>
+      <div class="metric-value green" id="kpi-rev">RM 112,548,810</div>
+      <div class="metric-sub">Capacity × Util × Rev/TEU</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Est. Annual OPEX</div>
+      <div class="metric-value danger" id="kpi-opex">RM 25,809,460</div>
+      <div class="metric-sub">Fixed (civil+eqpt) + Variable/TEU</div>
+    </div>
+  </div>
+
+  <!-- KPI grid — financial -->
+  <div class="metrics-grid" style="margin-bottom:16px;grid-template-columns:repeat(4,1fr);">
+    <div class="metric-card hl-finance">
+      <div class="metric-label" id="lbl-npv-years">Project NPV (16y)</div>
+      <div class="metric-value blue" id="kpi-npv" style="color: var(--accent2);">RM 365,600,689</div>
+      <div class="metric-sub">Discounted Cash Flow</div>
+    </div>
+    <div class="metric-card hl-finance">
+      <div class="metric-label">Project IRR <span id="irr-badge" class="irr-badge viable">VIABLE</span></div>
+      <div class="metric-value purple" id="kpi-irr" style="color: var(--accent);">31.7%</div>
+      <div class="metric-sub">Viable &gt;15% — Shariff benchmark</div>
+    </div>
+    <div class="metric-card hl-finance">
+      <div class="metric-label">Payback Period</div>
+      <div class="metric-value" id="kpi-payback" style="color: var(--text);">4 Years</div>
+      <div class="metric-sub">Cumulative break-even year</div>
+    </div>
+    <div class="metric-card hl-finance">
+      <div class="metric-label">Min Rev/TEU for Viability</div>
+      <div class="metric-value warn" id="kpi-breakeven" style="color: var(--accent);">RM 256</div>
+      <div class="metric-sub">RM/TEU needed for IRR ≥ 15%</div>
+    </div>
+  </div>
+
+  <div class="bottleneck-bar">
+    <div class="bn-dot" id="bn-dot" style="background: rgb(0, 212, 170);"></div>
+    <div>
+      <div style="font-size:10px;color:var(--text3);">Active Bottleneck</div>
+      <div style="font-size:13px;font-weight:500;" id="bn-value">✓ Equipment Cycle Time</div>
+    </div>
+    <div style="margin-left:auto;text-align:right;">
+      <div style="font-size:10px;color:var(--text3);">Rail vs Storage</div>
+      <div style="font-family:var(--mono);font-size:11px;" id="bn-detail">312,636 TEU rail | 312,636 TEU storage</div>
+    </div>
+  </div>
+
+  <div class="charts-row">
+    <div class="chart-card">
+      <div class="chart-title">Cost Breakdown (RM)</div>
+      <div style="position:relative;height:210px;"><canvas id="costChart" style="box-sizing: border-box; display: block; height: 210px; width: 714px;" width="714" height="210"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Siding Productivity (Moves/Hr)</div>
+      <div style="position:relative;height:210px;"><canvas id="sidingChart" style="box-sizing: border-box; display: block; height: 210px; width: 714px;" width="714" height="210"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Zone card -->
+  <div class="zone-card">
+    <div class="zone-title">Site Area — 8-Zone Breakdown</div>
+    <div class="zone-grid">
+      <div class="zone-tile"><div class="zone-tile-label">Zone 1 · Rail Corridor</div><div class="zone-tile-val" id="z1-val">8.1 ac</div><div class="zone-tile-sub">rail × 730m × 15m</div></div>
+      <div class="zone-tile"><div class="zone-tile-label">Zone 2 · Stacking Yard</div><div class="zone-tile-val" id="z2-val">20.0 ac</div><div class="zone-tile-sub" id="z2-sub" style="color: var(--text3);">derived 20.0ac from throughput</div></div>
+      <div class="zone-tile"><div class="zone-tile-label">Zone 3 · RS Driveway</div><div class="zone-tile-val" id="z3-val">3.6 ac</div><div class="zone-tile-sub">730m × 20m (track 3+)</div></div>
+      <div class="zone-tile warn-zone"><div class="zone-tile-label">Zone 4 · Warehouse</div><div class="zone-tile-val" id="z4-val">2.0 ac</div><div class="zone-tile-sub">user input</div></div>
+      <div class="zone-tile warn-zone"><div class="zone-tile-label">Zone 5 · Reefer Zone</div><div class="zone-tile-val" id="z5-val">0.5 ac</div><div class="zone-tile-sub">user input</div></div>
+      <div class="zone-tile purple-zone"><div class="zone-tile-label">Zone 6 · Truck Marshal</div><div class="zone-tile-val" id="z6-val">1.5 ac</div><div class="zone-tile-sub">0.5 ac/siding</div></div>
+      <div class="zone-tile purple-zone"><div class="zone-tile-label">Zone 7 · Internal Roads</div><div class="zone-tile-val" id="z7-val">3.3 ac</div><div class="zone-tile-sub">15% of Z2+Z4</div></div>
+      <div class="zone-tile"><div class="zone-tile-label">Zone 8 · Admin / Office</div><div class="zone-tile-val" id="z8-val">0.5 ac</div><div class="zone-tile-sub">fixed</div></div>
+    </div>
+    <div class="zone-total-row">
+      <div><div style="font-size:12px;color:var(--text2);font-weight:500;">Total Gross Site Area</div><div style="font-size:10px;color:var(--text3);margin-top:2px;">Sum of all 8 zones</div></div>
+      <div class="zone-total-val" id="zone-total">39.6 ac</div>
+    </div>
+  </div>
+
+  <!-- Soft costs panel -->
+  <div class="soft-costs-panel">
+    <div class="soft-costs-title">Soft Costs Breakdown — 29% Total (Confirmed by Adam QS)</div>
+    <div class="sc-row"><span>Contractor Preliminaries</span><span class="sc-src">PCE BQ Item 1.0</span><span style="font-family:var(--mono);color:var(--accent2);">7%</span></div>
+    <div class="sc-row"><span>Professional &amp; Consultancy</span><span class="sc-src">C&amp;S, MEP, Surveyors, PM</span><span style="font-family:var(--mono);color:var(--accent2);">10%</span></div>
+    <div class="sc-row"><span>Regulatory &amp; Levies</span><span class="sc-src">Adam confirmed: 2% (updated from 4%)</span><span style="font-family:var(--mono);color:var(--accent2);">2%</span></div>
+    <div class="sc-row"><span>Physical Contingency</span><span class="sc-src">Pulau Indah peat/soil conditions</span><span style="font-family:var(--mono);color:var(--accent2);">10%</span></div>
+    <div class="sc-row" style="margin-top:3px;"><span style="color:var(--text);">Total</span><span></span><span style="font-family:var(--mono);color:var(--warn);font-size:14px;">29%</span></div>
+  </div>
+
+  <!-- BQ table -->
+  <div class="bq-card">
+    <div class="bq-title">Bill of Quantities — Itemized CAPEX</div>
+    <table>
+      <thead><tr>
+        <th style="width:36px">Item</th>
+        <th>Category</th>
+        <th>Basis</th>
+        <th style="text-align:right">Amount (RM)</th>
+      </tr></thead>
+      <tbody id="bqBody"><tr><td class="item-num">0.0</td><td style="color:var(--text)">Land &amp; Conversion Cost</td><td style="color:var(--text2);font-size:11px">15 RM M lump sum</td><td class="amt" style="">RM 15,000,000</td></tr><tr><td class="item-num">1.0</td><td style="color:var(--text)">Zone 1 — Rail Corridor (Site Prep only)</td><td style="color:var(--text2);font-size:11px">3 sidings × 730m × 15m — no pavement on rail</td><td class="amt" style="">RM 6,412,750</td></tr><tr><td class="item-num">2.0</td><td style="color:var(--text)">Zone 2 — Stacking Yard (Civil)</td><td style="color:var(--text2);font-size:11px">20.04ac (derived 20.04ac)</td><td class="amt" style="">RM 19,940,539</td></tr><tr><td class="item-num">2.1</td><td style="color:var(--text)">Zone 3 — RS Driveway Reserve (Civil)</td><td style="color:var(--text2);font-size:11px">730m × 20m (track 3+ only)</td><td class="amt" style="">RM 3,589,697</td></tr><tr><td class="item-num">2.2</td><td style="color:var(--text)">Zone 6 — Truck Marshalling (Civil)</td><td style="color:var(--text2);font-size:11px">3 sidings × 0.5 ac</td><td class="amt" style="">RM 1,492,500</td></tr><tr><td class="item-num">2.3</td><td style="color:var(--text)">Zone 7 — Internal Roads (Civil)</td><td style="color:var(--text2);font-size:11px">15% of (Zone 2 + Zone 4)</td><td class="amt" style="">RM 3,289,581</td></tr><tr><td class="item-num">2.4</td><td style="color:var(--text)">Zone 8 — Admin / Office (Build)</td><td style="color:var(--text2);font-size:11px">2023 m² @ RM 1,200/m²</td><td class="amt" style="">RM 2,428,116</td></tr><tr><td class="item-num">3.0</td><td style="color:var(--text)">Zone 4 — Warehouse Build</td><td style="color:var(--text2);font-size:11px">8,094 m² @ RM 1,200/m²</td><td class="amt" style="">RM 9,712,464</td></tr><tr><td class="item-num">4.0</td><td style="color:var(--text)">Zone 5 — Reefer Plugs</td><td style="color:var(--text2);font-size:11px">10 pts @ RM 15,000/pt</td><td class="amt" style="">RM 150,000</td></tr><tr><td class="item-num">5.0</td><td style="color:var(--text)">Railway Works</td><td style="color:var(--text2);font-size:11px">3 lines × RM 10,900,000/line</td><td class="amt" style="">RM 32,700,000</td></tr><tr><td class="item-num">6.0</td><td style="color:var(--text)">Boom Gates</td><td style="color:var(--text2);font-size:11px">6 gates @ RM 50,000</td><td class="amt" style="">RM 300,000</td></tr><tr><td class="item-num">6.1</td><td style="color:var(--text)">RMG Foundation<span class="tag-unc">UNCONFIRMED</span></td><td style="color:var(--text2);font-size:11px">20% × 0 RMG × RM 18,000,000 (UNCTAD / Adam QS)</td><td class="amt" style="">—</td></tr><tr><td class="item-num">6.2</td><td style="color:var(--text)">Middle East War Cost Factor</td><td style="color:var(--text2);font-size:11px">OFF</td><td class="amt" style="">—</td></tr><tr class="bq-subtotal"><td class="item-num">—</td><td style="color:var(--text)">Construction Subtotal (adjusted)</td><td style="color:var(--text2);font-size:11px"></td><td class="amt" style="">RM 80,015,646</td></tr><tr><td class="item-num">7.0</td><td style="color:var(--text)">Prelims &amp; Soft Costs</td><td style="color:var(--text2);font-size:11px">29% on construction subtotal</td><td class="amt" style="">RM 23,204,537</td></tr><tr><td class="item-num">7.1</td><td style="color:var(--text)">Financing Cost</td><td style="color:var(--text2);font-size:11px">5% on (Const + Soft Costs) — Adam default 5%</td><td class="amt" style="">RM 5,161,009</td></tr><tr><td class="item-num">8.0</td><td style="color:var(--text)">Handling Equipment</td><td style="color:var(--text2);font-size:11px">12 train RS + 0 yard RS + 0 RMG</td><td class="amt" style="">RM 36,000,000</td></tr><tr class="bq-total"><td class="item-num"></td><td style="color:var(--text)">TOTAL GROSS DEVELOPMENT COST</td><td style="color:var(--text2);font-size:11px"></td><td class="amt" style="">RM 159,381,192</td></tr></tbody>
+    </table>
+  </div>
+
+  <!-- Finance module -->
+  <div class="finance-card">
+    <div class="finance-title">📊 DCF Analysis — Discounted Cash Flow &amp; ROI</div>
+
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:11px;display:flex;flex-wrap:wrap;gap:14px;">
+      <span>Full-util TEUs/yr: <strong id="fin-eff-teu" style="color:var(--accent);font-family:var(--mono);">250,108 TEU/yr</strong></span>
+      <span>Full-util Revenue: <strong id="fin-ann-rev" style="color:var(--accent);font-family:var(--mono);">RM 112.55M/yr</strong></span>
+      <span>Full-util OPEX: <strong id="fin-ann-opex" style="color:var(--danger);font-family:var(--mono);">RM 25.81M/yr</strong></span>
+      <span>Ramp-up: <strong id="fin-rampup-info" style="color:var(--warn);font-family:var(--mono);">5-yr ramp (Yr1=16%)</strong></span>
+      <span style="color:var(--text3);font-size:10px;">Fixed OPEX base = Civil + Machinery only (excl. land &amp; financing)</span>
+    </div>
+
+    <div class="bq-title" id="lbl-cf-table">16-Year Cash Flow Projection (ramp-up: 5 yrs)</div>
+    <div style="overflow-x:auto;">
+      <table style="min-width:820px;">
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th style="text-align:right">Util %</th>
+            <th style="text-align:right">TEU/yr</th>
+            <th style="text-align:right">Revenue (RM)</th>
+            <th style="text-align:right">OPEX (RM)</th>
+            <th style="text-align:right">Net CF (RM)</th>
+            <th style="text-align:right">Cumulative (RM)</th>
+            <th style="text-align:right">Discounted CF (RM)</th>
+          </tr>
+        </thead>
+        <tbody id="cashflowBody"><tr style="border-bottom:1px solid var(--border);background:rgba(255,179,64,0.05);">
+      <td style="color:var(--text);padding:6px 9px;font-family:var(--mono);font-size:11px;">Year 1 <span style="font-size:9px;color:var(--warn);font-family:var(--mono);margin-left:3px;">RAMP</span></td>
+      <td class="amt" style="padding:6px 9px;color:var(--warn);font-size:11px;">16%</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);font-size:11px;">50,022</td>
+      <td class="amt" style="color:var(--accent2);padding:6px 9px;">RM 22,509,762</td>
+      <td class="amt" style="color:var(--danger);padding:6px 9px;">−RM 9,802,518</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 12,707,244</td>
+      <td class="amt" style="padding:6px 9px;color:var(--danger);">RM -146,673,948</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);">RM 11,552,040</td>
+    </tr><tr style="border-bottom:1px solid var(--border);background:rgba(255,179,64,0.05);">
+      <td style="color:var(--text);padding:6px 9px;font-family:var(--mono);font-size:11px;">Year 2 <span style="font-size:9px;color:var(--warn);font-family:var(--mono);margin-left:3px;">RAMP</span></td>
+      <td class="amt" style="padding:6px 9px;color:var(--warn);font-size:11px;">32%</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);font-size:11px;">100,043</td>
+      <td class="amt" style="color:var(--accent2);padding:6px 9px;">RM 45,019,524</td>
+      <td class="amt" style="color:var(--danger);padding:6px 9px;">−RM 13,804,253</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 31,215,271</td>
+      <td class="amt" style="padding:6px 9px;color:var(--danger);">RM -115,458,677</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);">RM 25,797,744</td>
+    </tr><tr style="border-bottom:1px solid var(--border);background:rgba(255,179,64,0.05);">
+      <td style="color:var(--text);padding:6px 9px;font-family:var(--mono);font-size:11px;">Year 3 <span style="font-size:9px;color:var(--warn);font-family:var(--mono);margin-left:3px;">RAMP</span></td>
+      <td class="amt" style="padding:6px 9px;color:var(--warn);font-size:11px;">48%</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);font-size:11px;">150,065</td>
+      <td class="amt" style="color:var(--accent2);padding:6px 9px;">RM 67,529,286</td>
+      <td class="amt" style="color:var(--danger);padding:6px 9px;">−RM 17,805,989</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 49,723,297</td>
+      <td class="amt" style="padding:6px 9px;color:var(--danger);">RM -65,735,380</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);">RM 37,357,849</td>
+    </tr><tr style="border-bottom:1px solid var(--border);background:rgba(255,179,64,0.05);">
+      <td style="color:var(--text);padding:6px 9px;font-family:var(--mono);font-size:11px;">Year 4 <span style="font-size:9px;color:var(--warn);font-family:var(--mono);margin-left:3px;">RAMP</span></td>
+      <td class="amt" style="padding:6px 9px;color:var(--warn);font-size:11px;">64%</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);font-size:11px;">200,087</td>
+      <td class="amt" style="color:var(--accent2);padding:6px 9px;">RM 90,039,048</td>
+      <td class="amt" style="color:var(--danger);padding:6px 9px;">−RM 21,807,724</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 68,231,324</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 2,495,944</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);">RM 46,602,912</td>
+    </tr><tr style="border-bottom:1px solid var(--border);background:rgba(255,179,64,0.05);">
+      <td style="color:var(--text);padding:6px 9px;font-family:var(--mono);font-size:11px;">Year 5 <span style="font-size:9px;color:var(--warn);font-family:var(--mono);margin-left:3px;">RAMP</span></td>
+      <td class="amt" style="padding:6px 9px;color:var(--warn);font-size:11px;">80%</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);font-size:11px;">250,108</td>
+      <td class="amt" style="color:var(--accent2);padding:6px 9px;">RM 112,548,810</td>
+      <td class="amt" style="color:var(--danger);padding:6px 9px;">−RM 25,809,460</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 86,739,350</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 89,235,294</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);">RM 53,858,312</td>
+    </tr><tr style="border-bottom:1px solid var(--border);">
+      <td style="color:var(--text);padding:6px 9px;font-family:var(--mono);font-size:11px;">Year 6</td>
+      <td class="amt" style="padding:6px 9px;color:var(--warn);font-size:11px;">80%</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);font-size:11px;">250,108</td>
+      <td class="amt" style="color:var(--accent2);padding:6px 9px;">RM 112,548,810</td>
+      <td class="amt" style="color:var(--danger);padding:6px 9px;">−RM 25,809,460</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 86,739,350</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 175,974,644</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);">RM 48,962,102</td>
+    </tr><tr style="border-bottom:1px solid var(--border);">
+      <td style="color:var(--text);padding:6px 9px;font-family:var(--mono);font-size:11px;">Year 7</td>
+      <td class="amt" style="padding:6px 9px;color:var(--warn);font-size:11px;">80%</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);font-size:11px;">250,108</td>
+      <td class="amt" style="color:var(--accent2);padding:6px 9px;">RM 112,548,810</td>
+      <td class="amt" style="color:var(--danger);padding:6px 9px;">−RM 25,809,460</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 86,739,350</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 262,713,994</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);">RM 44,511,002</td>
+    </tr><tr style="border-bottom:1px solid var(--border);">
+      <td style="color:var(--text);padding:6px 9px;font-family:var(--mono);font-size:11px;">Year 8</td>
+      <td class="amt" style="padding:6px 9px;color:var(--warn);font-size:11px;">80%</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);font-size:11px;">250,108</td>
+      <td class="amt" style="color:var(--accent2);padding:6px 9px;">RM 112,548,810</td>
+      <td class="amt" style="color:var(--danger);padding:6px 9px;">−RM 25,809,460</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 86,739,350</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 349,453,345</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);">RM 40,464,547</td>
+    </tr><tr style="border-bottom:1px solid var(--border);">
+      <td style="color:var(--text);padding:6px 9px;font-family:var(--mono);font-size:11px;">Year 9</td>
+      <td class="amt" style="padding:6px 9px;color:var(--warn);font-size:11px;">80%</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);font-size:11px;">250,108</td>
+      <td class="amt" style="color:var(--accent2);padding:6px 9px;">RM 112,548,810</td>
+      <td class="amt" style="color:var(--danger);padding:6px 9px;">−RM 25,809,460</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 86,739,350</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 436,192,695</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);">RM 36,785,952</td>
+    </tr><tr style="border-bottom:1px solid var(--border);">
+      <td style="color:var(--text);padding:6px 9px;font-family:var(--mono);font-size:11px;">Year 10</td>
+      <td class="amt" style="padding:6px 9px;color:var(--warn);font-size:11px;">80%</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);font-size:11px;">250,108</td>
+      <td class="amt" style="color:var(--accent2);padding:6px 9px;">RM 112,548,810</td>
+      <td class="amt" style="color:var(--danger);padding:6px 9px;">−RM 25,809,460</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 86,739,350</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 522,932,045</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);">RM 33,441,774</td>
+    </tr><tr style="border-bottom:1px solid var(--border);">
+      <td style="color:var(--text);padding:6px 9px;font-family:var(--mono);font-size:11px;">Year 11</td>
+      <td class="amt" style="padding:6px 9px;color:var(--warn);font-size:11px;">80%</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);font-size:11px;">250,108</td>
+      <td class="amt" style="color:var(--accent2);padding:6px 9px;">RM 112,548,810</td>
+      <td class="amt" style="color:var(--danger);padding:6px 9px;">−RM 25,809,460</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 86,739,350</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 609,671,396</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);">RM 30,401,613</td>
+    </tr><tr style="border-bottom:1px solid var(--border);">
+      <td style="color:var(--text);padding:6px 9px;font-family:var(--mono);font-size:11px;">Year 12</td>
+      <td class="amt" style="padding:6px 9px;color:var(--warn);font-size:11px;">80%</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);font-size:11px;">250,108</td>
+      <td class="amt" style="color:var(--accent2);padding:6px 9px;">RM 112,548,810</td>
+      <td class="amt" style="color:var(--danger);padding:6px 9px;">−RM 25,809,460</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 86,739,350</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 696,410,746</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);">RM 27,637,830</td>
+    </tr><tr style="border-bottom:1px solid var(--border);">
+      <td style="color:var(--text);padding:6px 9px;font-family:var(--mono);font-size:11px;">Year 13</td>
+      <td class="amt" style="padding:6px 9px;color:var(--warn);font-size:11px;">80%</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);font-size:11px;">250,108</td>
+      <td class="amt" style="color:var(--accent2);padding:6px 9px;">RM 112,548,810</td>
+      <td class="amt" style="color:var(--danger);padding:6px 9px;">−RM 25,809,460</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 86,739,350</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 783,150,096</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);">RM 25,125,300</td>
+    </tr><tr style="border-bottom:1px solid var(--border);">
+      <td style="color:var(--text);padding:6px 9px;font-family:var(--mono);font-size:11px;">Year 14</td>
+      <td class="amt" style="padding:6px 9px;color:var(--warn);font-size:11px;">80%</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);font-size:11px;">250,108</td>
+      <td class="amt" style="color:var(--accent2);padding:6px 9px;">RM 112,548,810</td>
+      <td class="amt" style="color:var(--danger);padding:6px 9px;">−RM 25,809,460</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 86,739,350</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 869,889,446</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);">RM 22,841,182</td>
+    </tr><tr style="border-bottom:1px solid var(--border);">
+      <td style="color:var(--text);padding:6px 9px;font-family:var(--mono);font-size:11px;">Year 15</td>
+      <td class="amt" style="padding:6px 9px;color:var(--warn);font-size:11px;">80%</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);font-size:11px;">250,108</td>
+      <td class="amt" style="color:var(--accent2);padding:6px 9px;">RM 112,548,810</td>
+      <td class="amt" style="color:var(--danger);padding:6px 9px;">−RM 25,809,460</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 86,739,350</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 956,628,797</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);">RM 20,764,711</td>
+    </tr><tr style="border-bottom:1px solid var(--border);">
+      <td style="color:var(--text);padding:6px 9px;font-family:var(--mono);font-size:11px;">Year 16</td>
+      <td class="amt" style="padding:6px 9px;color:var(--warn);font-size:11px;">80%</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);font-size:11px;">250,108</td>
+      <td class="amt" style="color:var(--accent2);padding:6px 9px;">RM 112,548,810</td>
+      <td class="amt" style="color:var(--danger);padding:6px 9px;">−RM 25,809,460</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 86,739,350</td>
+      <td class="amt" style="padding:6px 9px;color:var(--accent);">RM 1,043,368,147</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);">RM 18,877,010</td>
+    </tr></tbody>
+      </table>
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:14px 0;">
+    <div class="chart-title" style="margin-bottom:10px;">15-Year Cash Flow Chart — Revenue vs OPEX vs Cumulative Net</div>
+    <div style="position:relative;height:220px;margin-bottom:4px;"><canvas id="cashflowChart" style="box-sizing: border-box; display: block; height: 220px; width: 1471px;" width="1471" height="220"></canvas></div>
+
+    <div style="font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:12px;line-height:1.9;padding-top:10px;border-top:1px solid var(--border);">
+      NPV Formula: −CAPEX + Σ[NetCF_t / (1+r)^t] over project lifetime &nbsp;|&nbsp;
+      IRR: discount rate where NPV = 0 (binary search 0–200%) &nbsp;|&nbsp;
+      OPEX Base = Civil Subtotal + Machinery (excl. land &amp; financing) &nbsp;|&nbsp;
+      Ramp-up: Yr 1 util = 1/N × target, rising linearly each year. Highlighted rows = ramp period. &nbsp;|&nbsp;
+      Min Rev/TEU = minimum RM/TEU for IRR ≥ 15% (binary search, current ramp &amp; OPEX assumptions).
+    </div>
+  </div>
+
+  <div class="scenario-chart-wrap" id="scenChartWrap">
+    <div class="chart-card">
+      <div class="chart-title">Scenario Comparison — Capacity vs Investment</div>
+      <div style="position:relative;height:250px;"><canvas id="scenChart"></canvas></div>
+    </div>
+  </div>
+
+  <div style="font-size:10px;color:var(--text3);font-family:var(--mono);margin-bottom:30px;line-height:2;">
+    ¹ GDC: Land + 8-zone civil + Railway + Boom Gates + RMG Foundation + War Factor + Soft Costs (29%) + Financing Cost + Machinery.<br>
+    ² OPEX Base: Civil Subtotal + Machinery ONLY — land and financing excluded (correct for port maintenance benchmarking).<br>
+    ³ RMG Foundation: 20% of RMG value (Adam QS confirmed UNCTAD rule). Switchable to RM/m in Unit Costs panel.<br>
+    ⁴ Regulatory &amp; Levies: updated to 2% (confirmed by Adam, was 4%).<br>
+    ⁵ IRR &lt;0%: shown as "Negative" when total net cash flows (with ramp-up) cannot recover total GDC over project lifetime.<br>
+    ⁶ War Factor: +12.6% on construction civil subtotal only, per Ministry of Economic.<br>
+    ⁷ Ramp-up: revenue and variable OPEX scale linearly over ramp period. Fixed OPEX is constant from year 1. IRR, NPV, and payback all reflect ramp-up.<br>
+    ⁸ Min Rev/TEU: auto-calculated breakeven — minimum RM per TEU at which IRR reaches 15% (Shariff threshold), using current ramp-up and OPEX settings.
+  </div>
+
+</main>
+</div>
+
+<script>
+// ============================================================
+// CONSTANTS
+// ============================================================
+const OP_DAYS_YEAR     = 312;
+const SIDING_LENGTH    = 730;
+const YARD_UTILIZATION = 0.70;
+const SQM_PER_ACRE     = 4046.86;
+const RAIL_CLEARANCE_M = 15;
+const DRIVEWAY_W_M     = 20;
+const ROAD_FRACTION    = 0.15;
+const ADMIN_ACRES      = 0.5;
+const TRUCK_AC_PER_SD  = 0.5;
+const MAX_RS_PER_SIDE  = 4;
+const RS_SCALE = [1.0, 0.67, 0.50, 0.40, 0.30, 0.20];
+const CONGESTION = [{above:1.1,f:0.95},{above:2.1,f:0.85},{above:3.1,f:0.75}];
+
+let scenarioLog = [];
+let costChartInst = null, sidingChartInst = null, scenChartInst = null;
+
+const RANGE_IDS = [
+  'rail_lines','num_rs_train','num_rs_yard','num_rmg','mhp_rs','mhp_rmg',
+  'op_hours','dwell_time','train_load','moves_per_cycle','rev_per_teu','stack_density',
+  'min_stacking_acres','warehouse_acres','reefer_acres',
+  'land_cost','u_site_prep','u_infra_acre','u_rmg_runway','u_rail_line','u_boom_gate',
+  'u_cost_rs','u_cost_rmg','u_warehouse_sqm','u_reefer_plug','reefer_plugs_per_acre',
+  'overhead_pct',
+  // Finance
+  'project_years','rampup_years','discount_rate','util_rate','opex_rate','opex_per_teu','financing_rate'
+];
+
+function getVal(id){ return +document.getElementById(id).value; }
+
+function getParams(){
+  const p = {};
+  RANGE_IDS.forEach(id => { p[id] = getVal(id); });
+  p.num_rs_total  = p.num_rs_train + p.num_rs_yard;
+  p.war_factor    = document.getElementById('war_factor').checked;
+  p.rmg_found_pct = document.getElementById('rmg_found_pct').checked;
+  return p;
+}
+
+// ============================================================
+// SIMULATION ENGINE
+// ============================================================
+function simulate(p){
+  const has_driveway = p.rail_lines > 2 && p.num_rs_train > 0;
+
+  // ── Capacity ──
+  let rs_pool = p.num_rs_train, rmg_pool = p.num_rmg, total_daily_trains = 0;
+  const siding_details = [];
+
+  for(let i = 0; i < p.rail_lines; i++){
+    const tidx    = has_driveway ? (i % 2) : Math.min(i, RS_SCALE.length - 1);
+    const prod_rs = p.mhp_rs * RS_SCALE[tidx];
+    const rem     = p.rail_lines - i;
+    const s_rs    = p.num_rs_train > 0 ? Math.min(MAX_RS_PER_SIDE, rs_pool / rem) : 0;
+    rs_pool -= s_rs;
+    let cong = 1.0;
+    CONGESTION.forEach(c => { if(s_rs > c.above) cong = c.f; });
+    const s_rmg = p.num_rmg > 0 ? rmg_pool / rem : 0;
+    rmg_pool -= s_rmg;
+    const siding_mhp = (s_rs * prod_rs * cong) + (s_rmg * p.mhp_rmg);
+    let trains = 0;
+    if(siding_mhp > 0){ const tat = (p.moves_per_cycle / siding_mhp) + 0.5; trains = p.op_hours / tat; total_daily_trains += trains; }
+    siding_details.push({ siding: i+1, mhp: siding_mhp, rs: s_rs, rmg: s_rmg });
+  }
+  const rail_cap_teu = total_daily_trains * p.train_load * OP_DAYS_YEAR;
+
+  // ── 8-Zone Acreage ──
+  const annual_turns = OP_DAYS_YEAR / p.dwell_time;
+  const peak_inv     = rail_cap_teu / annual_turns;
+  const z1 = (p.rail_lines * SIDING_LENGTH * RAIL_CLEARANCE_M) / SQM_PER_ACRE;
+  const z2_derived = (peak_inv / p.stack_density) / YARD_UTILIZATION;
+  const z2 = Math.max(z2_derived, p.min_stacking_acres);
+  const z3 = has_driveway ? (SIDING_LENGTH * DRIVEWAY_W_M) / SQM_PER_ACRE : 0;
+  const z4 = p.warehouse_acres;
+  const z5 = p.reefer_acres;
+  const z6 = p.rail_lines * TRUCK_AC_PER_SD;
+  const z7 = (z2 + z4) * ROAD_FRACTION;
+  const z8 = ADMIN_ACRES;
+  const total_acres = z1+z2+z3+z4+z5+z6+z7+z8;
+  const storage_cap_teu = z2 * YARD_UTILIZATION * p.stack_density * annual_turns;
+  const no_equip        = p.num_rs_train === 0 && p.num_rmg === 0;
+  const actual_cap      = no_equip ? 0 : Math.min(rail_cap_teu, storage_cap_teu);
+  const storage_binding = storage_cap_teu < rail_cap_teu * 0.99 && !no_equip;
+
+  // ── CAPEX Costing ──
+  const c_land = p.land_cost * 1_000_000;
+  const c_z1   = z1 * p.u_site_prep;
+  const civil  = p.u_site_prep + p.u_infra_acre;
+  const c_z2   = z2 * civil;
+  const c_z3   = z3 * civil;
+  const c_z6   = z6 * civil;
+  const c_z7   = z7 * civil;
+  const c_z8   = (z8 * SQM_PER_ACRE) * p.u_warehouse_sqm;
+  const wh_sqm = z4 * SQM_PER_ACRE;
+  const c_z4   = wh_sqm * p.u_warehouse_sqm;
+  const num_plugs = z5 * p.reefer_plugs_per_acre;
+  const c_z5   = num_plugs * p.u_reefer_plug;
+  const c_rail = p.rail_lines * p.u_rail_line;
+  const c_gates = p.rail_lines * 2 * p.u_boom_gate;
+
+  // RMG Foundation — FIXED: proper toggle between 20% rule vs RM/m
+  const c_rmg_civil = p.num_rmg > 0
+    ? (p.rmg_found_pct
+        ? (p.num_rmg * p.u_cost_rmg * 0.20)      // Adam confirmed: 20% of RMG value
+        : (p.u_rmg_runway * SIDING_LENGTH * 2))   // RM/m alternative
+    : 0;
+
+  // Civil subtotal before war factor
+  let civil_sub = c_z1+c_z2+c_z3+c_z4+c_z5+c_z6+c_z7+c_z8+c_rail+c_gates+c_rmg_civil;
+
+  // Middle East war factor applied to civil subtotal only
+  const c_war = p.war_factor ? civil_sub * 0.126 : 0;
+  const const_sub = civil_sub + c_war;   // adjusted civil subtotal
+
+  const c_soft      = const_sub * (p.overhead_pct / 100);
+  const c_financing = (const_sub + c_soft) * (p.financing_rate / 100);
+  const c_mach      = (p.num_rs_total * p.u_cost_rs) + (p.num_rmg * p.u_cost_rmg);
+  const total_gdc   = c_land + const_sub + c_soft + c_financing + c_mach;
+
+  // ── Financial Module v2.6 — ramp-up aware ──
+  const util         = p.util_rate / 100;
+  const discountRate = p.discount_rate / 100;
+  const years        = p.project_years;
+  const rampYears    = Math.min(p.rampup_years, years);
+
+  // OPEX base = civil + machinery ONLY (excludes land and financing)
+  const opex_base = const_sub + c_mach;
+
+  // Full-utilization figures for KPI display
+  const eff_teu           = actual_cap * util;
+  const annual_fixed_opex = opex_base * (p.opex_rate / 100);
+  const annual_var_opex   = eff_teu * p.opex_per_teu;
+  const annual_opex       = annual_fixed_opex + annual_var_opex;
+  const annual_rev        = eff_teu * p.rev_per_teu;
+
+  // Build year-by-year cash flows with ramp-up
+  // Ramp: util_frac in year t = min(t/rampYears, 1) × util_rate
+  // Fixed OPEX is constant from year 1; variable OPEX scales with TEUs
+  let npv = -total_gdc;
+  let cumulative = -total_gdc;
+  let payback = null;
+  let total_undiscounted_net = 0;
+  const cashflows = [];
+
+  for(let y = 1; y <= years; y++){
+    const ramp_frac = Math.min(y / rampYears, 1.0);
+    const yr_util   = util * ramp_frac;
+    const yr_teu    = actual_cap * yr_util;
+    const yr_rev    = yr_teu * p.rev_per_teu;
+    const yr_opex   = annual_fixed_opex + (yr_teu * p.opex_per_teu);
+    const yr_net    = yr_rev - yr_opex;
+    const discounted = yr_net / Math.pow(1 + discountRate, y);
+    npv += discounted;
+    cumulative += yr_net;
+    total_undiscounted_net += yr_net;
+    if(payback === null && cumulative >= 0) payback = y;
+    cashflows.push({
+      y,
+      util_pct: Math.round(yr_util * 100),
+      teu: yr_teu,
+      rev: yr_rev,
+      opex: yr_opex,
+      net: yr_net,
+      cum: cumulative,
+      disc: discounted
+    });
+  }
+
+  const payback_display = payback !== null ? payback + ' Years' : '> ' + years + ' Yrs';
+
+  // IRR edge case — verify total net cash flows can recover GDC
+  let irr_display = 'Negative';
+  let irr_num = null;
+
+  if(total_undiscounted_net > total_gdc){
+    let lo = 0, hi = 2.0;
+    for(let i = 0; i < 60; i++){
+      const mid = (lo + hi) / 2;
+      let check = -total_gdc;
+      cashflows.forEach(cf => { check += cf.net / Math.pow(1 + mid, cf.y); });
+      if(check > 0) lo = mid; else hi = mid;
+    }
+    irr_num = lo * 100;
+    irr_display = irr_num.toFixed(1) + '%';
+  }
+
+  // Breakeven rev/TEU — minimum RM/TEU so that IRR ≥ 15% under current ramp-up & OPEX settings
+  // Binary search: find rev/TEU where NPV at 15% discount rate = 0
+  let breakeven_rev_teu = null;
+  if(actual_cap > 0 && util > 0){
+    const target_r = 0.15;
+    let lo_r = 0, hi_r = 2000;
+    for(let i = 0; i < 60; i++){
+      const mid_r = (lo_r + hi_r) / 2;
+      let test_npv = -total_gdc;
+      for(let y2 = 1; y2 <= years; y2++){
+        const rf = Math.min(y2 / rampYears, 1.0);
+        const yt = actual_cap * util * rf;
+        const yn = (yt * mid_r) - annual_fixed_opex - (yt * p.opex_per_teu);
+        test_npv += yn / Math.pow(1 + target_r, y2);
+      }
+      if(test_npv < 0) lo_r = mid_r; else hi_r = mid_r;
+    }
+    breakeven_rev_teu = Math.ceil(lo_r);
+  }
+
+  const inv_per_teu  = actual_cap > 0 ? total_gdc / actual_cap : 0;
+  const teu_per_acre = total_acres > 0 ? actual_cap / total_acres : 0;
+  let bottleneck = '✓ Equipment Cycle Time', bn_color = '#00d4aa';
+  if(no_equip){ bottleneck = '⚠ No Train Equipment (RS or RMG)'; bn_color = '#ff5757'; }
+  else if(storage_binding){ bottleneck = '◼ Yard Storage (Zone 2 constrained)'; bn_color = '#ffb340'; }
+
+  return {
+    total_gdc, actual_cap, total_acres,
+    rail_cap_teu, storage_cap_teu, peak_inv,
+    inv_per_teu, teu_per_acre,
+    annual_rev, annual_opex, eff_teu,
+    npv, irr_display, irr_num, payback_display, cashflows,
+    breakeven_rev_teu, rampYears,
+    bottleneck, bn_color, storage_binding,
+    z1,z2,z2_derived,z3,z4,z5,z6,z7,z8,
+    c_land,c_z1,c_z2,c_z3,c_z4,c_z5,c_z6,c_z7,c_z8,
+    c_rail,c_gates,c_rmg_civil,c_war,const_sub,c_soft,c_financing,c_mach,
+    siding_details, num_plugs, wh_sqm, p
+  };
+}
+
+// ============================================================
+// FORMAT HELPERS
+// ============================================================
+const fmt    = n => 'RM ' + Math.round(n).toLocaleString();
+const fmtM   = n => 'RM ' + (n / 1e6).toFixed(2) + 'M';
+const fmtTeu = n => Math.round(n).toLocaleString() + ' TEU';
+const fmtAc  = n => n.toFixed(1) + ' ac';
+
+// ============================================================
+// UI UPDATE
+// ============================================================
+function updateUI(r){
+  const p = r.p;
+
+  // RMG foundation input state
+  const usesPct = p.rmg_found_pct;
+  ['val-u_rmg_runway','u_rmg_runway'].forEach(id => {
+    const el = document.getElementById(id);
+    el.disabled = usesPct;
+    el.style.opacity = usesPct ? '0.35' : '1';
+  });
+  document.getElementById('lbl_rmg_runway').style.opacity   = usesPct ? '0.35' : '1';
+  document.getElementById('hint_rmg_runway').textContent     = usesPct
+    ? 'Inactive — using 20% of RMG value (Adam QS confirmed)'
+    : 'Active — enter cost per linear metre of RMG runway';
+  document.getElementById('hint_rmg_runway').style.color     = usesPct ? 'var(--text3)' : 'var(--warn)';
+
+  // Operational KPIs
+  document.getElementById('kpi-gdc').textContent      = fmt(r.total_gdc);
+  document.getElementById('kpi-cap').textContent      = fmtTeu(r.actual_cap);
+  document.getElementById('kpi-acres').textContent    = fmtAc(r.total_acres);
+  document.getElementById('kpi-inv-teu').textContent  = fmt(r.inv_per_teu);
+  document.getElementById('kpi-rev').textContent      = fmt(r.annual_rev);
+  document.getElementById('kpi-opex').textContent     = fmt(r.annual_opex);
+
+  // RS cost display
+  document.getElementById('rs-total-display').textContent = p.num_rs_total;
+  document.getElementById('rs-cost-display').textContent  = fmt(p.num_rs_total * p.u_cost_rs);
+
+  // Financial KPIs
+  document.getElementById('lbl-npv-years').textContent  = `Project NPV (${p.project_years}y)`;
+  document.getElementById('kpi-npv').textContent        = fmt(r.npv);
+  document.getElementById('kpi-npv').style.color        = r.npv >= 0 ? 'var(--accent2)' : 'var(--danger)';
+
+  document.getElementById('kpi-irr').textContent        = r.irr_display;
+  document.getElementById('kpi-irr').style.color        = r.irr_num === null ? 'var(--danger)'
+                                                         : r.irr_num >= 15   ? 'var(--accent)'
+                                                         : r.irr_num >= 10   ? 'var(--warn)'
+                                                         :                     'var(--danger)';
+
+  // IRR viability badge
+  const badge = document.getElementById('irr-badge');
+  if(r.irr_num === null){
+    badge.textContent = 'NOT VIABLE'; badge.className = 'irr-badge poor';
+  } else if(r.irr_num >= 15){
+    badge.textContent = 'VIABLE'; badge.className = 'irr-badge viable';
+  } else if(r.irr_num >= 10){
+    badge.textContent = 'MARGINAL'; badge.className = 'irr-badge marginal';
+  } else {
+    badge.textContent = 'POOR'; badge.className = 'irr-badge poor';
+  }
+
+  document.getElementById('kpi-payback').textContent    = r.payback_display;
+  document.getElementById('kpi-payback').style.color    = r.payback_display.startsWith('>')
+                                                         ? 'var(--danger)' : 'var(--text)';
+
+  // Breakeven Rev/TEU KPI
+  const beEl = document.getElementById('kpi-breakeven');
+  if(r.breakeven_rev_teu !== null){
+    beEl.textContent = 'RM ' + r.breakeven_rev_teu.toLocaleString();
+    beEl.style.color = r.p.rev_per_teu >= r.breakeven_rev_teu ? 'var(--accent)' : 'var(--danger)';
+  } else {
+    beEl.textContent = '—'; beEl.style.color = 'var(--text3)';
+  }
+
+  // Finance summary strip — shows full-utilization figures + ramp info
+  document.getElementById('fin-eff-teu').textContent    = Math.round(r.eff_teu).toLocaleString() + ' TEU/yr';
+  document.getElementById('fin-ann-rev').textContent    = fmtM(r.annual_rev) + '/yr';
+  document.getElementById('fin-ann-opex').textContent   = fmtM(r.annual_opex) + '/yr';
+  document.getElementById('fin-rampup-info').textContent = r.rampYears + '-yr ramp (Yr1=' + Math.round(r.p.util_rate/r.rampYears) + '%)';
+  document.getElementById('lbl-cf-table').textContent   = r.p.project_years + '-Year Cash Flow Projection (ramp-up: ' + r.rampYears + ' yrs)';
+
+  // Bottleneck bar
+  document.getElementById('bn-value').textContent     = r.bottleneck;
+  document.getElementById('bn-dot').style.background  = r.bn_color;
+  document.getElementById('bn-detail').textContent    = fmtTeu(r.rail_cap_teu) + ' rail | ' + fmtTeu(r.storage_cap_teu) + ' storage';
+
+  // Zone tiles
+  ['z1','z2','z3','z4','z5','z6','z7','z8'].forEach(z => {
+    document.getElementById(z + '-val').textContent = fmtAc(r[z]);
+  });
+  document.getElementById('zone-total').textContent = fmtAc(r.total_acres);
+  const z2sub = document.getElementById('z2-sub');
+  if(r.storage_binding){
+    z2sub.textContent = '⚠ constrained — needs ' + r.z2_derived.toFixed(1) + 'ac';
+    z2sub.style.color = 'var(--warn)';
+  } else if(p.min_stacking_acres > 0 && r.z2 > r.z2_derived){
+    z2sub.textContent = 'oversized vs derived ' + r.z2_derived.toFixed(1) + 'ac';
+    z2sub.style.color = 'var(--accent2)';
+  } else {
+    z2sub.textContent = 'derived ' + r.z2_derived.toFixed(1) + 'ac from throughput';
+    z2sub.style.color = 'var(--text3)';
+  }
+
+  // BQ rows
+  const bqRows = [
+    ['0.0', 'Land &amp; Conversion Cost',              `${p.land_cost} RM M lump sum`,                                                   r.c_land,     false],
+    ['1.0', 'Zone 1 — Rail Corridor (Site Prep only)', `${p.rail_lines} sidings × ${SIDING_LENGTH}m × 15m — no pavement on rail`,       r.c_z1,       false],
+    ['2.0', 'Zone 2 — Stacking Yard (Civil)',          `${r.z2.toFixed(2)}ac (derived ${r.z2_derived.toFixed(2)}ac)`,                   r.c_z2,       r.storage_binding ? 'warn-row' : false],
+    ['2.1', 'Zone 3 — RS Driveway Reserve (Civil)',    `730m × 20m (track 3+ only)`,                                                     r.c_z3,       false],
+    ['2.2', 'Zone 6 — Truck Marshalling (Civil)',      `${p.rail_lines} sidings × 0.5 ac`,                                              r.c_z6,       false],
+    ['2.3', 'Zone 7 — Internal Roads (Civil)',         `15% of (Zone 2 + Zone 4)`,                                                       r.c_z7,       false],
+    ['2.4', 'Zone 8 — Admin / Office (Build)',         `${(ADMIN_ACRES * SQM_PER_ACRE).toFixed(0)} m² @ RM ${p.u_warehouse_sqm.toLocaleString()}/m²`, r.c_z8, false],
+    ['3.0', 'Zone 4 — Warehouse Build',                `${Math.round(r.wh_sqm).toLocaleString()} m² @ RM ${p.u_warehouse_sqm.toLocaleString()}/m²`,   r.c_z4, false],
+    ['4.0', 'Zone 5 — Reefer Plugs',                  `${Math.round(r.num_plugs)} pts @ RM ${p.u_reefer_plug.toLocaleString()}/pt`,     r.c_z5,       false],
+    ['5.0', 'Railway Works',                           `${p.rail_lines} lines × RM ${p.u_rail_line.toLocaleString()}/line`,             r.c_rail,     false],
+    ['6.0', 'Boom Gates',                              `${p.rail_lines * 2} gates @ RM ${p.u_boom_gate.toLocaleString()}`,              r.c_gates,    false],
+    ['6.1', 'RMG Foundation',                          p.rmg_found_pct
+      ? `20% × ${p.num_rmg} RMG × RM ${p.u_cost_rmg.toLocaleString()} (UNCTAD / Adam QS)`
+      : `${SIDING_LENGTH}m × 2 rails × RM ${p.u_rmg_runway.toLocaleString()}/m`,              r.c_rmg_civil, 'unc'],
+    ['6.2', 'Middle East War Cost Factor',             `${p.war_factor ? '+12.6% on civil subtotal — Ministry of Economic' : 'OFF'}`,   r.c_war,      r.c_war > 0 ? 'warn-row' : false],
+    ['—',   'Construction Subtotal (adjusted)',        '',                                                                               r.const_sub,  'sub'],
+    ['7.0', `Prelims &amp; Soft Costs`,                `${p.overhead_pct}% on construction subtotal`,                                   r.c_soft,     false],
+    ['7.1', 'Financing Cost',                          `${p.financing_rate}% on (Const + Soft Costs) — Adam default 5%`,               r.c_financing, false],
+    ['8.0', 'Handling Equipment',                      `${p.num_rs_train} train RS + ${p.num_rs_yard} yard RS + ${p.num_rmg} RMG`,     r.c_mach,     false],
+    ['',    'TOTAL GROSS DEVELOPMENT COST',            '',                                                                               r.total_gdc,  'total']
+  ];
+
+  document.getElementById('bqBody').innerHTML = bqRows.map(([item, cat, basis, amt, flag]) => {
+    const isTotal = flag === 'total', isSub = flag === 'sub';
+    const tag = flag === 'unc'      ? '<span class="tag-unc">UNCONFIRMED</span>'
+              : flag === 'warn-row' ? '<span class="tag-warn">NOTE</span>' : '';
+    const rc  = isTotal ? 'class="bq-total"' : isSub ? 'class="bq-subtotal"' : '';
+    const as  = flag === 'warn-row' ? 'color:var(--warn);' : '';
+    const amtStr = amt === 0 ? '—' : fmt(amt);
+    return `<tr ${rc}><td class="item-num">${item}</td><td style="color:var(--text)">${cat}${tag}</td><td style="color:var(--text2);font-size:11px">${basis}</td><td class="amt" style="${as}">${amtStr}</td></tr>`;
+  }).join('');
+
+  // Cash flow table — ramp-up rows highlighted in amber
+  document.getElementById('cashflowBody').innerHTML = r.cashflows.map(cf => {
+    const isRamp  = cf.y <= r.rampYears;
+    const rowBg   = isRamp ? 'background:rgba(255,179,64,0.05);' : '';
+    const yrLabel = isRamp
+      ? `Year ${cf.y} <span style="font-size:9px;color:var(--warn);font-family:var(--mono);margin-left:3px;">RAMP</span>`
+      : `Year ${cf.y}`;
+    return `<tr style="border-bottom:1px solid var(--border);${rowBg}">
+      <td style="color:var(--text);padding:6px 9px;font-family:var(--mono);font-size:11px;">${yrLabel}</td>
+      <td class="amt" style="padding:6px 9px;color:var(--warn);font-size:11px;">${cf.util_pct}%</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);font-size:11px;">${Math.round(cf.teu).toLocaleString()}</td>
+      <td class="amt" style="color:var(--accent2);padding:6px 9px;">${fmt(cf.rev)}</td>
+      <td class="amt" style="color:var(--danger);padding:6px 9px;">−${fmt(cf.opex)}</td>
+      <td class="amt" style="padding:6px 9px;color:${cf.net >= 0 ? 'var(--accent)' : 'var(--danger)'};">${fmt(cf.net)}</td>
+      <td class="amt" style="padding:6px 9px;color:${cf.cum >= 0 ? 'var(--accent)' : 'var(--danger)'};">${fmt(cf.cum)}</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);">${fmt(cf.disc)}</td>
+    </tr>`;
+  }).join('');
+
+  updateCostChart(r);
+  updateSidingChart(r);
+  updateCashflowChart(r);
+}
+
+let cashflowChartInst = null;
+function updateCashflowChart(r){
+  const labels    = r.cashflows.map(cf => 'Y' + cf.y);
+  const revData   = r.cashflows.map(cf => +(cf.rev  / 1e6).toFixed(2));
+  const opexData  = r.cashflows.map(cf => +(cf.opex / 1e6).toFixed(2));
+  const cumData   = r.cashflows.map(cf => +(cf.cum  / 1e6).toFixed(2));
+  const breakEvenY = r.rampYears + 0.5; // visual reference line position
+  if(cashflowChartInst) cashflowChartInst.destroy();
+  cashflowChartInst = new Chart(document.getElementById('cashflowChart'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Revenue (RM M)',
+          data: revData,
+          borderColor: '#0097ff', backgroundColor: 'rgba(0,151,255,0.06)',
+          fill: false, tension: 0.15, pointRadius: 3, borderWidth: 2
+        },
+        {
+          label: 'OPEX (RM M)',
+          data: opexData,
+          borderColor: '#ff5757', backgroundColor: 'rgba(255,87,87,0.06)',
+          fill: false, tension: 0.15, pointRadius: 3, borderWidth: 2
+        },
+        {
+          label: 'Cumulative Net CF (RM M)',
+          data: cumData,
+          borderColor: '#00d4aa', backgroundColor: 'rgba(0,212,170,0.08)',
+          fill: true, tension: 0.25, pointRadius: 3, borderWidth: 2.5
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      scales: {
+        x: {
+          ticks: { color: '#8b90a0', font: { family: 'Space Mono', size: 9 } },
+          grid: { color: '#ffffff08' }
+        },
+        y: {
+          ticks: {
+            color: '#8b90a0', font: { family: 'Space Mono', size: 9 },
+            callback: v => 'RM ' + v.toFixed(0) + 'M'
+          },
+          grid: { color: '#ffffff08' }
+        }
+      },
+      plugins: {
+        legend: { display: true, labels: { color: '#8b90a0', font: { family: 'Space Mono', size: 9 }, boxWidth: 12 } },
+        tooltip: {
+          callbacks: {
+            label: ctx => ctx.dataset.label + ': RM ' + ctx.parsed.y.toFixed(2) + 'M'
+          }
+        }
+      }
+    }
+  });
+}
+
+function updateCostChart(r){
+  const labels = ['Land','Z1 Rail','Z2 Stack','Z3 Drwy','Z4 Whse','Z5 Reefer','Z6 Truck','Z7 Roads','Z8 Admin','Rail Works','Gates','RMG Found.','War Fct.','Soft Costs','Financing','Equipment'];
+  const vals   = [r.c_land,r.c_z1,r.c_z2,r.c_z3,r.c_z4,r.c_z5,r.c_z6,r.c_z7,r.c_z8,r.c_rail,r.c_gates,r.c_rmg_civil,r.c_war,r.c_soft,r.c_financing,r.c_mach];
+  const colors = ['#0984e3','#00d4aa','#0097ff','#fdcb6e','#e17055','#6c5ce7','#a29bfe','#74b9ff','#b2bec3','#00b894','#55efc4','#fd79a8','#d63031','#636e72','#f39c12','#a78bfa'];
+  if(costChartInst) costChartInst.destroy();
+  costChartInst = new Chart(document.getElementById('costChart'), {
+    type: 'doughnut',
+    data: { labels, datasets: [{ data: vals, backgroundColor: colors, borderColor: '#13161e', borderWidth: 2 }] },
+    options: { responsive: true, maintainAspectRatio: false, cutout: '62%', plugins: { legend: { display: false } } }
+  });
+}
+
+function updateSidingChart(r){
+  const labels = r.siding_details.map(s => 'Siding ' + s.siding);
+  const vals   = r.siding_details.map(s => Math.round(s.mhp * 10) / 10);
+  if(sidingChartInst) sidingChartInst.destroy();
+  sidingChartInst = new Chart(document.getElementById('sidingChart'), {
+    type: 'bar',
+    data: { labels, datasets: [{ label: 'Moves/Hr', data: vals, backgroundColor: '#00d4aa88', borderColor: '#00d4aa', borderWidth: 1.5, borderRadius: 4 }] },
+    options: { responsive: true, maintainAspectRatio: false,
+      scales: {
+        x: { ticks: { color: '#8b90a0', font: { family: 'Space Mono', size: 10 } }, grid: { color: '#ffffff08' } },
+        y: { ticks: { color: '#8b90a0', font: { family: 'Space Mono', size: 10 } }, grid: { color: '#ffffff08' } }
+      },
+      plugins: { legend: { display: false } }
+    }
+  });
+}
+
+function run(){ updateUI(simulate(getParams())); }
+
+// ============================================================
+// SLIDER ↔ NUMBER INPUT SYNC
+// ============================================================
+function syncFromRange(id){
+  const range = document.getElementById(id);
+  const inp   = document.getElementById('val-' + id);
+  if(inp) inp.value = range.value;
+  if(id === 'num_rs_train' || id === 'num_rs_yard') updateRSTotals();
+  run(); triggerAutosave();
+}
+
+function syncFromInput(id){
+  const inp   = document.getElementById('val-' + id);
+  const range = document.getElementById(id);
+  if(!inp || !range) return;
+  let v = parseFloat(inp.value);
+  const mn = parseFloat(range.min), mx = parseFloat(range.max);
+  if(isNaN(v)) return;
+  v = Math.min(mx, Math.max(mn, v));
+  inp.value = v; range.value = v;
+  if(id === 'num_rs_train' || id === 'num_rs_yard') updateRSTotals();
+  run(); triggerAutosave();
+}
+
+function updateRSTotals(){
+  document.getElementById('rs-total-display').textContent = getVal('num_rs_train') + getVal('num_rs_yard');
+}
+
+function syncControls(){ run(); triggerAutosave(); }
+
+RANGE_IDS.forEach(id => {
+  const range = document.getElementById(id);
+  if(range) range.addEventListener('input', () => syncFromRange(id));
+  const inp = document.getElementById('val-' + id);
+  if(inp){
+    inp.addEventListener('change',  () => syncFromInput(id));
+    inp.addEventListener('keydown', e => { if(e.key === 'Enter') syncFromInput(id); });
+  }
+});
+
+function toggleSection(id){ document.getElementById(id).classList.toggle('collapsed'); }
+
+// ============================================================
+// SCENARIO LOGGER
+// ============================================================
+function logScenario(){
+  const p = getParams(), r = simulate(p);
+  const label = document.getElementById('scenLabel').value || ('Scenario ' + (scenarioLog.length + 1));
+  scenarioLog.push({ label, gdc: r.total_gdc, capacity: r.actual_cap, acres: r.total_acres, irr: r.irr_display, npv: r.npv });
+  document.getElementById('scenLabel').value = 'Scenario ' + (scenarioLog.length + 1);
+  renderScenTable(); showToast('Logged: ' + label, 'ok');
+}
+
+function renderScenTable(){
+  const wrap = document.getElementById('scenTableWrap');
+  if(!scenarioLog.length){ wrap.innerHTML = '<div style="font-size:11px;color:var(--text3);text-align:center;padding:14px;font-family:var(--mono);">No scenarios logged yet</div>'; return; }
+  let html = `<table style="width:100%;font-size:11px;margin-top:5px;">
+    <thead><tr><th>Label</th><th style="text-align:right">GDC(M)</th><th style="text-align:right">Cap(TEU)</th><th style="text-align:right">IRR</th></tr></thead><tbody>`;
+  scenarioLog.forEach(s => {
+    html += `<tr>
+      <td style="color:var(--text);padding:4px 3px">${s.label}</td>
+      <td style="font-family:var(--mono);text-align:right;padding:4px 3px">${(s.gdc/1e6).toFixed(1)}M</td>
+      <td style="font-family:var(--mono);text-align:right;padding:4px 3px">${Math.round(s.capacity).toLocaleString()}</td>
+      <td style="font-family:var(--mono);text-align:right;padding:4px 3px;color:${s.irr==='Negative'?'var(--danger)':'var(--accent)'}">${s.irr}</td>
+    </tr>`;
+  });
+  html += '</tbody></table>'; wrap.innerHTML = html;
+}
+
+function plotScenarios(){
+  if(!scenarioLog.length) return;
+  document.getElementById('scenChartWrap').classList.add('visible');
+  const sorted = [...scenarioLog].sort((a,b) => a.gdc - b.gdc);
+  if(scenChartInst) scenChartInst.destroy();
+  scenChartInst = new Chart(document.getElementById('scenChart'), {
+    type: 'scatter',
+    data: { datasets: [{ label: 'Scenarios', data: sorted.map(s => ({ x: s.gdc/1e6, y: s.capacity/1000 })), backgroundColor: '#ffb340', borderColor: '#ffb340', pointRadius: 7, pointHoverRadius: 9 }] },
+    options: { responsive: true, maintainAspectRatio: false,
+      scales: {
+        x: { title: { display: true, text: 'Total GDC (RM Million)', color: '#8b90a0' }, ticks: { color: '#8b90a0', font: { family: 'Space Mono', size: 10 } }, grid: { color: '#ffffff08' } },
+        y: { title: { display: true, text: 'Annual Capacity (000 TEU)', color: '#8b90a0' }, ticks: { color: '#8b90a0', font: { family: 'Space Mono', size: 10 } }, grid: { color: '#ffffff08' } }
+      },
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => { const s = sorted[ctx.dataIndex]; return [s.label, `GDC: RM ${(s.gdc/1e6).toFixed(1)}M`, `Cap: ${Math.round(s.capacity/1000)}k TEU`, `IRR: ${s.irr}`]; } } } }
+    }
+  });
+  document.getElementById('scenChartWrap').scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function clearScenarios(){
+  scenarioLog = []; renderScenTable();
+  if(scenChartInst){ scenChartInst.destroy(); scenChartInst = null; }
+  document.getElementById('scenChartWrap').classList.remove('visible');
+}
+
+// ============================================================
+// SAVE / LOAD
+// ============================================================
+const LS_AUTO  = 'icd_v26_auto';
+const LS_SLOTS = 'icd_v26_slots';
+let autosaveTimer = null;
+
+function showToast(msg, type = 'ok'){ const t = document.getElementById('toast'); t.textContent = msg; t.className = 'toast ' + type; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2400); }
+function setAutosaveStatus(state){ document.getElementById('autosaveDot').className = 'autosave-dot ' + state; document.getElementById('saveStatus').textContent = { saved: 'auto-saved', saving: 'saving…', idle: '' }[state] || ''; }
+function triggerAutosave(){ setAutosaveStatus('saving'); clearTimeout(autosaveTimer); autosaveTimer = setTimeout(() => { try{ localStorage.setItem(LS_AUTO, JSON.stringify({ params: getParams(), scenarios: scenarioLog, ts: Date.now() })); setAutosaveStatus('saved'); } catch(e){ setAutosaveStatus('idle'); } }, 800); }
+
+function applyParams(params){
+  RANGE_IDS.forEach(id => {
+    if(params[id] === undefined) return;
+    const r = document.getElementById(id), i = document.getElementById('val-' + id);
+    if(r) r.value = params[id];
+    if(i) i.value = params[id];
+  });
+  if(params.war_factor    !== undefined) document.getElementById('war_factor').checked    = params.war_factor;
+  if(params.rmg_found_pct !== undefined) document.getElementById('rmg_found_pct').checked = params.rmg_found_pct;
+  document.getElementById('rs-total-display').textContent = getVal('num_rs_train') + getVal('num_rs_yard');
+  run();
+}
+
+function restoreAutosave(){
+  try{
+    const raw = localStorage.getItem(LS_AUTO);
+    if(!raw) return;
+    const state = JSON.parse(raw);
+    if(state.params) applyParams(state.params);
+    if(state.scenarios){ scenarioLog = state.scenarios; renderScenTable(); }
+    const ago = Math.round((Date.now() - state.ts) / 60000);
+    setAutosaveStatus('saved');
+    document.getElementById('saveStatus').textContent = 'restored · ' + (ago < 1 ? 'just now' : ago < 60 ? ago + 'm ago' : Math.round(ago/60) + 'h ago');
+  } catch(e){}
+}
+
+function saveSlot(){
+  const name = document.getElementById('saveSlotName').value.trim() || ('Config ' + new Date().toLocaleTimeString());
+  const slots = getSlots();
+  const idx = slots.findIndex(s => s.name === name);
+  const entry = { name, params: getParams(), scenarios: scenarioLog, ts: Date.now() };
+  if(idx >= 0) slots[idx] = entry; else slots.unshift(entry);
+  localStorage.setItem(LS_SLOTS, JSON.stringify(slots.slice(0, 20)));
+  renderSlotList(); showToast('Saved: ' + name, 'ok');
+}
+
+function loadSlot(name){
+  const slot = getSlots().find(s => s.name === name);
+  if(!slot) return;
+  applyParams(slot.params);
+  if(slot.scenarios){ scenarioLog = slot.scenarios; renderScenTable(); }
+  showToast('Loaded: ' + name, 'info');
+}
+
+function deleteSlot(name){
+  localStorage.setItem(LS_SLOTS, JSON.stringify(getSlots().filter(s => s.name !== name)));
+  renderSlotList(); showToast('Deleted: ' + name, 'err');
+}
+
+function getSlots(){ try{ return JSON.parse(localStorage.getItem(LS_SLOTS)) || []; } catch(e){ return []; } }
+
+function renderSlotList(){
+  const slots = getSlots(), wrap = document.getElementById('slotList');
+  if(!slots.length){ wrap.innerHTML = '<div style="font-size:11px;color:var(--text3);text-align:center;padding:12px;font-family:var(--mono);">No saved configs</div>'; return; }
+  wrap.innerHTML = slots.map(s => {
+    const d = new Date(s.ts);
+    const lbl = d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return `<div class="slot-row">
+      <span class="slot-name" title="${s.name}">${s.name}</span>
+      <span class="slot-date">${lbl}</span>
+      <button class="btn-xs load" onclick="loadSlot('${s.name.replace(/'/g,"\\'")}')">Load</button>
+      <button class="btn-xs del"  onclick="deleteSlot('${s.name.replace(/'/g,"\\'")}')">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function exportJSON(){
+  const blob = new Blob([JSON.stringify({ version: '2.6', exported: new Date().toISOString(), params: getParams(), scenarios: scenarioLog, saved_slots: getSlots() }, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'ICD_Simulation_v26_' + new Date().toISOString().slice(0,10) + '.json';
+  a.click(); URL.revokeObjectURL(a.href);
+  showToast('Exported JSON', 'ok');
+}
+
+function importJSON(event){
+  const file = event.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try{
+      const state = JSON.parse(e.target.result);
+      if(!state.params) throw new Error('Bad format');
+      applyParams(state.params);
+      if(state.scenarios){ scenarioLog = state.scenarios; renderScenTable(); }
+      if(state.saved_slots && state.saved_slots.length){
+        const merged = [...state.saved_slots, ...getSlots()].reduce((acc,s) => { if(!acc.find(x => x.name === s.name)) acc.push(s); return acc; }, []);
+        localStorage.setItem(LS_SLOTS, JSON.stringify(merged.slice(0,20)));
+        renderSlotList();
+      }
+      showToast('Imported: ' + file.name, 'info');
+    } catch(err){ showToast('Import failed — invalid JSON', 'err'); }
+    event.target.value = '';
+  };
+  reader.readAsText(file);
+}
+
+// ============================================================
+// RESET
+// ============================================================
+const FACTORY_DEFAULTS = {
+  rail_lines:3, num_rs_train:3, num_rs_yard:0, num_rmg:0,
+  mhp_rs:12, mhp_rmg:22, op_hours:16, dwell_time:7,
+  train_load:85, moves_per_cycle:114, rev_per_teu:450, stack_density:500,
+  min_stacking_acres:0, warehouse_acres:2, reefer_acres:0.5,
+  land_cost:15, u_site_prep:785663, u_infra_acre:206125,
+  u_rmg_runway:15000, u_rail_line:10935000, u_boom_gate:50000,
+  u_cost_rs:3000000, u_cost_rmg:18000000, u_warehouse_sqm:1200,
+  u_reefer_plug:15000, reefer_plugs_per_acre:20, overhead_pct:29,
+  project_years:15, rampup_years:5, discount_rate:10, util_rate:80,
+  opex_rate:5, opex_per_teu:80, financing_rate:5,
+  war_factor: false, rmg_found_pct: true
+};
+
+let resetTimer = null;
+function confirmReset(){
+  const btn = document.getElementById('resetBtn');
+  if(btn.dataset.confirm === 'yes'){
+    clearTimeout(resetTimer);
+    btn.dataset.confirm = ''; btn.textContent = '↺ Reset'; btn.style.background = '';
+    applyParams(FACTORY_DEFAULTS);
+    scenarioLog = []; renderScenTable(); clearScenarios();
+    try{ localStorage.removeItem(LS_AUTO); } catch(e){}
+    setAutosaveStatus('idle');
+    document.getElementById('saveStatus').textContent = 'reset to defaults';
+    showToast('Reset to factory defaults', 'info');
+  } else {
+    btn.dataset.confirm = 'yes'; btn.textContent = 'Confirm reset?'; btn.style.background = 'rgba(255,87,87,.15)';
+    resetTimer = setTimeout(() => { btn.dataset.confirm = ''; btn.textContent = '↺ Reset'; btn.style.background = ''; }, 3500);
+  }
+}
+
+// ============================================================
+// INIT
+// ============================================================
+applyParams(FACTORY_DEFAULTS);
+restoreAutosave();
+renderSlotList();
+</script>
+
+</body></html>
