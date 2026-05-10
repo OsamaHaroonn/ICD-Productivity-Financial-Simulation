@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ICD Productivity & Financial Simulation v2.6</title>
+<title>ICD Productivity & Financial Simulation v2.7</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <script>
 /**
@@ -207,7 +207,7 @@
     <div class="logo-mark">ICD</div>
     <div>
       <h1>Inland Container Depot — Productivity &amp; Financial Simulation</h1>
-      <div class="header-sub">Equipment → Throughput → 8-Zone Acreage → CAPEX → DCF / ROI &nbsp;|&nbsp; v2.6 — Ramp-up · Breakeven · CF Chart</div>
+      <div class="header-sub">Equipment → Throughput → 8-Zone Acreage → CAPEX → DCF / ROI &nbsp;|&nbsp; v2.8</div>
     </div>
   </div>
   <div class="header-actions">
@@ -555,6 +555,40 @@
         <div class="slider-hint">Adam: 0–10%, default 5%. Applied to (Construction + Soft Costs). Added to CAPEX, excluded from OPEX base.</div>
       </div>
 
+      <div style="font-size:10px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;margin:10px 0 6px;">Escalation &amp; Growth</div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">OPEX Inflation (% / yr)</span>
+          <input class="num-input warn-inp" id="val-opex_inflation" type="number" min="0" max="10" step="0.5" value="3.5">
+        </div>
+        <input type="range" class="warn-sl" id="opex_inflation" min="0" max="10" step="0.5" value="3.5">
+        <div class="slider-hint">Annual OPEX cost escalation — compounded each year. Default 3.5%.</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">OPEX Inflation Every (Yrs)</span>
+          <input class="num-input warn-inp" id="val-opex_inf_every" type="number" min="1" max="5" step="1" value="1">
+        </div>
+        <input type="range" class="warn-sl" id="opex_inf_every" min="1" max="5" step="1" value="1">
+        <div class="slider-hint">Apply OPEX inflation every N years. 1 = every year (compound).</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Revenue Growth Step (%)</span>
+          <input class="num-input warn-inp" id="val-rev_growth_step" type="number" min="0" max="30" step="1" value="10">
+        </div>
+        <input type="range" class="warn-sl" id="rev_growth_step" min="0" max="30" step="1" value="10">
+        <div class="slider-hint">Revenue increases by this % at each step interval. Default 10%.</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Revenue Growth Every (Yrs)</span>
+          <input class="num-input warn-inp" id="val-rev_growth_every" type="number" min="1" max="10" step="1" value="5">
+        </div>
+        <input type="range" class="warn-sl" id="rev_growth_every" min="1" max="10" step="1" value="5">
+        <div class="slider-hint">Apply revenue growth step every N years. Default every 5 years.</div>
+      </div>
+
     </div>
   </div>
 
@@ -619,9 +653,9 @@
       <div class="metric-sub">Gross Development Cost</div>
     </div>
     <div class="metric-card">
-      <div class="metric-label">Annual Capacity</div>
+      <div class="metric-label">Annual Rail-Bound Capacity</div>
       <div class="metric-value green" id="kpi-cap">—</div>
-      <div class="metric-sub">Min(Rail, Storage)</div>
+      <div class="metric-sub">Rail trains only — excludes truck volume</div>
     </div>
     <div class="metric-card">
       <div class="metric-label">Total Site Area</div>
@@ -684,11 +718,11 @@
   <div class="charts-row">
     <div class="chart-card">
       <div class="chart-title">Cost Breakdown (RM)</div>
-      <div style="position:relative;height:210px;"><canvas id="costChart"></canvas></div>
+      <div style="position:relative;height:210px;"><canvas id="costChart" style="display:block;"></canvas></div>
     </div>
     <div class="chart-card">
       <div class="chart-title">Siding Productivity (Moves/Hr)</div>
-      <div style="position:relative;height:210px;"><canvas id="sidingChart"></canvas></div>
+      <div style="position:relative;height:210px;"><canvas id="sidingChart" style="display:block;"></canvas></div>
     </div>
   </div>
 
@@ -755,7 +789,9 @@
             <th>Year</th>
             <th style="text-align:right">Util %</th>
             <th style="text-align:right">TEU/yr</th>
+            <th style="text-align:right">Rev ×</th>
             <th style="text-align:right">Revenue (RM)</th>
+            <th style="text-align:right">OPEX ×</th>
             <th style="text-align:right">OPEX (RM)</th>
             <th style="text-align:right">Net CF (RM)</th>
             <th style="text-align:right">Cumulative (RM)</th>
@@ -768,7 +804,7 @@
 
     <hr style="border:none;border-top:1px solid var(--border);margin:14px 0;">
     <div class="chart-title" style="margin-bottom:10px;">15-Year Cash Flow Chart — Revenue vs OPEX vs Cumulative Net</div>
-    <div style="position:relative;height:220px;margin-bottom:4px;"><canvas id="cashflowChart"></canvas></div>
+    <div style="position:relative;height:220px;margin-bottom:4px;"><canvas id="cashflowChart" style="display:block;"></canvas></div>
 
     <div style="font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:12px;line-height:1.9;padding-top:10px;border-top:1px solid var(--border);">
       NPV Formula: −CAPEX + Σ[NetCF_t / (1+r)^t] over project lifetime &nbsp;|&nbsp;
@@ -782,7 +818,7 @@
   <div class="scenario-chart-wrap" id="scenChartWrap">
     <div class="chart-card">
       <div class="chart-title">Scenario Comparison — Capacity vs Investment</div>
-      <div style="position:relative;height:250px;"><canvas id="scenChart"></canvas></div>
+      <div style="position:relative;height:250px;"><canvas id="scenChart" style="display:block;"></canvas></div>
     </div>
   </div>
 
@@ -828,7 +864,8 @@ const RANGE_IDS = [
   'u_cost_rs','u_cost_rmg','u_warehouse_sqm','u_reefer_plug','reefer_plugs_per_acre',
   'overhead_pct',
   // Finance
-  'project_years','rampup_years','discount_rate','util_rate','opex_rate','opex_per_teu','financing_rate'
+  'project_years','rampup_years','discount_rate','util_rate','opex_rate','opex_per_teu','financing_rate',
+  'opex_inflation','opex_inf_every','rev_growth_step','rev_growth_every'
 ];
 
 function getVal(id){ return +document.getElementById(id).value; }
@@ -922,7 +959,7 @@ function simulate(p){
   const c_mach      = (p.num_rs_total * p.u_cost_rs) + (p.num_rmg * p.u_cost_rmg);
   const total_gdc   = c_land + const_sub + c_soft + c_financing + c_mach;
 
-  // ── Financial Module v2.6 — ramp-up aware ──
+  // ── Financial Module v2.7 — escalation + growth ──
   const util         = p.util_rate / 100;
   const discountRate = p.discount_rate / 100;
   const years        = p.project_years;
@@ -947,12 +984,30 @@ function simulate(p){
   let total_undiscounted_net = 0;
   const cashflows = [];
 
+  // Escalation params
+  const opexInflRate  = p.opex_inflation / 100;
+  const opexInfEvery  = Math.max(1, p.opex_inf_every);
+  const revGrowthStep = p.rev_growth_step / 100;
+  const revGrowthEvery= Math.max(1, p.rev_growth_every);
+
   for(let y = 1; y <= years; y++){
     const ramp_frac = Math.min(y / rampYears, 1.0);
     const yr_util   = util * ramp_frac;
     const yr_teu    = actual_cap * yr_util;
-    const yr_rev    = yr_teu * p.rev_per_teu;
-    const yr_opex   = annual_fixed_opex + (yr_teu * p.opex_per_teu);
+
+    // Revenue growth: stepped every N years (compounded)
+    // Number of steps completed by year y (step triggers at end of each interval)
+    const rev_steps   = Math.floor((y - 1) / revGrowthEvery);
+    const rev_factor  = Math.pow(1 + revGrowthStep, rev_steps);
+    const yr_rev      = yr_teu * p.rev_per_teu * rev_factor;
+
+    // OPEX inflation: applied every N years (compounded)
+    const opex_steps  = Math.floor((y - 1) / opexInfEvery);
+    const opex_factor = Math.pow(1 + opexInflRate, opex_steps);
+    const yr_fix_opex = annual_fixed_opex * opex_factor;
+    const yr_var_opex = yr_teu * p.opex_per_teu * opex_factor;
+    const yr_opex     = yr_fix_opex + yr_var_opex;
+
     const yr_net    = yr_rev - yr_opex;
     const discounted = yr_net / Math.pow(1 + discountRate, y);
     npv += discounted;
@@ -967,7 +1022,9 @@ function simulate(p){
       opex: yr_opex,
       net: yr_net,
       cum: cumulative,
-      disc: discounted
+      disc: discounted,
+      rev_factor,
+      opex_factor
     });
   }
 
@@ -1179,7 +1236,9 @@ function updateUI(r){
       <td style="color:var(--text);padding:6px 9px;font-family:var(--mono);font-size:11px;">${yrLabel}</td>
       <td class="amt" style="padding:6px 9px;color:var(--warn);font-size:11px;">${cf.util_pct}%</td>
       <td class="amt" style="padding:6px 9px;color:var(--text2);font-size:11px;">${Math.round(cf.teu).toLocaleString()}</td>
+      <td class="amt" style="padding:6px 9px;color:${cf.rev_factor>1?'var(--accent)':'var(--text3)'};font-size:10px;">${cf.rev_factor != null ? cf.rev_factor.toFixed(2) : "1.00"}×</td>
       <td class="amt" style="color:var(--accent2);padding:6px 9px;">${fmt(cf.rev)}</td>
+      <td class="amt" style="padding:6px 9px;color:${cf.opex_factor>1?'var(--warn)':'var(--text3)'};font-size:10px;">${cf.opex_factor != null ? cf.opex_factor.toFixed(2) : "1.00"}×</td>
       <td class="amt" style="color:var(--danger);padding:6px 9px;">−${fmt(cf.opex)}</td>
       <td class="amt" style="padding:6px 9px;color:${cf.net >= 0 ? 'var(--accent)' : 'var(--danger)'};">${fmt(cf.net)}</td>
       <td class="amt" style="padding:6px 9px;color:${cf.cum >= 0 ? 'var(--accent)' : 'var(--danger)'};">${fmt(cf.cum)}</td>
@@ -1193,7 +1252,7 @@ function updateUI(r){
 }
 
 let cashflowChartInst = null;
-function updateCashflowChart(r){
+function updateCashflowChart(r){ try {
   const labels    = r.cashflows.map(cf => 'Y' + cf.y);
   const revData   = r.cashflows.map(cf => +(cf.rev  / 1e6).toFixed(2));
   const opexData  = r.cashflows.map(cf => +(cf.opex / 1e6).toFixed(2));
@@ -1251,9 +1310,9 @@ function updateCashflowChart(r){
       }
     }
   });
-}
+  } catch(e){ console.warn('cashflowChart error',e); } }
 
-function updateCostChart(r){
+function updateCostChart(r){ try {
   const labels = ['Land','Z1 Rail','Z2 Stack','Z3 Drwy','Z4 Whse','Z5 Reefer','Z6 Truck','Z7 Roads','Z8 Admin','Rail Works','Gates','RMG Found.','War Fct.','Soft Costs','Financing','Equipment'];
   const vals   = [r.c_land,r.c_z1,r.c_z2,r.c_z3,r.c_z4,r.c_z5,r.c_z6,r.c_z7,r.c_z8,r.c_rail,r.c_gates,r.c_rmg_civil,r.c_war,r.c_soft,r.c_financing,r.c_mach];
   const colors = ['#0984e3','#00d4aa','#0097ff','#fdcb6e','#e17055','#6c5ce7','#a29bfe','#74b9ff','#b2bec3','#00b894','#55efc4','#fd79a8','#d63031','#636e72','#f39c12','#a78bfa'];
@@ -1263,9 +1322,9 @@ function updateCostChart(r){
     data: { labels, datasets: [{ data: vals, backgroundColor: colors, borderColor: '#13161e', borderWidth: 2 }] },
     options: { responsive: true, maintainAspectRatio: false, cutout: '62%', plugins: { legend: { display: false } } }
   });
-}
+  } catch(e){ console.warn('costChart error',e); } }
 
-function updateSidingChart(r){
+function updateSidingChart(r){ try {
   const labels = r.siding_details.map(s => 'Siding ' + s.siding);
   const vals   = r.siding_details.map(s => Math.round(s.mhp * 10) / 10);
   if(sidingChartInst) sidingChartInst.destroy();
@@ -1280,7 +1339,7 @@ function updateSidingChart(r){
       plugins: { legend: { display: false } }
     }
   });
-}
+  } catch(e){ console.warn('sidingChart error',e); } }
 
 function run(){ updateUI(simulate(getParams())); }
 
@@ -1341,7 +1400,7 @@ function renderScenTable(){
   const wrap = document.getElementById('scenTableWrap');
   if(!scenarioLog.length){ wrap.innerHTML = '<div style="font-size:11px;color:var(--text3);text-align:center;padding:14px;font-family:var(--mono);">No scenarios logged yet</div>'; return; }
   let html = `<table style="width:100%;font-size:11px;margin-top:5px;">
-    <thead><tr><th>Label</th><th style="text-align:right">GDC(M)</th><th style="text-align:right">Cap(TEU)</th><th style="text-align:right">IRR</th></tr></thead><tbody>`;
+    <thead><tr><th>Label</th><th style="text-align:right">GDC(M)</th><th style="text-align:right">Rail Cap(TEU)</th><th style="text-align:right">IRR</th></tr></thead><tbody>`;
   scenarioLog.forEach(s => {
     html += `<tr>
       <td style="color:var(--text);padding:4px 3px">${s.label}</td>
@@ -1364,7 +1423,7 @@ function plotScenarios(){
     options: { responsive: true, maintainAspectRatio: false,
       scales: {
         x: { title: { display: true, text: 'Total GDC (RM Million)', color: '#8b90a0' }, ticks: { color: '#8b90a0', font: { family: 'Space Mono', size: 10 } }, grid: { color: '#ffffff08' } },
-        y: { title: { display: true, text: 'Annual Capacity (000 TEU)', color: '#8b90a0' }, ticks: { color: '#8b90a0', font: { family: 'Space Mono', size: 10 } }, grid: { color: '#ffffff08' } }
+        y: { title: { display: true, text: 'Rail-Bound Capacity (000 TEU)', color: '#8b90a0' }, ticks: { color: '#8b90a0', font: { family: 'Space Mono', size: 10 } }, grid: { color: '#ffffff08' } }
       },
       plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => { const s = sorted[ctx.dataIndex]; return [s.label, `GDC: RM ${(s.gdc/1e6).toFixed(1)}M`, `Cap: ${Math.round(s.capacity/1000)}k TEU`, `IRR: ${s.irr}`]; } } } }
     }
@@ -1499,6 +1558,7 @@ const FACTORY_DEFAULTS = {
   u_reefer_plug:15000, reefer_plugs_per_acre:20, overhead_pct:29,
   project_years:15, rampup_years:5, discount_rate:10, util_rate:80,
   opex_rate:5, opex_per_teu:80, financing_rate:5,
+  opex_inflation:3.5, opex_inf_every:1, rev_growth_step:10, rev_growth_every:5,
   war_factor: false, rmg_found_pct: true
 };
 
@@ -1508,7 +1568,7 @@ function confirmReset(){
   if(btn.dataset.confirm === 'yes'){
     clearTimeout(resetTimer);
     btn.dataset.confirm = ''; btn.textContent = '↺ Reset'; btn.style.background = '';
-    applyParams(FACTORY_DEFAULTS);
+    setTimeout(() => applyParams(FACTORY_DEFAULTS), 0);
     scenarioLog = []; renderScenTable(); clearScenarios();
     try{ localStorage.removeItem(LS_AUTO); } catch(e){}
     setAutosaveStatus('idle');
@@ -1523,7 +1583,7 @@ function confirmReset(){
 // ============================================================
 // INIT
 // ============================================================
-applyParams(FACTORY_DEFAULTS);
+setTimeout(() => applyParams(FACTORY_DEFAULTS), 0);
 restoreAutosave();
 renderSlotList();
 </script>
