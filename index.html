@@ -234,9 +234,9 @@
 
       <div class="slider-row">
         <div class="slider-label"><span class="slider-name">Rail Sidings</span>
-          <input class="num-input" id="val-rail_lines" type="number" min="1" max="6" step="1" value="3">
+          <input class="num-input" id="val-rail_lines" type="number" min="1" max="6" step="1" value="1">
         </div>
-        <input type="range" id="rail_lines" min="1" max="6" step="1" value="3">
+        <input type="range" id="rail_lines" min="1" max="6" step="1" value="1">
         <div class="slider-hint">PCE Pulau Indah Draft — Tracks 1, 2, 3</div>
       </div>
 
@@ -247,9 +247,9 @@
             <div class="rs-split-label">Train Unloading</div>
             <div class="slider-label" style="margin-bottom:4px;">
               <span style="font-size:10px;color:var(--text3);">units</span>
-              <input class="num-input" id="val-num_rs_train" type="number" min="0" max="24" step="1" value="3">
+              <input class="num-input" id="val-num_rs_train" type="number" min="0" max="24" step="1" value="4">
             </div>
-            <input type="range" id="num_rs_train" min="0" max="24" step="1" value="3">
+            <input type="range" id="num_rs_train" min="0" max="24" step="1" value="4">
             <div style="font-size:10px;color:var(--text3);margin-top:3px;">RS serving train sidings directly</div>
           </div>
           <div class="rs-split-cell">
@@ -533,17 +533,17 @@
 
       <div class="slider-row">
         <div class="slider-label"><span class="slider-name">Fixed OPEX (% of Civil+Eqpt/yr)</span>
-          <input class="num-input warn-inp" id="val-opex_rate" type="number" min="0" max="15" step="0.5" value="5">
+          <input class="num-input warn-inp" id="val-opex_rate" type="number" min="0" max="15" step="0.5" value="4">
         </div>
-        <input type="range" class="warn-sl" id="opex_rate" min="0" max="15" step="0.5" value="5">
+        <input type="range" class="warn-sl" id="opex_rate" min="0" max="15" step="0.5" value="4">
         <div class="slider-hint">Calculated on civil + machinery only (NOT land or financing). Port rule-of-thumb: 3–6%.</div>
       </div>
 
       <div class="slider-row">
         <div class="slider-label"><span class="slider-name">Variable OPEX (RM/TEU)</span>
-          <input class="num-input warn-inp" id="val-opex_per_teu" type="number" min="50" max="150" step="1" value="80">
+          <input class="num-input warn-inp" id="val-opex_per_teu" type="number" min="50" max="150" step="1" value="70">
         </div>
-        <input type="range" class="warn-sl" id="opex_per_teu" min="50" max="150" step="1" value="80">
+        <input type="range" class="warn-sl" id="opex_per_teu" min="50" max="150" step="1" value="70">
         <div class="slider-hint">Linked to actual handled TEUs (capacity × utilization). Default RM 80/TEU.</div>
       </div>
 
@@ -559,9 +559,9 @@
 
       <div class="slider-row">
         <div class="slider-label"><span class="slider-name">OPEX Inflation (% / yr)</span>
-          <input class="num-input warn-inp" id="val-opex_inflation" type="number" min="0" max="10" step="0.5" value="3.5">
+          <input class="num-input warn-inp" id="val-opex_inflation" type="number" min="0" max="10" step="0.5" value="0">
         </div>
-        <input type="range" class="warn-sl" id="opex_inflation" min="0" max="10" step="0.5" value="3.5">
+        <input type="range" class="warn-sl" id="opex_inflation" min="0" max="10" step="0.5" value="0">
         <div class="slider-hint">Annual OPEX cost escalation — compounded each year. Default 3.5%.</div>
       </div>
 
