@@ -207,7 +207,7 @@
     <div class="logo-mark">ICD</div>
     <div>
       <h1>Inland Container Depot — Productivity &amp; Financial Simulation</h1>
-      <div class="header-sub">Equipment → Throughput → 8-Zone Acreage → CAPEX → DCF / ROI &nbsp;|&nbsp; v2.8</div>
+      <div class="header-sub">Equipment → Throughput → 8-Zone Acreage → CAPEX → DCF / ROI &nbsp;|&nbsp; v2.9.1</div>
     </div>
   </div>
   <div class="header-actions">
@@ -1050,16 +1050,25 @@ function simulate(p){
   // Binary search: find rev/TEU where NPV at 15% discount rate = 0
   let breakeven_rev_teu = null;
   if(actual_cap > 0 && util > 0){
+    // Binary search: find min rev/TEU such that NPV at 15% discount rate = 0
+    // Must match the EXACT same escalation logic used in the cashflow loop
     const target_r = 0.15;
     let lo_r = 0, hi_r = 2000;
     for(let i = 0; i < 60; i++){
       const mid_r = (lo_r + hi_r) / 2;
       let test_npv = -total_gdc;
       for(let y2 = 1; y2 <= years; y2++){
-        const rf = Math.min(y2 / rampYears, 1.0);
-        const yt = actual_cap * util * rf;
-        const yn = (yt * mid_r) - annual_fixed_opex - (yt * p.opex_per_teu);
-        test_npv += yn / Math.pow(1 + target_r, y2);
+        const ramp_f  = Math.min(y2 / rampYears, 1.0);
+        const yt      = actual_cap * util * ramp_f;
+        // Revenue growth steps — same as cashflow loop
+        const rv_steps  = Math.floor((y2 - 1) / Math.max(1, p.rev_growth_every));
+        const rv_factor = Math.pow(1 + p.rev_growth_step / 100, rv_steps);
+        // OPEX inflation steps — same as cashflow loop
+        const op_steps  = Math.floor((y2 - 1) / Math.max(1, p.opex_inf_every));
+        const op_factor = Math.pow(1 + opexInflRate, op_steps);
+        const yr_rev_be = yt * mid_r * rv_factor;
+        const yr_opx_be = (annual_fixed_opex * op_factor) + (yt * p.opex_per_teu * op_factor);
+        test_npv += (yr_rev_be - yr_opx_be) / Math.pow(1 + target_r, y2);
       }
       if(test_npv < 0) lo_r = mid_r; else hi_r = mid_r;
     }
@@ -1239,7 +1248,7 @@ function updateUI(r){
       <td class="amt" style="padding:6px 9px;color:${cf.rev_factor>1?'var(--accent)':'var(--text3)'};font-size:10px;">${cf.rev_factor != null ? cf.rev_factor.toFixed(2) : "1.00"}×</td>
       <td class="amt" style="color:var(--accent2);padding:6px 9px;">${fmt(cf.rev)}</td>
       <td class="amt" style="padding:6px 9px;color:${cf.opex_factor>1?'var(--warn)':'var(--text3)'};font-size:10px;">${cf.opex_factor != null ? cf.opex_factor.toFixed(2) : "1.00"}×</td>
-      <td class="amt" style="color:var(--danger);padding:6px 9px;">−${fmt(cf.opex)}</td>
+      <td class="amt" style="color:var(--danger);padding:6px 9px;">${fmt(Math.abs(cf.opex))}</td>
       <td class="amt" style="padding:6px 9px;color:${cf.net >= 0 ? 'var(--accent)' : 'var(--danger)'};">${fmt(cf.net)}</td>
       <td class="amt" style="padding:6px 9px;color:${cf.cum >= 0 ? 'var(--accent)' : 'var(--danger)'};">${fmt(cf.cum)}</td>
       <td class="amt" style="padding:6px 9px;color:var(--text2);">${fmt(cf.disc)}</td>
@@ -1255,7 +1264,7 @@ let cashflowChartInst = null;
 function updateCashflowChart(r){ try {
   const labels    = r.cashflows.map(cf => 'Y' + cf.y);
   const revData   = r.cashflows.map(cf => +(cf.rev  / 1e6).toFixed(2));
-  const opexData  = r.cashflows.map(cf => +(cf.opex / 1e6).toFixed(2));
+  const opexData  = r.cashflows.map(cf => +(Math.abs(cf.opex) / 1e6).toFixed(2));
   const cumData   = r.cashflows.map(cf => +(cf.cum  / 1e6).toFixed(2));
   const breakEvenY = r.rampYears + 0.5; // visual reference line position
   if(cashflowChartInst) cashflowChartInst.destroy();
@@ -1548,17 +1557,17 @@ function importJSON(event){
 // RESET
 // ============================================================
 const FACTORY_DEFAULTS = {
-  rail_lines:3, num_rs_train:3, num_rs_yard:0, num_rmg:0,
+  rail_lines:1, num_rs_train:4, num_rs_yard:0, num_rmg:0,
   mhp_rs:12, mhp_rmg:22, op_hours:16, dwell_time:7,
-  train_load:85, moves_per_cycle:114, rev_per_teu:450, stack_density:500,
+  train_load:85, moves_per_cycle:114, rev_per_teu:254, stack_density:500,
   min_stacking_acres:0, warehouse_acres:2, reefer_acres:0.5,
   land_cost:15, u_site_prep:785663, u_infra_acre:206125,
   u_rmg_runway:15000, u_rail_line:10935000, u_boom_gate:50000,
   u_cost_rs:3000000, u_cost_rmg:18000000, u_warehouse_sqm:1200,
   u_reefer_plug:15000, reefer_plugs_per_acre:20, overhead_pct:29,
   project_years:15, rampup_years:5, discount_rate:10, util_rate:80,
-  opex_rate:5, opex_per_teu:80, financing_rate:5,
-  opex_inflation:3.5, opex_inf_every:1, rev_growth_step:10, rev_growth_every:5,
+  opex_rate:4, opex_per_teu:70, financing_rate:5,
+  opex_inflation:0, opex_inf_every:1, rev_growth_step:10, rev_growth_every:5,
   war_factor: false, rmg_found_pct: true
 };
 
