@@ -28,175 +28,308 @@
 //# sourceMappingURL=chart.umd.js.map
 </script>
 <style>
+  /* ── PENANG SLIDES DESIGN SYSTEM ─────────────────────────────
+     Palette: #F5C400 (yellow accent) · #1A1A2E (navy) · #FFFFFF (white)
+     Typography: Calibri / DM Sans · two weights only · no gradients
+  ─────────────────────────────────────────────────────────────── */
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap');
+
   :root {
-    --bg:#0d0f14; --bg2:#13161e; --bg3:#1a1e2a; --bg4:#212636;
-    --border:rgba(255,255,255,0.07); --border2:rgba(255,255,255,0.12);
-    --text:#e8eaf0; --text2:#8b90a0; --text3:#555b6e;
-    --accent:#00d4aa; --accent2:#0097ff; --warn:#ffb340;
-    --danger:#ff5757; --purple:#a78bfa;
-    --mono:'Space Mono',monospace; --sans:'DM Sans',sans-serif;
+    --yellow:   #F5C400;
+    --yellow-dk:#C49B00;
+    --yellow-bg:#FFFBEA;
+    --navy:     #1A1A2E;
+    --navy2:    #252540;
+    --white:    #FFFFFF;
+    --gray-bg:  #F5F5F5;
+    --gray-row: #FAFAFA;
+    --border:   #E5E7EB;
+    --border2:  #D1D5DB;
+    --text:     #1A1A2E;
+    --text2:    #4B5563;
+    --text3:    #9CA3AF;
+    --red:      #DC2626;
+    --green:    #059669;
+    --blue:     #2563EB;
+    --mono: 'Space Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
   }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  html{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;}
-  body{min-height:100vh;}
 
-  .header{background:var(--bg2);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;flex-wrap:wrap;gap:8px;}
-  .header-left{display:flex;align-items:center;gap:12px;}
-  .logo-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:700;color:#000;}
-  .header h1{font-size:13px;font-weight:600;}
-  .header-sub{font-size:10px;color:var(--text3);font-family:var(--mono);}
-  .header-actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
-  .autosave-dot{width:6px;height:6px;border-radius:50%;background:var(--text3);transition:background 0.4s;flex-shrink:0;}
-  .autosave-dot.saved{background:var(--accent);}
-  .autosave-dot.saving{background:var(--warn);}
-  .save-status{font-size:10px;color:var(--text3);font-family:var(--mono);}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--gray-bg); color: var(--text); font-family: var(--sans); font-size: 14px; }
+  body { min-height: 100vh; }
 
-  .layout{display:grid;grid-template-columns:360px 1fr;min-height:calc(100vh - 60px);}
-  .sidebar{background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;}
-  .main{padding:20px;overflow-y:auto;}
+  /* ── HEADER ─────────────────────────────────────────────────── */
+  .header {
+    background: var(--navy);
+    padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+    flex-wrap: wrap; gap: 8px;
+  }
+  .header-left { display: flex; align-items: center; gap: 12px; }
+  .logo-mark {
+    width: 36px; height: 36px;
+    background: var(--yellow);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--navy);
+  }
+  .header h1 { font-size: 13px; font-weight: 600; color: #FFFFFF; }
+  .header-sub { font-size: 10px; color: rgba(255,255,255,0.45); font-family: var(--mono); margin-top: 1px; }
+  .header-actions { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+  .autosave-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); transition: background 0.4s; flex-shrink: 0; }
+  .autosave-dot.saved  { background: var(--yellow); }
+  .autosave-dot.saving { background: #F59E0B; }
+  .save-status { font-size: 10px; color: rgba(255,255,255,0.4); font-family: var(--mono); }
 
-  .sidebar-section{border-bottom:1px solid var(--border);}
-  .sidebar-section-header{display:flex;align-items:center;gap:8px;padding:12px 16px;cursor:pointer;user-select:none;}
-  .sidebar-section-header:hover{background:rgba(255,255,255,0.02);}
-  .sidebar-section-header h3{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);flex:1;}
-  .section-icon{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;}
-  .section-icon.ops{background:rgba(0,212,170,.15);color:var(--accent);}
-  .section-icon.cost{background:rgba(0,151,255,.15);color:var(--accent2);}
-  .section-icon.zone{background:rgba(167,139,250,.15);color:var(--purple);}
-  .section-icon.scen{background:rgba(255,179,64,.15);color:var(--warn);}
-  .section-icon.save{background:rgba(255,255,255,.06);color:var(--text2);}
-  .section-icon.fin{background:rgba(255,87,87,.15);color:var(--danger);}
-  .chevron{color:var(--text3);font-size:9px;transition:transform .2s;}
-  .collapsed .chevron{transform:rotate(-90deg);}
-  .collapsed .section-body{display:none;}
-  .section-body{padding:4px 16px 14px;}
+  /* ── LAYOUT ─────────────────────────────────────────────────── */
+  .layout { display: grid; grid-template-columns: 340px 1fr; min-height: calc(100vh - 56px); }
+  .sidebar { background: var(--white); border-right: 1px solid var(--border); overflow-y: auto; }
+  .main { padding: 20px 24px; overflow-y: auto; background: var(--gray-bg); }
 
-  .slider-row{margin-bottom:12px;}
-  .slider-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
-  .slider-name{font-size:12px;color:var(--text2);}
-  .num-input{font-family:var(--mono);font-size:11px;color:var(--accent);background:rgba(0,212,170,.08);border:1px solid transparent;padding:2px 6px;border-radius:4px;min-width:72px;text-align:right;outline:none;cursor:text;-moz-appearance:textfield;}
-  .num-input::-webkit-outer-spin-button,.num-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
-  .num-input:focus{border-color:var(--accent);background:rgba(0,212,170,.14);}
-  .num-input.blue{color:var(--accent2);background:rgba(0,151,255,.08);}
-  .num-input.blue:focus{border-color:var(--accent2);background:rgba(0,151,255,.14);}
-  .num-input.warn-inp{color:var(--warn);background:rgba(255,179,64,.08);}
-  .num-input.warn-inp:focus{border-color:var(--warn);background:rgba(255,179,64,.14);}
-  input[type=range]{width:100%;height:3px;appearance:none;background:var(--bg4);border-radius:3px;outline:none;cursor:pointer;}
-  input[type=range]::-webkit-slider-thumb{appearance:none;width:13px;height:13px;border-radius:50%;background:var(--accent);border:2px solid var(--bg2);cursor:pointer;box-shadow:0 0 5px rgba(0,212,170,.35);}
-  input[type=range].blue::-webkit-slider-thumb{background:var(--accent2);box-shadow:0 0 5px rgba(0,151,255,.35);}
-  input[type=range].warn-sl::-webkit-slider-thumb{background:var(--warn);box-shadow:0 0 5px rgba(255,179,64,.35);}
-  .slider-hint{font-size:10px;color:var(--text3);margin-top:3px;line-height:1.4;}
+  /* ── SIDEBAR SECTIONS ───────────────────────────────────────── */
+  .sidebar-section { border-bottom: 1px solid var(--border); }
+  .sidebar-section-header {
+    display: flex; align-items: center; gap: 8px;
+    padding: 11px 16px; cursor: pointer; user-select: none;
+    background: var(--white);
+    transition: background 0.1s;
+  }
+  .sidebar-section-header:hover { background: var(--gray-bg); }
+  .sidebar-section-header h3 {
+    font-size: 10px; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--text2); flex: 1;
+  }
+  .section-icon {
+    width: 20px; height: 20px; border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; flex-shrink: 0;
+    background: var(--yellow); color: var(--navy);
+  }
+  .section-icon.cost  { background: var(--navy); color: var(--yellow); }
+  .section-icon.zone  { background: var(--gray-bg); color: var(--text2); border: 1px solid var(--border); }
+  .section-icon.scen  { background: var(--navy); color: #FFFFFF; }
+  .section-icon.save  { background: var(--gray-bg); color: var(--text2); border: 1px solid var(--border); }
+  .section-icon.fin   { background: var(--yellow); color: var(--navy); }
+  .chevron { color: var(--text3); font-size: 9px; transition: transform .2s; }
+  .collapsed .chevron { transform: rotate(-90deg); }
+  .collapsed .section-body { display: none; }
+  .section-body { padding: 6px 16px 14px; }
 
-  .rs-split-row{margin-bottom:12px;}
-  .rs-split-title{font-size:12px;color:var(--text2);margin-bottom:6px;}
-  .rs-split-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-  .rs-split-cell{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:8px 10px;}
-  .rs-split-label{font-size:10px;color:var(--text3);margin-bottom:5px;}
-  .rs-split-total{font-size:10px;color:var(--text3);margin-top:6px;text-align:right;font-family:var(--mono);}
-  .rs-split-total span{color:var(--accent);}
+  /* ── SLIDERS ─────────────────────────────────────────────────── */
+  .slider-row { margin-bottom: 14px; }
+  .slider-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+  .slider-name { font-size: 12px; color: var(--text); font-weight: 400; }
+  .num-input {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--navy); background: var(--yellow-bg);
+    border: 1px solid var(--border2); padding: 2px 7px;
+    border-radius: 4px; min-width: 80px; text-align: right;
+    outline: none; cursor: text;
+    -moz-appearance: textfield;
+  }
+  .num-input::-webkit-outer-spin-button, .num-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .num-input:focus { border-color: var(--yellow-dk); background: #FFF8D0; }
+  .num-input.blue { color: var(--blue); background: #EFF6FF; border-color: #BFDBFE; }
+  .num-input.blue:focus { border-color: var(--blue); }
+  .num-input.warn-inp { color: #92400E; background: #FFFBEA; border-color: #FDE68A; }
+  .num-input.warn-inp:focus { border-color: var(--yellow-dk); }
 
-  .metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
-  .metric-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:13px 15px;}
-  .metric-card.hl{border-color:var(--accent);}
-  .metric-card.hl-finance{border-color:rgba(167,139,250,.5);}
-  .metric-label{font-size:10px;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;font-family:var(--mono);}
-  .metric-value{font-family:var(--mono);font-size:17px;font-weight:700;}
-  .metric-value.green{color:var(--accent);}
-  .metric-value.blue{color:var(--accent2);}
-  .metric-value.warn{color:var(--warn);}
-  .metric-value.purple{color:var(--purple);}
-  .metric-value.danger{color:var(--danger);}
-  .metric-sub{font-size:10px;color:var(--text3);margin-top:3px;}
+  input[type=range] {
+    width: 100%; height: 4px; appearance: none;
+    background: var(--border); border-radius: 4px; outline: none; cursor: pointer;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    appearance: none; width: 14px; height: 14px; border-radius: 50%;
+    background: var(--navy); border: 2px solid var(--white);
+    cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  input[type=range].blue::-webkit-slider-thumb    { background: var(--blue); }
+  input[type=range].warn-sl::-webkit-slider-thumb { background: var(--yellow-dk); }
+  .slider-hint { font-size: 10px; color: var(--text3); margin-top: 3px; line-height: 1.4; }
 
-  .bottleneck-bar{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:11px 15px;margin-bottom:16px;display:flex;align-items:center;gap:12px;}
-  .bn-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  /* RS split */
+  .rs-split-row { margin-bottom: 14px; }
+  .rs-split-title { font-size: 12px; color: var(--text); font-weight: 600; margin-bottom: 6px; }
+  .rs-split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .rs-split-cell {
+    background: var(--gray-bg); border: 1px solid var(--border);
+    border-radius: 6px; padding: 8px 10px;
+  }
+  .rs-split-label { font-size: 10px; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 5px; }
+  .rs-split-total { font-size: 10px; color: var(--text3); margin-top: 6px; text-align: right; font-family: var(--mono); }
+  .rs-split-total span { color: var(--navy); font-weight: 700; }
 
-  .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:16px;}
-  .chart-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:15px;}
-  .chart-title{font-size:10px;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:11px;font-family:var(--mono);}
+  /* RMG toggle box */
+  .toggle-box {
+    display: flex; align-items: center; gap: 8px; cursor: pointer;
+    background: #FFF5F5; border: 1px solid #FCA5A5;
+    padding: 8px 10px; border-radius: 6px; margin-bottom: 10px;
+  }
+  .toggle-box input { cursor: pointer; accent-color: var(--red); }
+  .toggle-box span  { font-size: 10px; color: var(--red); font-weight: 700; font-family: var(--mono); }
 
-  .zone-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px;}
-  .zone-title{font-size:10px;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px;font-family:var(--mono);}
-  .zone-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:10px;}
-  .zone-tile{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:9px 11px;border-left:3px solid var(--accent);}
-  .zone-tile.warn-zone{border-left-color:var(--warn);}
-  .zone-tile.purple-zone{border-left-color:var(--purple);}
-  .zone-tile-label{font-size:10px;color:var(--text3);margin-bottom:3px;}
-  .zone-tile-val{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--text);}
-  .zone-tile-sub{font-size:9px;color:var(--text3);margin-top:2px;}
-  .zone-total-row{background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:9px 13px;display:flex;justify-content:space-between;align-items:center;}
-  .zone-total-val{font-family:var(--mono);font-size:17px;font-weight:700;color:var(--accent2);}
+  .checkbox-row { display: flex; align-items: center; gap: 7px; margin-bottom: 10px; cursor: pointer; font-size: 11px; color: var(--text2); }
+  .checkbox-row input { cursor: pointer; accent-color: var(--navy); }
 
-  .bq-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:16px;}
-  .bq-title{font-size:10px;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px;font-family:var(--mono);}
-  table{width:100%;border-collapse:collapse;}
-  thead tr{border-bottom:1px solid var(--border2);}
-  th{font-size:10px;color:var(--text3);text-align:left;padding:5px 9px;letter-spacing:.05em;text-transform:uppercase;font-weight:500;}
-  td{font-size:12px;padding:7px 9px;border-bottom:1px solid var(--border);}
-  td.amt{font-family:var(--mono);text-align:right;}
-  td.item-num{font-family:var(--mono);color:var(--text3);font-size:10px;}
-  .bq-subtotal td{background:var(--bg3);color:var(--text2);font-size:11px;}
-  .bq-total td{background:var(--bg3);font-weight:600;border-top:1px solid var(--border2);}
-  .bq-total td.amt{color:var(--warn);font-size:14px;}
-  .tag-warn{font-size:9px;color:var(--warn);background:rgba(255,179,64,.1);padding:1px 5px;border-radius:3px;margin-left:4px;}
-  .tag-unc{font-size:9px;color:var(--danger);background:rgba(255,87,87,.1);padding:1px 5px;border-radius:3px;margin-left:4px;}
+  /* Inputs: text fields */
+  input[type=text] {
+    background: var(--white); border: 1px solid var(--border2);
+    color: var(--text); padding: 6px 10px; border-radius: 6px;
+    font-family: var(--sans); font-size: 12px; outline: none;
+  }
+  input[type=text]:focus { border-color: var(--yellow-dk); }
 
-  .soft-costs-panel{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:11px 13px;margin-bottom:16px;}
-  .soft-costs-title{font-size:10px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;margin-bottom:9px;}
-  .sc-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border);font-size:11px;}
-  .sc-row:last-child{border-bottom:none;font-weight:600;}
-  .sc-src{font-size:10px;color:var(--text3);margin-left:6px;}
+  /* ── BUTTONS ─────────────────────────────────────────────────── */
+  .btn {
+    padding: 6px 13px; border-radius: 5px;
+    border: 1px solid var(--border2); background: var(--white);
+    color: var(--text); font-family: var(--sans); font-size: 11px;
+    cursor: pointer; transition: background 0.12s; white-space: nowrap;
+    font-weight: 600;
+  }
+  .btn:hover { background: var(--gray-bg); }
+  .btn.accent { background: var(--yellow); border-color: var(--yellow-dk); color: var(--navy); }
+  .btn.accent:hover { background: var(--yellow-dk); }
+  .btn.danger { background: #FEF2F2; border-color: #FCA5A5; color: var(--red); }
+  .btn.danger:hover { background: #FEE2E2; }
+  .btn-xs {
+    padding: 3px 8px; font-size: 10px; border-radius: 4px;
+    border: 1px solid var(--border2); background: var(--white);
+    color: var(--text2); cursor: pointer; font-weight: 600;
+  }
+  .btn-xs.load { color: var(--blue); border-color: #BFDBFE; }
+  .btn-xs.del  { color: var(--red);  border-color: #FCA5A5; }
 
-  /* Finance module card */
-  .finance-card{background:var(--bg2);border:1px solid rgba(167,139,250,.3);border-radius:10px;padding:16px;margin-bottom:16px;}
-  .finance-title{font-size:10px;color:var(--purple);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px;font-family:var(--mono);}
-  .finance-divider{border:none;border-top:1px solid var(--border);margin:12px 0;}
+  /* ── MAIN CONTENT ────────────────────────────────────────────── */
 
-  /* IRR viability badge */
-  .irr-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-family:var(--mono);font-size:10px;font-weight:700;margin-left:8px;}
-  .irr-badge.viable{background:rgba(0,212,170,.15);color:var(--accent);border:1px solid var(--accent);}
-  .irr-badge.marginal{background:rgba(255,179,64,.15);color:var(--warn);border:1px solid var(--warn);}
-  .irr-badge.poor{background:rgba(255,87,87,.15);color:var(--danger);border:1px solid var(--danger);}
+  /* Flow steps */
+  .flow-row { display: flex; gap: 6px; margin-bottom: 18px; font-size: 11px; font-family: var(--mono); align-items: center; flex-wrap: wrap; }
+  .flow-step { background: var(--white); border: 1px solid var(--border); padding: 4px 10px; border-radius: 4px; color: var(--text3); font-size: 10px; }
+  .flow-step.active { border-color: var(--yellow-dk); background: var(--yellow); color: var(--navy); font-weight: 700; }
+  .flow-arrow { color: var(--text3); }
 
-  .scenario-input-row{display:flex;gap:7px;margin-bottom:9px;}
-  .scenario-input-row input[type=text]{flex:1;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:6px 9px;border-radius:6px;font-family:var(--sans);font-size:12px;outline:none;}
-  .btn{padding:6px 12px;border-radius:6px;border:1px solid var(--border2);background:var(--bg3);color:var(--text);font-family:var(--sans);font-size:11px;cursor:pointer;transition:all .15s;white-space:nowrap;}
-  .btn:hover{background:var(--bg4);}
-  .btn.accent{background:rgba(0,212,170,.1);border-color:var(--accent);color:var(--accent);}
-  .btn.accent:hover{background:rgba(0,212,170,.2);}
-  .btn.danger{background:rgba(255,87,87,.1);border-color:var(--danger);color:var(--danger);}
-  .btn.danger:hover{background:rgba(255,87,87,.2);}
-  .btn-xs{padding:3px 7px;font-size:10px;border-radius:4px;border:1px solid var(--border2);background:var(--bg4);color:var(--text2);cursor:pointer;}
-  .btn-xs.load{color:var(--accent2);border-color:rgba(0,151,255,.3);}
-  .btn-xs.del{color:var(--danger);border-color:rgba(255,87,87,.3);}
+  /* Section header (page-level) */
+  .section-page-header {
+    background: var(--navy); color: #FFFFFF;
+    padding: 8px 14px; border-radius: 6px;
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 12px;
+  }
+  .section-page-badge {
+    background: var(--yellow); color: var(--navy);
+    font-size: 11px; font-weight: 700; font-family: var(--mono);
+    padding: 2px 8px; border-radius: 4px;
+  }
+  .section-page-title { font-size: 12px; font-weight: 600; }
 
-  .scenario-chart-wrap{display:none;margin-bottom:16px;}
-  .scenario-chart-wrap.visible{display:block;}
-  .flow-row{display:flex;gap:5px;margin-bottom:14px;font-size:10px;font-family:var(--mono);align-items:center;flex-wrap:wrap;}
-  .flow-step{background:var(--bg4);border:1px solid var(--border);padding:4px 9px;border-radius:5px;color:var(--text2);}
-  .flow-step.active{border-color:var(--accent);color:var(--accent);}
-  .flow-arrow{color:var(--text3);}
-  .toast{position:fixed;bottom:18px;right:18px;z-index:999;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:9px 15px;font-size:12px;font-family:var(--mono);transform:translateY(60px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;}
-  .toast.show{transform:translateY(0);opacity:1;}
-  .toast.ok{border-color:var(--accent);color:var(--accent);}
-  .toast.err{border-color:var(--danger);color:var(--danger);}
-  .toast.info{border-color:var(--accent2);color:var(--accent2);}
-  .slot-row{display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid var(--border);font-size:11px;}
-  .slot-row:last-child{border-bottom:none;}
-  .slot-name{flex:1;color:var(--text2);font-family:var(--mono);font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .slot-date{font-size:10px;color:var(--text3);}
-  .checkbox-row{display:flex;align-items:center;gap:7px;margin-bottom:10px;cursor:pointer;font-size:11px;color:var(--text2);}
-  .checkbox-row input{cursor:pointer;accent-color:var(--warn);}
-  .toggle-box{display:flex;align-items:center;gap:8px;cursor:pointer;background:rgba(255,87,87,.08);border:1px solid rgba(255,87,87,.3);padding:8px 10px;border-radius:6px;margin-bottom:10px;}
-  .toggle-box input{cursor:pointer;accent-color:var(--danger);}
-  .toggle-box span{font-size:10px;color:var(--danger);font-weight:700;font-family:var(--mono);}
+  /* KPI metric cards */
+  .metrics-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 14px; }
+  .metric-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-left: 4px solid var(--border);
+    border-radius: 8px; padding: 13px 15px;
+  }
+  .metric-card.hl         { border-left-color: var(--yellow); }
+  .metric-card.hl-finance { border-left-color: var(--navy); }
+  .metric-label { font-size: 10px; color: var(--text3); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 5px; font-family: var(--mono); }
+  .metric-value { font-family: var(--mono); font-size: 18px; font-weight: 700; color: var(--navy); }
+  .metric-value.green  { color: var(--green); }
+  .metric-value.blue   { color: var(--blue); }
+  .metric-value.warn   { color: #B45309; }
+  .metric-value.purple { color: #6D28D9; }
+  .metric-value.danger { color: var(--red); }
+  .metric-sub { font-size: 10px; color: var(--text3); margin-top: 3px; }
+
+  /* IRR badge */
+  .irr-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-family: var(--mono); font-size: 9px; font-weight: 700; margin-left: 6px; }
+  .irr-badge.viable   { background: #D1FAE5; color: #065F46; }
+  .irr-badge.marginal { background: #FEF3C7; color: #92400E; }
+  .irr-badge.poor     { background: #FEE2E2; color: #991B1B; }
+
+  /* Bottleneck bar */
+  .bottleneck-bar {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 8px; padding: 11px 15px;
+    margin-bottom: 14px; display: flex; align-items: center; gap: 12px;
+  }
+  .bn-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  /* Charts */
+  .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+  .chart-card { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 15px; }
+  .chart-title { font-size: 10px; color: var(--text3); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 11px; font-family: var(--mono); font-weight: 700; }
+
+  /* Zone card */
+  .zone-card { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 14px; }
+  .zone-title { font-size: 10px; color: var(--text3); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 12px; font-family: var(--mono); font-weight: 700; }
+  .zone-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 7px; margin-bottom: 10px; }
+  .zone-tile { background: var(--gray-bg); border: 1px solid var(--border); border-left: 3px solid var(--yellow); border-radius: 6px; padding: 9px 11px; }
+  .zone-tile.warn-zone   { border-left-color: #F59E0B; }
+  .zone-tile.purple-zone { border-left-color: var(--navy); }
+  .zone-tile-label { font-size: 10px; color: var(--text3); margin-bottom: 3px; font-weight: 600; }
+  .zone-tile-val  { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--text); }
+  .zone-tile-sub  { font-size: 9px; color: var(--text3); margin-top: 2px; }
+  .zone-total-row { background: var(--navy); border-radius: 6px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; }
+  .zone-total-val { font-family: var(--mono); font-size: 18px; font-weight: 700; color: var(--yellow); }
+
+  /* BQ table */
+  .bq-card { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 14px; }
+  .bq-title { font-size: 10px; color: var(--text3); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 12px; font-family: var(--mono); font-weight: 700; }
+  table { width: 100%; border-collapse: collapse; }
+  thead tr { background: var(--yellow); }
+  th { font-size: 10px; color: var(--navy); text-align: left; padding: 6px 9px; letter-spacing: .04em; text-transform: uppercase; font-weight: 700; }
+  td { font-size: 12px; padding: 6px 9px; border-bottom: 1px solid var(--border); color: var(--text); }
+  tbody tr:nth-child(even) { background: var(--gray-row); }
+  tbody tr:nth-child(odd)  { background: var(--white); }
+  td.amt      { font-family: var(--mono); text-align: right; }
+  td.item-num { font-family: var(--mono); color: var(--text3); font-size: 10px; }
+  .bq-subtotal td { background: var(--gray-bg) !important; color: var(--text2); font-size: 11px; font-weight: 600; }
+  .bq-total td    { background: var(--navy)   !important; font-weight: 700; color: #FFFFFF; }
+  .bq-total td.amt { color: var(--yellow); font-size: 14px; }
+  .tag-warn { font-size: 9px; color: #92400E; background: #FEF3C7; padding: 1px 5px; border-radius: 3px; margin-left: 4px; }
+  .tag-unc  { font-size: 9px; color: var(--red); background: #FEE2E2; padding: 1px 5px; border-radius: 3px; margin-left: 4px; }
+
+  /* Soft costs panel */
+  .soft-costs-panel { background: var(--yellow-bg); border: 1px solid #FDE68A; border-left: 4px solid var(--yellow); border-radius: 0 6px 6px 0; padding: 12px 14px; margin-bottom: 14px; }
+  .soft-costs-title { font-size: 10px; color: #92400E; font-family: var(--mono); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 9px; font-weight: 700; }
+  .sc-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid #FDE68A; font-size: 11px; }
+  .sc-row:last-child { border-bottom: none; font-weight: 700; }
+  .sc-src { font-size: 10px; color: var(--text3); margin-left: 6px; }
+
+  /* Finance card */
+  .finance-card { background: var(--white); border: 1px solid var(--border); border-top: 3px solid var(--navy); border-radius: 8px; padding: 16px; margin-bottom: 14px; }
+  .finance-title { font-size: 10px; color: var(--navy); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 12px; font-family: var(--mono); font-weight: 700; }
+  .finance-divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
+
+  /* Scenario logger */
+  .scenario-input-row { display: flex; gap: 7px; margin-bottom: 9px; }
+  .scenario-chart-wrap { display: none; margin-bottom: 14px; }
+  .scenario-chart-wrap.visible { display: block; }
+
+  /* Slot rows */
+  .slot-row { display: flex; align-items: center; gap: 6px; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 11px; }
+  .slot-row:last-child { border-bottom: none; }
+  .slot-name { flex: 1; color: var(--text2); font-family: var(--mono); font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .slot-date { font-size: 10px; color: var(--text3); }
+
+  /* Toast */
+  .toast { position: fixed; bottom: 18px; right: 18px; z-index: 999; background: var(--navy); border-left: 4px solid var(--yellow); border-radius: 6px; padding: 10px 16px; font-size: 12px; font-family: var(--mono); color: #FFFFFF; transform: translateY(60px); opacity: 0; transition: all .3s cubic-bezier(.34,1.56,.64,1); pointer-events: none; }
+  .toast.show   { transform: translateY(0); opacity: 1; }
+  .toast.ok     { border-left-color: var(--yellow); }
+  .toast.err    { border-left-color: var(--red); }
+  .toast.info   { border-left-color: var(--blue); }
+
+  /* Footnotes */
+  .footnotes { font-size: 10px; color: var(--text3); font-family: var(--mono); margin-bottom: 30px; line-height: 2; background: var(--white); border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; }
 
   @media(max-width:900px){
-    .layout{grid-template-columns:1fr;}
-    .sidebar{border-right:none;border-bottom:1px solid var(--border);}
-    .metrics-grid{grid-template-columns:1fr 1fr;}
-    .charts-row{grid-template-columns:1fr;}
-    .zone-grid{grid-template-columns:repeat(2,1fr);}
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { border-right: none; border-bottom: 1px solid var(--border); }
+    .metrics-grid { grid-template-columns: 1fr 1fr; }
+    .charts-row { grid-template-columns: 1fr; }
+    .zone-grid { grid-template-columns: repeat(2,1fr); }
   }
 </style>
 </head>
@@ -214,7 +347,7 @@
     <button class="btn" onclick="exportJSON()" style="font-size:10px;padding:4px 9px;">↓ Export JSON</button>
     <button class="btn accent" onclick="document.getElementById('importFile').click()" style="font-size:10px;padding:4px 9px;">↑ Import JSON</button>
     <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
-    <button class="btn" id="resetBtn" onclick="confirmReset()" style="font-size:10px;padding:4px 9px;border-color:rgba(255,87,87,.4);color:var(--danger);">↺ Reset</button>
+    <button class="btn" id="resetBtn" onclick="confirmReset()" style="font-size:10px;padding:4px 9px;">↺ Reset</button>
     <div class="autosave-dot" id="autosaveDot"></div>
     <span class="save-status" id="saveStatus">auto-saved</span>
   </div>
@@ -405,12 +538,11 @@
         <div class="slider-hint">PCE BQ Item 6.0 — Pavement, drainage, utilities</div>
       </div>
 
-      <!-- RMG Foundation toggle: checkbox switches between 20% rule vs RM/m -->
-      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:12px;">
-        <div style="font-size:11px;color:var(--warn);font-weight:600;margin-bottom:8px;">RMG Foundation Method</div>
+      <div style="background:var(--gray-bg);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin-bottom:12px;">
+        <div style="font-size:11px;color:var(--navy);font-weight:700;margin-bottom:8px;">RMG Foundation Method</div>
         <label class="checkbox-row">
           <input type="checkbox" id="rmg_found_pct" checked onchange="syncControls()">
-          <span>Use UNCTAD 20% rule (20% of RMG value) <span style="color:var(--accent);font-size:9px;">— Adam confirmed</span></span>
+          <span>Use UNCTAD 20% rule (20% of RMG value) <span style="color:var(--green);font-size:9px;">— Adam confirmed</span></span>
         </label>
         <div id="rmg_perm_row">
           <div class="slider-label" style="margin-top:6px;">
@@ -478,10 +610,9 @@
           <input class="num-input blue" id="val-overhead_pct" type="number" min="10" max="50" step="1" value="29">
         </div>
         <input type="range" class="blue" id="overhead_pct" min="10" max="50" step="1" value="29">
-        <div class="slider-hint">7% Prelims + 10% Prof Fees + 2% Regulatory (Adam confirmed) + 10% Contingency = 29%</div>
+        <div class="slider-hint">7% Prelims + 10% Prof Fees + 2% Regulatory + 10% Contingency = 29%</div>
       </div>
 
-      <!-- Middle East war factor toggle -->
       <label class="toggle-box">
         <input type="checkbox" id="war_factor" onchange="syncControls()">
         <span>⚠ MIDDLE EAST WAR COST FACTOR (+12.6% on civil — Ministry of Economic)</span>
@@ -510,7 +641,7 @@
           <input class="num-input warn-inp" id="val-rampup_years" type="number" min="1" max="10" step="1" value="5">
         </div>
         <input type="range" class="warn-sl" id="rampup_years" min="1" max="10" step="1" value="5">
-        <div class="slider-hint">Years to reach full utilization. Yr 1 = 1/N of target util, rising linearly. Affects IRR, NPV, payback significantly.</div>
+        <div class="slider-hint">Years to reach full utilization.</div>
       </div>
 
       <div class="slider-row">
@@ -518,7 +649,7 @@
           <input class="num-input warn-inp" id="val-discount_rate" type="number" min="1" max="25" step="0.5" value="10">
         </div>
         <input type="range" class="warn-sl" id="discount_rate" min="1" max="25" step="0.5" value="10">
-        <div class="slider-hint">Required rate of return / cost of capital. Shariff rule of thumb: IRR must exceed 15%.</div>
+        <div class="slider-hint">Required rate of return. IRR must exceed 15% (Shariff).</div>
       </div>
 
       <div class="slider-row">
@@ -529,14 +660,14 @@
         <div class="slider-hint">% of annual capacity actually used. Conservative = 80%.</div>
       </div>
 
-      <div style="font-size:10px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;margin:10px 0 6px;">OPEX Structure</div>
+      <div style="font-size:10px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;margin:10px 0 6px;font-weight:700;">OPEX Structure</div>
 
       <div class="slider-row">
         <div class="slider-label"><span class="slider-name">Fixed OPEX (% of Civil+Eqpt/yr)</span>
           <input class="num-input warn-inp" id="val-opex_rate" type="number" min="0" max="15" step="0.5" value="4">
         </div>
         <input type="range" class="warn-sl" id="opex_rate" min="0" max="15" step="0.5" value="4">
-        <div class="slider-hint">Calculated on civil + machinery only (NOT land or financing). Port rule-of-thumb: 3–6%.</div>
+        <div class="slider-hint">Calculated on civil + machinery only. Port rule-of-thumb: 3–6%.</div>
       </div>
 
       <div class="slider-row">
@@ -544,7 +675,7 @@
           <input class="num-input warn-inp" id="val-opex_per_teu" type="number" min="50" max="150" step="1" value="70">
         </div>
         <input type="range" class="warn-sl" id="opex_per_teu" min="50" max="150" step="1" value="70">
-        <div class="slider-hint">Linked to actual handled TEUs (capacity × utilization). Default RM 70/TEU.</div>
+        <div class="slider-hint">Linked to actual handled TEUs. Default RM 70/TEU.</div>
       </div>
 
       <div class="slider-row">
@@ -552,17 +683,16 @@
           <input class="num-input warn-inp" id="val-financing_rate" type="number" min="0" max="15" step="0.5" value="5">
         </div>
         <input type="range" class="warn-sl" id="financing_rate" min="0" max="15" step="0.5" value="5">
-        <div class="slider-hint">Adam: 0–10%, default 5%. Applied to (Construction + Soft Costs). Added to CAPEX, excluded from OPEX base.</div>
+        <div class="slider-hint">Applied to (Construction + Soft Costs). Default 5%.</div>
       </div>
 
-      <div style="font-size:10px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;margin:10px 0 6px;">Escalation &amp; Growth</div>
+      <div style="font-size:10px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;margin:10px 0 6px;font-weight:700;">Escalation &amp; Growth</div>
 
       <div class="slider-row">
         <div class="slider-label"><span class="slider-name">OPEX Inflation (% / yr)</span>
           <input class="num-input warn-inp" id="val-opex_inflation" type="number" min="0" max="10" step="0.5" value="0">
         </div>
         <input type="range" class="warn-sl" id="opex_inflation" min="0" max="10" step="0.5" value="0">
-        <div class="slider-hint">Annual OPEX cost escalation — compounded each year. Default 3.5%.</div>
       </div>
 
       <div class="slider-row">
@@ -570,7 +700,6 @@
           <input class="num-input warn-inp" id="val-opex_inf_every" type="number" min="1" max="5" step="1" value="1">
         </div>
         <input type="range" class="warn-sl" id="opex_inf_every" min="1" max="5" step="1" value="1">
-        <div class="slider-hint">Apply OPEX inflation every N years. 1 = every year (compound).</div>
       </div>
 
       <div class="slider-row">
@@ -578,7 +707,6 @@
           <input class="num-input warn-inp" id="val-rev_growth_step" type="number" min="0" max="30" step="1" value="10">
         </div>
         <input type="range" class="warn-sl" id="rev_growth_step" min="0" max="30" step="1" value="10">
-        <div class="slider-hint">Revenue increases by this % at each step interval. Default 10%.</div>
       </div>
 
       <div class="slider-row">
@@ -586,7 +714,6 @@
           <input class="num-input warn-inp" id="val-rev_growth_every" type="number" min="1" max="10" step="1" value="5">
         </div>
         <input type="range" class="warn-sl" id="rev_growth_every" min="1" max="10" step="1" value="5">
-        <div class="slider-hint">Apply revenue growth step every N years. Default every 5 years.</div>
       </div>
 
     </div>
@@ -620,7 +747,7 @@
     <div class="section-body">
       <div style="font-size:10px;color:var(--text3);margin-bottom:9px;line-height:1.6;">Saves to browser. Use Export/Import JSON to share across devices.</div>
       <div style="display:flex;gap:6px;margin-bottom:9px;">
-        <input type="text" id="saveSlotName" placeholder="Config name…" style="flex:1;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:5px 9px;border-radius:6px;font-size:11px;font-family:var(--sans);outline:none;">
+        <input type="text" id="saveSlotName" placeholder="Config name…" style="flex:1;">
         <button class="btn accent" onclick="saveSlot()" style="font-size:10px;padding:5px 10px;">Save</button>
       </div>
       <div id="slotList">
@@ -642,7 +769,7 @@
     <span class="flow-arrow">→</span>
     <div class="flow-step active">CAPEX</div>
     <span class="flow-arrow">→</span>
-    <div class="flow-step active" style="border-color:var(--purple);color:var(--purple);">DCF / ROI</div>
+    <div class="flow-step active" style="background:var(--navy);color:var(--yellow);border-color:var(--navy);">DCF / ROI</div>
   </div>
 
   <!-- KPI grid — operational -->
@@ -706,8 +833,8 @@
   <div class="bottleneck-bar">
     <div class="bn-dot" id="bn-dot"></div>
     <div>
-      <div style="font-size:10px;color:var(--text3);">Active Bottleneck</div>
-      <div style="font-size:13px;font-weight:500;" id="bn-value">—</div>
+      <div style="font-size:10px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.05em;">Active Bottleneck</div>
+      <div style="font-size:13px;font-weight:600;" id="bn-value">—</div>
     </div>
     <div style="margin-left:auto;text-align:right;">
       <div style="font-size:10px;color:var(--text3);">Rail vs Storage</div>
@@ -726,7 +853,6 @@
     </div>
   </div>
 
-  <!-- Zone card -->
   <div class="zone-card">
     <div class="zone-title">Site Area — 8-Zone Breakdown</div>
     <div class="zone-grid">
@@ -740,22 +866,20 @@
       <div class="zone-tile"><div class="zone-tile-label">Zone 8 · Admin / Office</div><div class="zone-tile-val" id="z8-val">0.5 ac</div><div class="zone-tile-sub">fixed</div></div>
     </div>
     <div class="zone-total-row">
-      <div><div style="font-size:12px;color:var(--text2);font-weight:500;">Total Gross Site Area</div><div style="font-size:10px;color:var(--text3);margin-top:2px;">Sum of all 8 zones</div></div>
+      <div><div style="font-size:12px;color:rgba(255,255,255,0.7);font-weight:600;">Total Gross Site Area</div><div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:2px;">Sum of all 8 zones</div></div>
       <div class="zone-total-val" id="zone-total">—</div>
     </div>
   </div>
 
-  <!-- Soft costs panel -->
   <div class="soft-costs-panel">
     <div class="soft-costs-title">Soft Costs Breakdown — 29% Total (Confirmed by Adam QS)</div>
-    <div class="sc-row"><span>Contractor Preliminaries</span><span class="sc-src">PCE BQ Item 1.0</span><span style="font-family:var(--mono);color:var(--accent2);">7%</span></div>
-    <div class="sc-row"><span>Professional &amp; Consultancy</span><span class="sc-src">C&amp;S, MEP, Surveyors, PM</span><span style="font-family:var(--mono);color:var(--accent2);">10%</span></div>
-    <div class="sc-row"><span>Regulatory &amp; Levies</span><span class="sc-src">Adam confirmed: 2% (updated from 4%)</span><span style="font-family:var(--mono);color:var(--accent2);">2%</span></div>
-    <div class="sc-row"><span>Physical Contingency</span><span class="sc-src">Pulau Indah peat/soil conditions</span><span style="font-family:var(--mono);color:var(--accent2);">10%</span></div>
-    <div class="sc-row" style="margin-top:3px;"><span style="color:var(--text);">Total</span><span></span><span style="font-family:var(--mono);color:var(--warn);font-size:14px;">29%</span></div>
+    <div class="sc-row"><span>Contractor Preliminaries</span><span class="sc-src">PCE BQ Item 1.0</span><span style="font-family:var(--mono);color:#92400E;">7%</span></div>
+    <div class="sc-row"><span>Professional &amp; Consultancy</span><span class="sc-src">C&amp;S, MEP, Surveyors, PM</span><span style="font-family:var(--mono);color:#92400E;">10%</span></div>
+    <div class="sc-row"><span>Regulatory &amp; Levies</span><span class="sc-src">Adam confirmed: 2%</span><span style="font-family:var(--mono);color:#92400E;">2%</span></div>
+    <div class="sc-row"><span>Physical Contingency</span><span class="sc-src">Pulau Indah peat/soil conditions</span><span style="font-family:var(--mono);color:#92400E;">10%</span></div>
+    <div class="sc-row" style="margin-top:3px;"><span style="color:var(--text);">Total</span><span></span><span style="font-family:var(--mono);color:var(--navy);font-size:14px;font-weight:700;">29%</span></div>
   </div>
 
-  <!-- BQ table -->
   <div class="bq-card">
     <div class="bq-title">Bill of Quantities — Itemized CAPEX</div>
     <table>
@@ -769,15 +893,14 @@
     </table>
   </div>
 
-  <!-- Finance module -->
   <div class="finance-card">
-    <div class="finance-title">📊 DCF Analysis — Discounted Cash Flow &amp; ROI</div>
+    <div class="finance-title">DCF Analysis — Discounted Cash Flow &amp; ROI</div>
 
-    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:11px;display:flex;flex-wrap:wrap;gap:14px;">
-      <span>Full-util TEUs/yr: <strong id="fin-eff-teu" style="color:var(--accent);font-family:var(--mono);">—</strong></span>
-      <span>Full-util Revenue: <strong id="fin-ann-rev" style="color:var(--accent);font-family:var(--mono);">—</strong></span>
-      <span>Full-util OPEX: <strong id="fin-ann-opex" style="color:var(--danger);font-family:var(--mono);">—</strong></span>
-      <span>Ramp-up: <strong id="fin-rampup-info" style="color:var(--warn);font-family:var(--mono);">—</strong></span>
+    <div style="background:var(--gray-bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;margin-bottom:14px;font-size:11px;display:flex;flex-wrap:wrap;gap:14px;">
+      <span>Full-util TEUs/yr: <strong id="fin-eff-teu" style="color:var(--green);font-family:var(--mono);">—</strong></span>
+      <span>Full-util Revenue: <strong id="fin-ann-rev" style="color:var(--navy);font-family:var(--mono);">—</strong></span>
+      <span>Full-util OPEX: <strong id="fin-ann-opex" style="color:var(--red);font-family:var(--mono);">—</strong></span>
+      <span>Ramp-up: <strong id="fin-rampup-info" style="color:#92400E;font-family:var(--mono);">—</strong></span>
       <span style="color:var(--text3);font-size:10px;">Fixed OPEX base = Civil + Machinery only (excl. land &amp; financing)</span>
     </div>
 
@@ -810,8 +933,7 @@
       NPV Formula: −CAPEX + Σ[NetCF_t / (1+r)^t] over project lifetime &nbsp;|&nbsp;
       IRR: discount rate where NPV = 0 (binary search 0–200%) &nbsp;|&nbsp;
       OPEX Base = Civil Subtotal + Machinery (excl. land &amp; financing) &nbsp;|&nbsp;
-      Ramp-up: Yr 1 util = 1/N × target, rising linearly each year. Highlighted rows = ramp period. &nbsp;|&nbsp;
-      Min Rev/TEU = minimum RM/TEU for IRR ≥ 15% (binary search, current ramp &amp; OPEX assumptions).
+      Ramp-up: Yr 1 util = 1/N × target, rising linearly. Highlighted rows = ramp period.
     </div>
   </div>
 
@@ -822,15 +944,15 @@
     </div>
   </div>
 
-  <div style="font-size:10px;color:var(--text3);font-family:var(--mono);margin-bottom:30px;line-height:2;">
+  <div class="footnotes">
     ¹ GDC: Land + 8-zone civil + Railway + Boom Gates + RMG Foundation + War Factor + Soft Costs (29%) + Financing Cost + Machinery.<br>
-    ² OPEX Base: Civil Subtotal + Machinery ONLY — land and financing excluded (correct for port maintenance benchmarking).<br>
-    ³ RMG Foundation: 20% of RMG value (Adam QS confirmed UNCTAD rule). Switchable to RM/m in Unit Costs panel.<br>
-    ⁴ Regulatory &amp; Levies: updated to 2% (confirmed by Adam, was 4%).<br>
-    ⁵ IRR &lt;0%: shown as "Negative" when total net cash flows (with ramp-up) cannot recover total GDC over project lifetime.<br>
+    ² OPEX Base: Civil Subtotal + Machinery ONLY — land and financing excluded.<br>
+    ³ RMG Foundation: 20% of RMG value (Adam QS confirmed UNCTAD rule).<br>
+    ⁴ Regulatory &amp; Levies: updated to 2% (confirmed by Adam).<br>
+    ⁵ IRR &lt;0%: shown as "Negative" when total net cash flows cannot recover total GDC over project lifetime.<br>
     ⁶ War Factor: +12.6% on construction civil subtotal only, per Ministry of Economic.<br>
-    ⁷ Ramp-up: revenue and variable OPEX scale linearly over ramp period. Fixed OPEX is constant from year 1. IRR, NPV, and payback all reflect ramp-up.<br>
-    ⁸ Min Rev/TEU: auto-calculated breakeven — minimum RM per TEU at which IRR reaches 15% (Shariff threshold), using current ramp-up and OPEX settings.
+    ⁷ Ramp-up: revenue and variable OPEX scale linearly. Fixed OPEX is constant from year 1.<br>
+    ⁸ Min Rev/TEU: auto-calculated breakeven — minimum RM/TEU for IRR ≥ 15% (Shariff threshold).
   </div>
 
 </main>
@@ -1298,19 +1420,19 @@ function updateCashflowChart(r){ try {
       interaction: { mode: 'index', intersect: false },
       scales: {
         x: {
-          ticks: { color: '#8b90a0', font: { family: 'Space Mono', size: 9 } },
-          grid: { color: '#ffffff08' }
+          ticks: { color: '#6B7280', font: { family: 'Space Mono', size: 9 } },
+          grid: { color: '#E5E7EB' }
         },
         y: {
           ticks: {
-            color: '#8b90a0', font: { family: 'Space Mono', size: 9 },
+            color: '#6B7280', font: { family: 'Space Mono', size: 9 },
             callback: v => 'RM ' + v.toFixed(0) + 'M'
           },
-          grid: { color: '#ffffff08' }
+          grid: { color: '#E5E7EB' }
         }
       },
       plugins: {
-        legend: { display: true, labels: { color: '#8b90a0', font: { family: 'Space Mono', size: 9 }, boxWidth: 12 } },
+        legend: { display: true, labels: { color: '#6B7280', font: { family: 'Space Mono', size: 9 }, boxWidth: 12 } },
         tooltip: {
           callbacks: {
             label: ctx => ctx.dataset.label + ': RM ' + ctx.parsed.y.toFixed(2) + 'M'
@@ -1328,7 +1450,7 @@ function updateCostChart(r){ try {
   if(costChartInst) costChartInst.destroy();
   costChartInst = new Chart(document.getElementById('costChart'), {
     type: 'doughnut',
-    data: { labels, datasets: [{ data: vals, backgroundColor: colors, borderColor: '#13161e', borderWidth: 2 }] },
+    data: { labels, datasets: [{ data: vals, backgroundColor: colors, borderColor: '#FFFFFF', borderWidth: 2 }] },
     options: { responsive: true, maintainAspectRatio: false, cutout: '62%', plugins: { legend: { display: false } } }
   });
   } catch(e){ console.warn('costChart error',e); } }
@@ -1342,8 +1464,8 @@ function updateSidingChart(r){ try {
     data: { labels, datasets: [{ label: 'Moves/Hr', data: vals, backgroundColor: '#00d4aa88', borderColor: '#00d4aa', borderWidth: 1.5, borderRadius: 4 }] },
     options: { responsive: true, maintainAspectRatio: false,
       scales: {
-        x: { ticks: { color: '#8b90a0', font: { family: 'Space Mono', size: 10 } }, grid: { color: '#ffffff08' } },
-        y: { ticks: { color: '#8b90a0', font: { family: 'Space Mono', size: 10 } }, grid: { color: '#ffffff08' } }
+        x: { ticks: { color: '#6B7280', font: { family: 'Space Mono', size: 10 } }, grid: { color: '#E5E7EB' } },
+        y: { ticks: { color: '#6B7280', font: { family: 'Space Mono', size: 10 } }, grid: { color: '#E5E7EB' } }
       },
       plugins: { legend: { display: false } }
     }
@@ -1431,8 +1553,8 @@ function plotScenarios(){
     data: { datasets: [{ label: 'Scenarios', data: sorted.map(s => ({ x: s.gdc/1e6, y: s.capacity/1000 })), backgroundColor: '#ffb340', borderColor: '#ffb340', pointRadius: 7, pointHoverRadius: 9 }] },
     options: { responsive: true, maintainAspectRatio: false,
       scales: {
-        x: { title: { display: true, text: 'Total GDC (RM Million)', color: '#8b90a0' }, ticks: { color: '#8b90a0', font: { family: 'Space Mono', size: 10 } }, grid: { color: '#ffffff08' } },
-        y: { title: { display: true, text: 'Rail-Bound Capacity (000 TEU)', color: '#8b90a0' }, ticks: { color: '#8b90a0', font: { family: 'Space Mono', size: 10 } }, grid: { color: '#ffffff08' } }
+        x: { title: { display: true, text: 'Total GDC (RM Million)', color: '#6B7280' }, ticks: { color: '#6B7280', font: { family: 'Space Mono', size: 10 } }, grid: { color: '#E5E7EB' } },
+        y: { title: { display: true, text: 'Rail-Bound Capacity (000 TEU)', color: '#6B7280' }, ticks: { color: '#6B7280', font: { family: 'Space Mono', size: 10 } }, grid: { color: '#E5E7EB' } }
       },
       plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => { const s = sorted[ctx.dataIndex]; return [s.label, `GDC: RM ${(s.gdc/1e6).toFixed(1)}M`, `Cap: ${Math.round(s.capacity/1000)}k TEU`, `IRR: ${s.irr}`]; } } } }
     }
