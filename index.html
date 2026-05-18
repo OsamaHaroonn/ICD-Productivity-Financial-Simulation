@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ICD Productivity & Financial Simulation v2.7</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
 <script>
 /**
  * Skipped minification because the original files appears to be already minified .
@@ -30,9 +30,9 @@
 <style>
   /* ── PENANG SLIDES DESIGN SYSTEM ─────────────────────────────
      Palette: #F5C400 (yellow accent) · #1A1A2E (navy) · #FFFFFF (white)
-     Typography: Calibri / DM Sans · two weights only · no gradients
+     Typography: Arial · two weights only · no gradients
   ─────────────────────────────────────────────────────────────── */
-  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap');
+
 
   :root {
     --yellow:   #F5C400;
@@ -51,12 +51,12 @@
     --red:      #DC2626;
     --green:    #059669;
     --blue:     #2563EB;
-    --mono: 'Space Mono', monospace;
-    --sans: 'DM Sans', sans-serif;
+    --mono: Arial, sans-serif;
+    --sans: Arial, sans-serif;
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { background: var(--gray-bg); color: var(--text); font-family: var(--sans); font-size: 14px; }
+  html { background: var(--gray-bg); color: var(--text); font-family: Arial; font-size: 14px; }
   body { min-height: 100vh; }
 
   /* ── HEADER ─────────────────────────────────────────────────── */
@@ -73,15 +73,15 @@
     background: var(--yellow);
     border-radius: 6px;
     display: flex; align-items: center; justify-content: center;
-    font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--navy);
+    font-family: Arial; font-size: 10px; font-weight: 700; color: var(--navy);
   }
   .header h1 { font-size: 13px; font-weight: 600; color: #FFFFFF; }
-  .header-sub { font-size: 10px; color: rgba(255,255,255,0.45); font-family: var(--mono); margin-top: 1px; }
+  .header-sub { font-size: 10px; color: rgba(255,255,255,0.45); font-family: Arial; margin-top: 1px; }
   .header-actions { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
   .autosave-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); transition: background 0.4s; flex-shrink: 0; }
   .autosave-dot.saved  { background: var(--yellow); }
   .autosave-dot.saving { background: #F59E0B; }
-  .save-status { font-size: 10px; color: rgba(255,255,255,0.4); font-family: var(--mono); }
+  .save-status { font-size: 10px; color: rgba(255,255,255,0.4); font-family: Arial; }
 
   /* ── LAYOUT ─────────────────────────────────────────────────── */
   .layout { display: grid; grid-template-columns: 340px 1fr; min-height: calc(100vh - 56px); }
@@ -122,7 +122,7 @@
   .slider-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
   .slider-name { font-size: 12px; color: var(--text); font-weight: 400; }
   .num-input {
-    font-family: var(--mono); font-size: 11px;
+    font-family: Arial; font-size: 11px;
     color: var(--navy); background: var(--yellow-bg);
     border: 1px solid var(--border2); padding: 2px 7px;
     border-radius: 4px; min-width: 80px; text-align: right;
@@ -158,7 +158,7 @@
     border-radius: 6px; padding: 8px 10px;
   }
   .rs-split-label { font-size: 10px; color: var(--text3); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 5px; }
-  .rs-split-total { font-size: 10px; color: var(--text3); margin-top: 6px; text-align: right; font-family: var(--mono); }
+  .rs-split-total { font-size: 10px; color: var(--text3); margin-top: 6px; text-align: right; font-family: Arial; }
   .rs-split-total span { color: var(--navy); font-weight: 700; }
 
   /* RMG toggle box */
@@ -168,7 +168,7 @@
     padding: 8px 10px; border-radius: 6px; margin-bottom: 10px;
   }
   .toggle-box input { cursor: pointer; accent-color: var(--red); }
-  .toggle-box span  { font-size: 10px; color: var(--red); font-weight: 700; font-family: var(--mono); }
+  .toggle-box span  { font-size: 10px; color: var(--red); font-weight: 700; font-family: Arial; }
 
   .checkbox-row { display: flex; align-items: center; gap: 7px; margin-bottom: 10px; cursor: pointer; font-size: 11px; color: var(--text2); }
   .checkbox-row input { cursor: pointer; accent-color: var(--navy); }
@@ -177,7 +177,7 @@
   input[type=text] {
     background: var(--white); border: 1px solid var(--border2);
     color: var(--text); padding: 6px 10px; border-radius: 6px;
-    font-family: var(--sans); font-size: 12px; outline: none;
+    font-family: Arial; font-size: 12px; outline: none;
   }
   input[type=text]:focus { border-color: var(--yellow-dk); }
 
@@ -185,7 +185,7 @@
   .btn {
     padding: 6px 13px; border-radius: 5px;
     border: 1px solid var(--border2); background: var(--white);
-    color: var(--text); font-family: var(--sans); font-size: 11px;
+    color: var(--text); font-family: Arial; font-size: 11px;
     cursor: pointer; transition: background 0.12s; white-space: nowrap;
     font-weight: 600;
   }
@@ -205,7 +205,7 @@
   /* ── MAIN CONTENT ────────────────────────────────────────────── */
 
   /* Flow steps */
-  .flow-row { display: flex; gap: 6px; margin-bottom: 18px; font-size: 11px; font-family: var(--mono); align-items: center; flex-wrap: wrap; }
+  .flow-row { display: flex; gap: 6px; margin-bottom: 18px; font-size: 11px; font-family: Arial; align-items: center; flex-wrap: wrap; }
   .flow-step { background: var(--white); border: 1px solid var(--border); padding: 4px 10px; border-radius: 4px; color: var(--text3); font-size: 10px; }
   .flow-step.active { border-color: var(--yellow-dk); background: var(--yellow); color: var(--navy); font-weight: 700; }
   .flow-arrow { color: var(--text3); }
@@ -219,7 +219,7 @@
   }
   .section-page-badge {
     background: var(--yellow); color: var(--navy);
-    font-size: 11px; font-weight: 700; font-family: var(--mono);
+    font-size: 11px; font-weight: 700; font-family: Arial;
     padding: 2px 8px; border-radius: 4px;
   }
   .section-page-title { font-size: 12px; font-weight: 600; }
@@ -233,8 +233,8 @@
   }
   .metric-card.hl         { border-left-color: var(--yellow); }
   .metric-card.hl-finance { border-left-color: var(--navy); }
-  .metric-label { font-size: 10px; color: var(--text3); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 5px; font-family: var(--mono); }
-  .metric-value { font-family: var(--mono); font-size: 18px; font-weight: 700; color: var(--navy); }
+  .metric-label { font-size: 10px; color: var(--text3); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 5px; font-family: Arial; }
+  .metric-value { font-family: Arial; font-size: 18px; font-weight: 700; color: var(--navy); }
   .metric-value.green  { color: var(--green); }
   .metric-value.blue   { color: var(--blue); }
   .metric-value.warn   { color: #B45309; }
@@ -243,7 +243,7 @@
   .metric-sub { font-size: 10px; color: var(--text3); margin-top: 3px; }
 
   /* IRR badge */
-  .irr-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-family: var(--mono); font-size: 9px; font-weight: 700; margin-left: 6px; }
+  .irr-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-family: Arial; font-size: 9px; font-weight: 700; margin-left: 6px; }
   .irr-badge.viable   { background: #D1FAE5; color: #065F46; }
   .irr-badge.marginal { background: #FEF3C7; color: #92400E; }
   .irr-badge.poor     { background: #FEE2E2; color: #991B1B; }
@@ -259,32 +259,32 @@
   /* Charts */
   .charts-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
   .chart-card { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 15px; }
-  .chart-title { font-size: 10px; color: var(--text3); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 11px; font-family: var(--mono); font-weight: 700; }
+  .chart-title { font-size: 10px; color: var(--text3); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 11px; font-family: Arial; font-weight: 700; }
 
   /* Zone card */
   .zone-card { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 14px; }
-  .zone-title { font-size: 10px; color: var(--text3); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 12px; font-family: var(--mono); font-weight: 700; }
+  .zone-title { font-size: 10px; color: var(--text3); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 12px; font-family: Arial; font-weight: 700; }
   .zone-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 7px; margin-bottom: 10px; }
   .zone-tile { background: var(--gray-bg); border: 1px solid var(--border); border-left: 3px solid var(--yellow); border-radius: 6px; padding: 9px 11px; }
   .zone-tile.warn-zone   { border-left-color: #F59E0B; }
   .zone-tile.purple-zone { border-left-color: var(--navy); }
   .zone-tile-label { font-size: 10px; color: var(--text3); margin-bottom: 3px; font-weight: 600; }
-  .zone-tile-val  { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--text); }
+  .zone-tile-val  { font-family: Arial; font-size: 13px; font-weight: 700; color: var(--text); }
   .zone-tile-sub  { font-size: 9px; color: var(--text3); margin-top: 2px; }
   .zone-total-row { background: var(--navy); border-radius: 6px; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; }
-  .zone-total-val { font-family: var(--mono); font-size: 18px; font-weight: 700; color: var(--yellow); }
+  .zone-total-val { font-family: Arial; font-size: 18px; font-weight: 700; color: var(--yellow); }
 
   /* BQ table */
   .bq-card { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 14px; }
-  .bq-title { font-size: 10px; color: var(--text3); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 12px; font-family: var(--mono); font-weight: 700; }
+  .bq-title { font-size: 10px; color: var(--text3); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 12px; font-family: Arial; font-weight: 700; }
   table { width: 100%; border-collapse: collapse; }
   thead tr { background: var(--yellow); }
   th { font-size: 10px; color: var(--navy); text-align: left; padding: 6px 9px; letter-spacing: .04em; text-transform: uppercase; font-weight: 700; }
   td { font-size: 12px; padding: 6px 9px; border-bottom: 1px solid var(--border); color: var(--text); }
   tbody tr:nth-child(even) { background: var(--gray-row); }
   tbody tr:nth-child(odd)  { background: var(--white); }
-  td.amt      { font-family: var(--mono); text-align: right; }
-  td.item-num { font-family: var(--mono); color: var(--text3); font-size: 10px; }
+  td.amt      { font-family: Arial; text-align: right; }
+  td.item-num { font-family: Arial; color: var(--text3); font-size: 10px; }
   .bq-subtotal td { background: var(--gray-bg) !important; color: var(--text2); font-size: 11px; font-weight: 600; }
   .bq-total td    { background: var(--navy)   !important; font-weight: 700; color: #FFFFFF; }
   .bq-total td.amt { color: var(--yellow); font-size: 14px; }
@@ -293,14 +293,14 @@
 
   /* Soft costs panel */
   .soft-costs-panel { background: var(--yellow-bg); border: 1px solid #FDE68A; border-left: 4px solid var(--yellow); border-radius: 0 6px 6px 0; padding: 12px 14px; margin-bottom: 14px; }
-  .soft-costs-title { font-size: 10px; color: #92400E; font-family: var(--mono); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 9px; font-weight: 700; }
+  .soft-costs-title { font-size: 10px; color: #92400E; font-family: Arial; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 9px; font-weight: 700; }
   .sc-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid #FDE68A; font-size: 11px; }
   .sc-row:last-child { border-bottom: none; font-weight: 700; }
   .sc-src { font-size: 10px; color: var(--text3); margin-left: 6px; }
 
   /* Finance card */
   .finance-card { background: var(--white); border: 1px solid var(--border); border-top: 3px solid var(--navy); border-radius: 8px; padding: 16px; margin-bottom: 14px; }
-  .finance-title { font-size: 10px; color: var(--navy); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 12px; font-family: var(--mono); font-weight: 700; }
+  .finance-title { font-size: 10px; color: var(--navy); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 12px; font-family: Arial; font-weight: 700; }
   .finance-divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
 
   /* Scenario logger */
@@ -311,18 +311,18 @@
   /* Slot rows */
   .slot-row { display: flex; align-items: center; gap: 6px; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 11px; }
   .slot-row:last-child { border-bottom: none; }
-  .slot-name { flex: 1; color: var(--text2); font-family: var(--mono); font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .slot-name { flex: 1; color: var(--text2); font-family: Arial; font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .slot-date { font-size: 10px; color: var(--text3); }
 
   /* Toast */
-  .toast { position: fixed; bottom: 18px; right: 18px; z-index: 999; background: var(--navy); border-left: 4px solid var(--yellow); border-radius: 6px; padding: 10px 16px; font-size: 12px; font-family: var(--mono); color: #FFFFFF; transform: translateY(60px); opacity: 0; transition: all .3s cubic-bezier(.34,1.56,.64,1); pointer-events: none; }
+  .toast { position: fixed; bottom: 18px; right: 18px; z-index: 999; background: var(--navy); border-left: 4px solid var(--yellow); border-radius: 6px; padding: 10px 16px; font-size: 12px; font-family: Arial; color: #FFFFFF; transform: translateY(60px); opacity: 0; transition: all .3s cubic-bezier(.34,1.56,.64,1); pointer-events: none; }
   .toast.show   { transform: translateY(0); opacity: 1; }
   .toast.ok     { border-left-color: var(--yellow); }
   .toast.err    { border-left-color: var(--red); }
   .toast.info   { border-left-color: var(--blue); }
 
   /* Footnotes */
-  .footnotes { font-size: 10px; color: var(--text3); font-family: var(--mono); margin-bottom: 30px; line-height: 2; background: var(--white); border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; }
+  .footnotes { font-size: 10px; color: var(--text3); font-family: Arial; margin-bottom: 30px; line-height: 2; background: var(--white); border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; }
 
   @media(max-width:900px){
     .layout { grid-template-columns: 1fr; }
@@ -661,7 +661,7 @@
         <div class="slider-hint">% of annual capacity actually used. Conservative = 80%.</div>
       </div>
 
-      <div style="font-size:10px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;margin:10px 0 6px;font-weight:700;">OPEX Structure</div>
+      <div style="font-size:10px;color:var(--text3);font-family:Arial;text-transform:uppercase;letter-spacing:.06em;margin:10px 0 6px;font-weight:700;">OPEX Structure</div>
 
       <div class="slider-row">
         <div class="slider-label"><span class="slider-name">Fixed OPEX (% of Civil+Eqpt/yr)</span>
@@ -687,7 +687,7 @@
         <div class="slider-hint">Applied to (Construction + Soft Costs). Default 5%.</div>
       </div>
 
-      <div style="font-size:10px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;margin:10px 0 6px;font-weight:700;">Escalation &amp; Growth</div>
+      <div style="font-size:10px;color:var(--text3);font-family:Arial;text-transform:uppercase;letter-spacing:.06em;margin:10px 0 6px;font-weight:700;">Escalation &amp; Growth</div>
 
       <div class="slider-row">
         <div class="slider-label"><span class="slider-name">OPEX Inflation (% / yr)</span>
@@ -735,7 +735,7 @@
         <button class="btn danger" onclick="clearScenarios()">Clear</button>
       </div>
       <div id="scenTableWrap">
-        <div style="font-size:11px;color:var(--text3);text-align:center;padding:14px;font-family:var(--mono);">No scenarios logged yet</div>
+        <div style="font-size:11px;color:var(--text3);text-align:center;padding:14px;font-family:Arial;">No scenarios logged yet</div>
       </div>
     </div>
   </div>
@@ -752,7 +752,7 @@
         <button class="btn accent" onclick="saveSlot()" style="font-size:10px;padding:5px 10px;">Save</button>
       </div>
       <div id="slotList">
-        <div style="font-size:11px;color:var(--text3);text-align:center;padding:12px;font-family:var(--mono);">No saved configs</div>
+        <div style="font-size:11px;color:var(--text3);text-align:center;padding:12px;font-family:Arial;">No saved configs</div>
       </div>
     </div>
   </div>
@@ -839,7 +839,7 @@
     </div>
     <div style="margin-left:auto;text-align:right;">
       <div style="font-size:10px;color:var(--text3);">Rail vs Storage</div>
-      <div style="font-family:var(--mono);font-size:11px;" id="bn-detail">—</div>
+      <div style="font-family:Arial;font-size:11px;" id="bn-detail">—</div>
     </div>
   </div>
 
@@ -874,11 +874,11 @@
 
   <div class="soft-costs-panel">
     <div class="soft-costs-title">Soft Costs Breakdown — 29% Total (Confirmed by Adam QS)</div>
-    <div class="sc-row"><span>Contractor Preliminaries</span><span class="sc-src">PCE BQ Item 1.0</span><span style="font-family:var(--mono);color:#92400E;">7%</span></div>
-    <div class="sc-row"><span>Professional &amp; Consultancy</span><span class="sc-src">C&amp;S, MEP, Surveyors, PM</span><span style="font-family:var(--mono);color:#92400E;">10%</span></div>
-    <div class="sc-row"><span>Regulatory &amp; Levies</span><span class="sc-src">Adam confirmed: 2%</span><span style="font-family:var(--mono);color:#92400E;">2%</span></div>
-    <div class="sc-row"><span>Physical Contingency</span><span class="sc-src">Pulau Indah peat/soil conditions</span><span style="font-family:var(--mono);color:#92400E;">10%</span></div>
-    <div class="sc-row" style="margin-top:3px;"><span style="color:var(--text);">Total</span><span></span><span style="font-family:var(--mono);color:var(--navy);font-size:14px;font-weight:700;">29%</span></div>
+    <div class="sc-row"><span>Contractor Preliminaries</span><span class="sc-src">PCE BQ Item 1.0</span><span style="font-family:Arial;color:#92400E;">7%</span></div>
+    <div class="sc-row"><span>Professional &amp; Consultancy</span><span class="sc-src">C&amp;S, MEP, Surveyors, PM</span><span style="font-family:Arial;color:#92400E;">10%</span></div>
+    <div class="sc-row"><span>Regulatory &amp; Levies</span><span class="sc-src">Adam confirmed: 2%</span><span style="font-family:Arial;color:#92400E;">2%</span></div>
+    <div class="sc-row"><span>Physical Contingency</span><span class="sc-src">Pulau Indah peat/soil conditions</span><span style="font-family:Arial;color:#92400E;">10%</span></div>
+    <div class="sc-row" style="margin-top:3px;"><span style="color:var(--text);">Total</span><span></span><span style="font-family:Arial;color:var(--navy);font-size:14px;font-weight:700;">29%</span></div>
   </div>
 
   <div class="bq-card">
@@ -898,10 +898,10 @@
     <div class="finance-title">DCF Analysis — Discounted Cash Flow &amp; ROI</div>
 
     <div style="background:var(--gray-bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;margin-bottom:14px;font-size:11px;display:flex;flex-wrap:wrap;gap:14px;">
-      <span>Full-util TEUs/yr: <strong id="fin-eff-teu" style="color:var(--green);font-family:var(--mono);">—</strong></span>
-      <span>Full-util Revenue: <strong id="fin-ann-rev" style="color:var(--navy);font-family:var(--mono);">—</strong></span>
-      <span>Full-util OPEX: <strong id="fin-ann-opex" style="color:var(--red);font-family:var(--mono);">—</strong></span>
-      <span>Ramp-up: <strong id="fin-rampup-info" style="color:#92400E;font-family:var(--mono);">—</strong></span>
+      <span>Full-util TEUs/yr: <strong id="fin-eff-teu" style="color:var(--green);font-family:Arial;">—</strong></span>
+      <span>Full-util Revenue: <strong id="fin-ann-rev" style="color:var(--navy);font-family:Arial;">—</strong></span>
+      <span>Full-util OPEX: <strong id="fin-ann-opex" style="color:var(--red);font-family:Arial;">—</strong></span>
+      <span>Ramp-up: <strong id="fin-rampup-info" style="color:#92400E;font-family:Arial;">—</strong></span>
       <span style="color:var(--text3);font-size:10px;">Fixed OPEX base = Civil + Machinery only (excl. land &amp; financing)</span>
     </div>
 
@@ -930,7 +930,7 @@
     <div class="chart-title" style="margin-bottom:10px;">15-Year Cash Flow Chart — Revenue vs OPEX vs Cumulative Net</div>
     <div style="position:relative;height:220px;margin-bottom:4px;"><canvas id="cashflowChart" style="display:block;"></canvas></div>
 
-    <div style="font-size:10px;color:var(--text3);font-family:var(--mono);margin-top:12px;line-height:1.9;padding-top:10px;border-top:1px solid var(--border);">
+    <div style="font-size:10px;color:var(--text3);font-family:Arial;margin-top:12px;line-height:1.9;padding-top:10px;border-top:1px solid var(--border);">
       NPV Formula: −CAPEX + Σ[NetCF_t / (1+r)^t] over project lifetime &nbsp;|&nbsp;
       IRR: discount rate where NPV = 0 (binary search 0–200%) &nbsp;|&nbsp;
       OPEX Base = Civil Subtotal + Machinery (excl. land &amp; financing) &nbsp;|&nbsp;
@@ -1362,10 +1362,10 @@ function updateUI(r){
     const isRamp  = cf.y <= r.rampYears;
     const rowBg   = isRamp ? 'background:rgba(255,179,64,0.05);' : '';
     const yrLabel = isRamp
-      ? `Year ${cf.y} <span style="font-size:9px;color:var(--warn);font-family:var(--mono);margin-left:3px;">RAMP</span>`
+      ? `Year ${cf.y} <span style="font-size:9px;color:var(--warn);font-family:Arial;margin-left:3px;">RAMP</span>`
       : `Year ${cf.y}`;
     return `<tr style="border-bottom:1px solid var(--border);${rowBg}">
-      <td style="color:var(--text);padding:6px 9px;font-family:var(--mono);font-size:11px;">${yrLabel}</td>
+      <td style="color:var(--text);padding:6px 9px;font-family:Arial;font-size:11px;">${yrLabel}</td>
       <td class="amt" style="padding:6px 9px;color:var(--warn);font-size:11px;">${cf.util_pct}%</td>
       <td class="amt" style="padding:6px 9px;color:var(--text2);font-size:11px;">${Math.round(cf.teu).toLocaleString()}</td>
       <td class="amt" style="padding:6px 9px;color:${cf.rev_factor>1?'var(--accent)':'var(--text3)'};font-size:10px;">${cf.rev_factor != null ? cf.rev_factor.toFixed(2) : "1.00"}×</td>
@@ -1421,19 +1421,19 @@ function updateCashflowChart(r){ try {
       interaction: { mode: 'index', intersect: false },
       scales: {
         x: {
-          ticks: { color: '#6B7280', font: { family: 'Space Mono', size: 9 } },
+          ticks: { color: '#6B7280', font: { family: 'Arial', size: 9 } },
           grid: { color: '#E5E7EB' }
         },
         y: {
           ticks: {
-            color: '#6B7280', font: { family: 'Space Mono', size: 9 },
+            color: '#6B7280', font: { family: 'Arial', size: 9 },
             callback: v => 'RM ' + v.toFixed(0) + 'M'
           },
           grid: { color: '#E5E7EB' }
         }
       },
       plugins: {
-        legend: { display: true, labels: { color: '#6B7280', font: { family: 'Space Mono', size: 9 }, boxWidth: 12 } },
+        legend: { display: true, labels: { color: '#6B7280', font: { family: 'Arial', size: 9 }, boxWidth: 12 } },
         tooltip: {
           callbacks: {
             label: ctx => ctx.dataset.label + ': RM ' + ctx.parsed.y.toFixed(2) + 'M'
@@ -1465,8 +1465,8 @@ function updateSidingChart(r){ try {
     data: { labels, datasets: [{ label: 'Moves/Hr', data: vals, backgroundColor: '#00d4aa88', borderColor: '#00d4aa', borderWidth: 1.5, borderRadius: 4 }] },
     options: { responsive: true, maintainAspectRatio: false,
       scales: {
-        x: { ticks: { color: '#6B7280', font: { family: 'Space Mono', size: 10 } }, grid: { color: '#E5E7EB' } },
-        y: { ticks: { color: '#6B7280', font: { family: 'Space Mono', size: 10 } }, grid: { color: '#E5E7EB' } }
+        x: { ticks: { color: '#6B7280', font: { family: 'Arial', size: 10 } }, grid: { color: '#E5E7EB' } },
+        y: { ticks: { color: '#6B7280', font: { family: 'Arial', size: 10 } }, grid: { color: '#E5E7EB' } }
       },
       plugins: { legend: { display: false } }
     }
@@ -1530,15 +1530,15 @@ function logScenario(){
 
 function renderScenTable(){
   const wrap = document.getElementById('scenTableWrap');
-  if(!scenarioLog.length){ wrap.innerHTML = '<div style="font-size:11px;color:var(--text3);text-align:center;padding:14px;font-family:var(--mono);">No scenarios logged yet</div>'; return; }
+  if(!scenarioLog.length){ wrap.innerHTML = '<div style="font-size:11px;color:var(--text3);text-align:center;padding:14px;font-family:Arial;">No scenarios logged yet</div>'; return; }
   let html = `<table style="width:100%;font-size:11px;margin-top:5px;">
     <thead><tr><th>Label</th><th style="text-align:right">GDC(M)</th><th style="text-align:right">Rail Cap(TEU)</th><th style="text-align:right">IRR</th></tr></thead><tbody>`;
   scenarioLog.forEach(s => {
     html += `<tr>
       <td style="color:var(--text);padding:4px 3px">${s.label}</td>
-      <td style="font-family:var(--mono);text-align:right;padding:4px 3px">${(s.gdc/1e6).toFixed(1)}M</td>
-      <td style="font-family:var(--mono);text-align:right;padding:4px 3px">${Math.round(s.capacity).toLocaleString()}</td>
-      <td style="font-family:var(--mono);text-align:right;padding:4px 3px;color:${s.irr==='Negative'?'var(--danger)':'var(--accent)'}">${s.irr}</td>
+      <td style="font-family:Arial;text-align:right;padding:4px 3px">${(s.gdc/1e6).toFixed(1)}M</td>
+      <td style="font-family:Arial;text-align:right;padding:4px 3px">${Math.round(s.capacity).toLocaleString()}</td>
+      <td style="font-family:Arial;text-align:right;padding:4px 3px;color:${s.irr==='Negative'?'var(--danger)':'var(--accent)'}">${s.irr}</td>
     </tr>`;
   });
   html += '</tbody></table>'; wrap.innerHTML = html;
@@ -1554,8 +1554,8 @@ function plotScenarios(){
     data: { datasets: [{ label: 'Scenarios', data: sorted.map(s => ({ x: s.gdc/1e6, y: s.capacity/1000 })), backgroundColor: '#ffb340', borderColor: '#ffb340', pointRadius: 7, pointHoverRadius: 9 }] },
     options: { responsive: true, maintainAspectRatio: false,
       scales: {
-        x: { title: { display: true, text: 'Total GDC (RM Million)', color: '#6B7280' }, ticks: { color: '#6B7280', font: { family: 'Space Mono', size: 10 } }, grid: { color: '#E5E7EB' } },
-        y: { title: { display: true, text: 'Rail-Bound Capacity (000 TEU)', color: '#6B7280' }, ticks: { color: '#6B7280', font: { family: 'Space Mono', size: 10 } }, grid: { color: '#E5E7EB' } }
+        x: { title: { display: true, text: 'Total GDC (RM Million)', color: '#6B7280' }, ticks: { color: '#6B7280', font: { family: 'Arial', size: 10 } }, grid: { color: '#E5E7EB' } },
+        y: { title: { display: true, text: 'Rail-Bound Capacity (000 TEU)', color: '#6B7280' }, ticks: { color: '#6B7280', font: { family: 'Arial', size: 10 } }, grid: { color: '#E5E7EB' } }
       },
       plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => { const s = sorted[ctx.dataIndex]; return [s.label, `GDC: RM ${(s.gdc/1e6).toFixed(1)}M`, `Cap: ${Math.round(s.capacity/1000)}k TEU`, `IRR: ${s.irr}`]; } } } }
     }
@@ -1633,7 +1633,7 @@ function getSlots(){ try{ return JSON.parse(localStorage.getItem(LS_SLOTS)) || [
 
 function renderSlotList(){
   const slots = getSlots(), wrap = document.getElementById('slotList');
-  if(!slots.length){ wrap.innerHTML = '<div style="font-size:11px;color:var(--text3);text-align:center;padding:12px;font-family:var(--mono);">No saved configs</div>'; return; }
+  if(!slots.length){ wrap.innerHTML = '<div style="font-size:11px;color:var(--text3);text-align:center;padding:12px;font-family:Arial;">No saved configs</div>'; return; }
   wrap.innerHTML = slots.map(s => {
     const d = new Date(s.ts);
     const lbl = d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
