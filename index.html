@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ICD Productivity & Financial Simulation v2.7</title>
+<title>ICD Productivity & Financial Simulation </title>
 
 <script>
 /**
@@ -340,7 +340,7 @@
     <div class="logo-mark">MDS</div>
     <div>
       <h1>Inland Container Depot — Productivity &amp; Financial Simulation</h1>
-      <div class="header-sub">Equipment → Throughput → 8-Zone Acreage → CAPEX → DCF / ROI &nbsp;|&nbsp; v2.9.1</div>
+      <div class="header-sub">Equipment → Throughput → 8-Zone Acreage → CAPEX → DCF / ROI &nbsp; </div>
     </div>
   </div>
   <div class="header-actions">
@@ -428,7 +428,7 @@
           <input class="num-input" id="val-op_hours" type="number" min="8" max="24" step="8" value="16">
         </div>
         <input type="range" id="op_hours" min="8" max="24" step="8" value="16">
-        <div class="slider-hint">Two-shift standard = 16 hrs</div>
+        <div class="slider-hint">Two-shift standard = 16 hrs. Note: trains arrive 24 hrs but Malaysian ICDs typically operate 16 hrs — 24-hr ops not assumed.</div>
       </div>
 
       <div class="slider-row">
@@ -460,7 +460,7 @@
           <input class="num-input" id="val-rev_per_teu" type="number" min="140" max="1000" step="1" value="254">
         </div>
         <input type="range" id="rev_per_teu" min="140" max="1000" step="1" value="254">
-        <div class="slider-hint">Port Klang benchmark</div>
+        <div class="slider-hint">Port Klang benchmark. Min Rev/TEU for IRR ≥ 15% shown in KPI row above.</div>
       </div>
 
       <div class="slider-row">
@@ -515,12 +515,45 @@
     </div>
     <div class="section-body">
 
-      <div class="slider-row">
-        <div class="slider-label"><span class="slider-name">Land &amp; Conversion (RM M)</span>
-          <input class="num-input blue" id="val-land_cost" type="number" min="0" max="150" step="0.5" value="15">
+      <!-- ── LAND ACQUISITION — dual mode ── -->
+      <div style="background:var(--gray-bg);border:1px solid var(--border);border-radius:7px;padding:11px 13px;margin-bottom:14px;">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--navy);margin-bottom:10px;">Land Acquisition</div>
+
+        <!-- Mode toggle -->
+        <div style="display:flex;gap:0;border:1px solid var(--border);border-radius:5px;overflow:hidden;margin-bottom:11px;">
+          <button id="land-mode-lump" onclick="setLandMode('lump')" data-active="true"
+            style="flex:1;padding:5px 0;font-size:10px;font-weight:700;border:none;cursor:pointer;background:var(--navy);color:var(--yellow);">
+            Lump Sum (RM M)
+          </button>
+          <button id="land-mode-acre" onclick="setLandMode('acre')" data-active="false"
+            style="flex:1;padding:5px 0;font-size:10px;font-weight:700;border:none;cursor:pointer;background:var(--white);color:var(--text2);">
+            Per Acre (RM/ac)
+          </button>
         </div>
-        <input type="range" class="blue" id="land_cost" min="0" max="150" step="0.5" value="15">
-        <div class="slider-hint">Land acquisition + conversion cost (millions RM). Set 0 if govt-provided.</div>
+
+        <!-- Mode A: Lump sum -->
+        <div id="land-block-lump">
+          <div class="slider-label">
+            <span class="slider-name" style="font-size:11px;">Total Cost (RM Million)</span>
+            <input class="num-input blue" id="val-land_cost" type="number" min="0" max="150" step="0.5" value="15">
+          </div>
+          <input type="range" class="blue" id="land_cost" min="0" max="150" step="0.5" value="15">
+          <div class="slider-hint">Enter total land acquisition cost in RM Millions. Set 0 if TBC or govt-provided.</div>
+        </div>
+
+        <!-- Mode B: Per acre — auto-calculates from total site area -->
+        <div id="land-block-acre" style="display:none;">
+          <div class="slider-label">
+            <span class="slider-name" style="font-size:11px;">Price per Acre (RM)</span>
+            <input class="num-input blue" id="val-land_per_acre" type="number" min="0" max="5000000" step="1000" value="500000">
+          </div>
+          <input type="range" class="blue" id="land_per_acre" min="0" max="5000000" step="1000" value="500000">
+          <div class="slider-hint" style="margin-top:4px;">Auto-calculates: Price/ac × Total Site Area (from 8-zone sum). Result shown in BQ as Land Acquisition.</div>
+          <div style="margin-top:7px;background:var(--yellow-bg);border:1px solid #FDE68A;border-radius:5px;padding:6px 10px;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:10px;color:#92400E;font-weight:600;">Calculated Total:</span>
+            <span style="font-family:Arial;font-size:12px;font-weight:700;color:var(--navy);" id="land-acre-total">—</span>
+          </div>
+        </div>
       </div>
 
       <div class="slider-row">
@@ -676,7 +709,7 @@
           <input class="num-input warn-inp" id="val-opex_per_teu" type="number" min="50" max="150" step="1" value="70">
         </div>
         <input type="range" class="warn-sl" id="opex_per_teu" min="50" max="150" step="1" value="70">
-        <div class="slider-hint">Linked to actual handled TEUs. Default RM 70/TEU.</div>
+        <div class="slider-hint">Covers all truck-side handling, forklifts &amp; yard ops. RS in CAPEX covers train loading/unloading only. Default RM 70/TEU.</div>
       </div>
 
       <div class="slider-row">
@@ -873,7 +906,7 @@
   </div>
 
   <div class="soft-costs-panel">
-    <div class="soft-costs-title">Soft Costs Breakdown — 29% Total (Confirmed by Adam QS)</div>
+    <div class="soft-costs-title">Soft Costs Summary — 29% Total (Confirmed by Adam QS) — See BQ Section G for line-by-line amounts</div>
     <div class="sc-row"><span>Contractor Preliminaries</span><span class="sc-src">PCE BQ Item 1.0</span><span style="font-family:Arial;color:#92400E;">7%</span></div>
     <div class="sc-row"><span>Professional &amp; Consultancy</span><span class="sc-src">C&amp;S, MEP, Surveyors, PM</span><span style="font-family:Arial;color:#92400E;">10%</span></div>
     <div class="sc-row"><span>Regulatory &amp; Levies</span><span class="sc-src">Adam confirmed: 2%</span><span style="font-family:Arial;color:#92400E;">2%</span></div>
@@ -886,9 +919,11 @@
     <table>
       <thead><tr>
         <th style="width:36px">Item</th>
-        <th>Category</th>
-        <th>Basis</th>
-        <th style="text-align:right">Amount (RM)</th>
+        <th>Description</th>
+        <th style="text-align:right;width:200px">Qty</th>
+        <th style="width:52px">Unit</th>
+        <th style="text-align:right;width:140px">Unit Rate (RM)</th>
+        <th style="text-align:right;width:130px">Amount (RM)</th>
       </tr></thead>
       <tbody id="bqBody"></tbody>
     </table>
@@ -983,7 +1018,7 @@ const RANGE_IDS = [
   'rail_lines','num_rs_train','num_rs_yard','num_rmg','mhp_rs','mhp_rmg',
   'op_hours','dwell_time','train_load','moves_per_cycle','rev_per_teu','stack_density',
   'min_stacking_acres','warehouse_acres','reefer_acres',
-  'land_cost','u_site_prep','u_infra_acre','u_rmg_runway','u_rail_line','u_boom_gate',
+  'land_cost','land_per_acre','u_site_prep','u_infra_acre','u_rmg_runway','u_rail_line','u_boom_gate',
   'u_cost_rs','u_cost_rmg','u_warehouse_sqm','u_reefer_plug','reefer_plugs_per_acre',
   'overhead_pct',
   // Finance
@@ -1048,7 +1083,17 @@ function simulate(p){
   const storage_binding = storage_cap_teu < rail_cap_teu * 0.99 && !no_equip;
 
   // ── CAPEX Costing ──
-  const c_land = p.land_cost * 1_000_000;
+  // Land cost — mode driven by hidden field
+  const land_mode = (document.getElementById('land-mode-lump').dataset.active === 'true') ? 'lump' : 'acre';
+  const total_acres_for_land = z1+z2+z3+z4+z5+z6+z7+z8;
+  const c_land_lump = p.land_cost * 1_000_000;
+  const c_land_acre = (p.land_per_acre || 0) * total_acres_for_land;
+  const c_land = land_mode === 'acre' ? c_land_acre : c_land_lump;
+  // Update the per-acre calculated display
+  const landAcreEl = document.getElementById('land-acre-total');
+  if (landAcreEl) landAcreEl.textContent = land_mode === 'acre'
+    ? 'RM ' + c_land.toLocaleString('en-MY', {maximumFractionDigits:0})
+    : '—';
   const c_z1   = z1 * p.u_site_prep;
   const civil  = p.u_site_prep + p.u_infra_acre;
   const c_z2   = z2 * civil;
@@ -1215,7 +1260,8 @@ function simulate(p){
     z1,z2,z2_derived,z3,z4,z5,z6,z7,z8,
     c_land,c_z1,c_z2,c_z3,c_z4,c_z5,c_z6,c_z7,c_z8,
     c_rail,c_gates,c_rmg_civil,c_war,const_sub,c_soft,c_financing,c_mach,
-    siding_details, num_plugs, wh_sqm, p
+    siding_details, num_plugs, wh_sqm, p,
+    land_mode, total_acres_for_land
   };
 }
 
@@ -1323,38 +1369,192 @@ function updateUI(r){
     z2sub.style.color = 'var(--text3)';
   }
 
-  // BQ rows
+  // BQ rows — each row: [item, description, qty, unit, unitRate, amount, flag]
+  // flag: false | 'warn-row' | 'unc' | 'sub' | 'sub-soft' | 'total' | 'section'
+  const railMPerLine = SIDING_LENGTH; // 730 m per siding
+  const railRatePerM = p.rail_lines > 0 ? Math.round(p.u_rail_line / railMPerLine) : 0;
+
+  // Soft cost components (each applied to const_sub)
+  const c_prelims  = r.const_sub * 0.07;
+  const c_profees  = r.const_sub * 0.10;
+  const c_regul    = r.const_sub * 0.02;
+  const c_conting  = r.const_sub * 0.10;
+
   const bqRows = [
-    ['0.0', 'Land &amp; Conversion Cost',              `${p.land_cost} RM M lump sum`,                                                   r.c_land,     false],
-    ['1.0', 'Zone 1 — Rail Corridor (Site Prep only)', `${p.rail_lines} sidings × ${SIDING_LENGTH}m × 15m — no pavement on rail`,       r.c_z1,       false],
-    ['2.0', 'Zone 2 — Stacking Yard (Civil)',          `${r.z2.toFixed(2)}ac (derived ${r.z2_derived.toFixed(2)}ac)`,                   r.c_z2,       r.storage_binding ? 'warn-row' : false],
-    ['2.1', 'Zone 3 — RS Driveway Reserve (Civil)',    `730m × 20m (track 3+ only)`,                                                     r.c_z3,       false],
-    ['2.2', 'Zone 6 — Truck Marshalling (Civil)',      `${p.rail_lines} sidings × 0.5 ac`,                                              r.c_z6,       false],
-    ['2.3', 'Zone 7 — Internal Roads (Civil)',         `15% of (Zone 2 + Zone 4)`,                                                       r.c_z7,       false],
-    ['2.4', 'Zone 8 — Admin / Office (Build)',         `${(ADMIN_ACRES * SQM_PER_ACRE).toFixed(0)} m² @ RM ${p.u_warehouse_sqm.toLocaleString()}/m²`, r.c_z8, false],
-    ['3.0', 'Zone 4 — Warehouse Build',                `${Math.round(r.wh_sqm).toLocaleString()} m² @ RM ${p.u_warehouse_sqm.toLocaleString()}/m²`,   r.c_z4, false],
-    ['4.0', 'Zone 5 — Reefer Plugs',                  `${Math.round(r.num_plugs)} pts @ RM ${p.u_reefer_plug.toLocaleString()}/pt`,     r.c_z5,       false],
-    ['5.0', 'Railway Works',                           `${p.rail_lines} lines × RM ${p.u_rail_line.toLocaleString()}/line`,             r.c_rail,     false],
-    ['6.0', 'Boom Gates',                              `${p.rail_lines * 2} gates @ RM ${p.u_boom_gate.toLocaleString()}`,              r.c_gates,    false],
-    ['6.1', 'RMG Foundation',                          p.rmg_found_pct
-      ? `20% × ${p.num_rmg} RMG × RM ${p.u_cost_rmg.toLocaleString()} (UNCTAD / Adam QS)`
-      : `${SIDING_LENGTH}m × 2 rails × RM ${p.u_rmg_runway.toLocaleString()}/m`,              r.c_rmg_civil, 'unc'],
-    ['6.2', 'Middle East War Cost Factor',             `${p.war_factor ? '+12.6% on civil subtotal — Ministry of Economic' : 'OFF'}`,   r.c_war,      r.c_war > 0 ? 'warn-row' : false],
-    ['—',   'Construction Subtotal (adjusted)',        '',                                                                               r.const_sub,  'sub'],
-    ['7.0', `Prelims &amp; Soft Costs`,                `${p.overhead_pct}% on construction subtotal`,                                   r.c_soft,     false],
-    ['7.1', 'Financing Cost',                          `${p.financing_rate}% on (Const + Soft Costs) — Adam default 5%`,               r.c_financing, false],
-    ['8.0', 'Handling Equipment',                      `${p.num_rs_train} train RS + ${p.num_rs_yard} yard RS + ${p.num_rmg} RMG`,     r.c_mach,     false],
-    ['',    'TOTAL GROSS DEVELOPMENT COST',            '',                                                                               r.total_gdc,  'total']
+    // ── SECTION A: LAND ────────────────────────────────────────────────────
+    ['', 'A. LAND ACQUISITION', '', '', '', null, 'section'],
+    ['A.1', 'Land Acquisition',
+      r.land_mode === 'acre'
+        ? `${r.total_acres_for_land.toFixed(2)} ac`
+        : (p.land_cost > 0 ? 'Lump sum input' : '— TBC —'),
+      r.land_mode === 'acre' ? 'acre' : 'lump sum',
+      r.land_mode === 'acre'
+        ? `RM ${(p.land_per_acre || 0).toLocaleString()}/ac`
+        : (p.land_cost > 0 ? `RM ${(p.land_cost * 1e6).toLocaleString()}` : '—'),
+      r.c_land, r.c_land === 0 ? 'warn-row' : false],
+
+    // ── SECTION B: RAIL INFRASTRUCTURE ─────────────────────────────────────
+    ['', 'B. RAIL INFRASTRUCTURE', '', '', '', null, 'section'],
+    ['B.1', 'Rail Corridor — Site Preparation',
+      `${p.rail_lines} × ${SIDING_LENGTH}m × ${RAIL_CLEARANCE_M}m`,
+      'm²', `RM ${Math.round(p.u_site_prep / SQM_PER_ACRE).toLocaleString()}/m²`,
+      r.c_z1, false],
+    ['B.2', `Railway Track Works`,
+      `${p.rail_lines} lines × ${SIDING_LENGTH} m`,
+      'm', `RM ${railRatePerM.toLocaleString()}/m`,
+      r.c_rail, false],
+    ['B.3', 'RS Driveway Reserve',
+      `${p.rail_lines >= 3 ? SIDING_LENGTH + 'm × ' + DRIVEWAY_W_M + 'm' : 'N/A (< 3 tracks)'}`,
+      'm²', p.rail_lines >= 3 ? `RM ${Math.round(p.u_infra_acre / SQM_PER_ACRE).toLocaleString()}/m²` : '—',
+      r.c_z3, false],
+    ['B.4', 'Boom Gates',
+      `${p.rail_lines * 2} gates (2 per siding)`,
+      'unit', `RM ${p.u_boom_gate.toLocaleString()}/gate`,
+      r.c_gates, false],
+    ['B.5', 'RMG Foundation / Runway',
+      p.num_rmg === 0 ? 'No RMG specified'
+        : p.rmg_found_pct
+          ? `20% × RM ${p.u_cost_rmg.toLocaleString()} (UNCTAD rule — Adam QS confirmed)`
+          : `${SIDING_LENGTH}m × 2 rails`,
+      p.num_rmg === 0 ? '—' : p.rmg_found_pct ? 'RMG' : 'm',
+      p.num_rmg === 0 ? '—' : p.rmg_found_pct ? `RM ${(p.u_cost_rmg * 0.20).toLocaleString()}/RMG` : `RM ${p.u_rmg_runway.toLocaleString()}/m`,
+      r.c_rmg_civil, p.num_rmg > 0 ? 'unc' : false],
+
+    // ── SECTION C: CIVIL WORKS (ZONES) ──────────────────────────────────────
+    ['', 'C. CIVIL WORKS — YARD & SITE', '', '', '', null, 'section'],
+    ['C.1', `Stacking Yard (Zone 2) — Earthworks & Pavement`,
+      `${r.z2.toFixed(2)} ac (derived: ${r.z2_derived.toFixed(2)} ac from throughput)`,
+      'acre', `RM ${(p.u_site_prep + p.u_infra_acre).toLocaleString()}/ac`,
+      r.c_z2, r.storage_binding ? 'warn-row' : false],
+    ['C.2', 'Truck Marshalling Area (Zone 6)',
+      `${p.rail_lines} sidings × 0.5 ac`,
+      'acre', `RM ${(p.u_site_prep + p.u_infra_acre).toLocaleString()}/ac`,
+      r.c_z6, false],
+    ['C.3', 'Internal Roads & Hardstanding (Zone 7)',
+      `15% of (Zone 2 + Zone 4) = ${((r.z2 + r.z4) * 0.15).toFixed(2)} ac`,
+      'acre', `RM ${(p.u_site_prep + p.u_infra_acre).toLocaleString()}/ac`,
+      r.c_z7, false],
+
+    // ── SECTION D: BUILDINGS ─────────────────────────────────────────────────
+    ['', 'D. BUILDINGS', '', '', '', null, 'section'],
+    ['D.1', 'Warehouse / CFS Build (Zone 4)',
+      `${Math.round(r.wh_sqm).toLocaleString()} m²`,
+      'm²', `RM ${p.u_warehouse_sqm.toLocaleString()}/m² ⚠ Under review`,
+      r.c_z4, false],
+    ['D.2', 'Admin & Office Block (Zone 8)',
+      `${Math.round(ADMIN_ACRES * SQM_PER_ACRE).toLocaleString()} m² (fixed 0.5 ac)`,
+      'm²', `RM ${p.u_warehouse_sqm.toLocaleString()}/m²`,
+      r.c_z8, false],
+
+    // ── SECTION E: MEP / SPECIALIST ──────────────────────────────────────────
+    ['', 'E. MEP & SPECIALIST', '', '', '', null, 'section'],
+    ['E.1', 'Reefer Plug Points (Zone 5)',
+      `${Math.round(r.num_plugs)} points (${p.reefer_plugs_per_acre} pts/ac × ${p.reefer_acres} ac)`,
+      'point', `RM ${p.u_reefer_plug.toLocaleString()}/point`,
+      r.c_z5, false],
+
+    // ── SECTION F: WAR FACTOR ────────────────────────────────────────────────
+    ['', 'F. ESCALATION', '', '', '', null, 'section'],
+    ['F.1', 'Middle East War Cost Escalation',
+      p.war_factor ? '+12.6% on civil subtotal (Ministry of Economic)' : 'OFF — not applied',
+      p.war_factor ? '%' : '—',
+      p.war_factor ? '12.6%' : '—',
+      r.c_war, r.c_war > 0 ? 'warn-row' : false],
+
+    // ── CONSTRUCTION SUBTOTAL ─────────────────────────────────────────────────
+    ['—', 'CONSTRUCTION SUBTOTAL (A to F)', '', '', '', r.const_sub, 'sub'],
+
+    // ── SECTION G: SOFT COSTS (split into 4 lines) ───────────────────────────
+    ['', 'G. SOFT COSTS (29% TOTAL — Adam QS Confirmed)', '', '', '', null, 'section'],
+    ['G.1', 'Contractor Preliminaries',
+      'PCE BQ Item 1.0',
+      '%', '7% of Const. Subtotal',
+      c_prelims, false],
+    ['G.2', 'Professional & Consultancy Fees',
+      'C&S, MEP, Surveyors, PM',
+      '%', '10% of Const. Subtotal',
+      c_profees, false],
+    ['G.3', 'Regulatory & Levies',
+      'Adam confirmed',
+      '%', '2% of Const. Subtotal',
+      c_regul, false],
+    ['G.4', 'Physical Contingency',
+      'Pulau Indah peat/soil conditions',
+      '%', '10% of Const. Subtotal',
+      c_conting, false],
+    ['—', 'Soft Costs Subtotal (G.1–G.4)', '', '', '', r.c_soft, 'sub-soft'],
+
+    // ── SECTION H: FINANCING ──────────────────────────────────────────────────
+    ['', 'H. FINANCING COST', '', '', '', null, 'section'],
+    ['H.1', 'Financing / Interest During Construction',
+      `Applied to (Const. + Soft Costs)`,
+      '%', `${p.financing_rate}% — Adam default`,
+      r.c_financing, false],
+
+    // ── SECTION I: MACHINERY ──────────────────────────────────────────────────
+    ['', 'I. HANDLING EQUIPMENT', '', '', '', null, 'section'],
+    ['I.1', `Reach Stackers — Train Side`,
+      `${p.num_rs_train} units`,
+      'unit', `RM ${p.u_cost_rs.toLocaleString()}/unit`,
+      p.num_rs_train * p.u_cost_rs, false],
+    ['I.2', `Reach Stackers — Yard / Other`,
+      `${p.num_rs_yard} units`,
+      'unit', `RM ${p.u_cost_rs.toLocaleString()}/unit`,
+      p.num_rs_yard * p.u_cost_rs, false],
+    ['I.3', `Rail Mounted Gantry (RMG)`,
+      `${p.num_rmg} units`,
+      'unit', `RM ${p.u_cost_rmg.toLocaleString()}/unit`,
+      p.num_rmg * p.u_cost_rmg, p.num_rmg > 0 ? false : false],
+    ['—', 'Equipment Subtotal (I.1–I.3)', '', '', '', r.c_mach, 'sub'],
+
+    // ── GRAND TOTAL ───────────────────────────────────────────────────────────
+    ['', 'TOTAL GROSS DEVELOPMENT COST', '', '', '', r.total_gdc, 'total'],
   ];
 
-  document.getElementById('bqBody').innerHTML = bqRows.map(([item, cat, basis, amt, flag]) => {
-    const isTotal = flag === 'total', isSub = flag === 'sub';
-    const tag = flag === 'unc'      ? '<span class="tag-unc">UNCONFIRMED</span>'
-              : flag === 'warn-row' ? '<span class="tag-warn">NOTE</span>' : '';
-    const rc  = isTotal ? 'class="bq-total"' : isSub ? 'class="bq-subtotal"' : '';
-    const as  = flag === 'warn-row' ? 'color:var(--warn);' : '';
-    const amtStr = amt === 0 ? '—' : fmt(amt);
-    return `<tr ${rc}><td class="item-num">${item}</td><td style="color:var(--text)">${cat}${tag}</td><td style="color:var(--text2);font-size:11px">${basis}</td><td class="amt" style="${as}">${amtStr}</td></tr>`;
+  document.getElementById('bqBody').innerHTML = bqRows.map(([item, desc, qty, unit, rate, amt, flag]) => {
+    const isTotal    = flag === 'total';
+    const isSub      = flag === 'sub';
+    const isSubSoft  = flag === 'sub-soft';
+    const isSection  = flag === 'section';
+    const isWarn     = flag === 'warn-row';
+    const isUnc      = flag === 'unc';
+
+    if (isSection) {
+      return `<tr style="background:var(--navy);">
+        <td colspan="6" style="padding:5px 9px;font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--yellow);text-transform:uppercase;">${desc}</td>
+      </tr>`;
+    }
+
+    const tag = isUnc ? '<span class="tag-unc" style="margin-left:5px;">UNCONFIRMED</span>'
+              : isWarn ? '<span class="tag-warn" style="margin-left:5px;">NOTE</span>' : '';
+
+    const rc = isTotal ? 'class="bq-total"'
+             : isSub   ? 'class="bq-subtotal"'
+             : isSubSoft ? 'style="background:var(--yellow-bg)!important;font-weight:600;"'
+             : '';
+
+    const amtStyle = isWarn ? 'color:var(--red);' : isTotal ? 'color:var(--yellow);font-size:14px;' : '';
+    const amtStr   = (amt === null || amt === 0) ? '—' : fmt(amt);
+    const qtyStr   = qty  || '—';
+    const unitStr  = unit || '—';
+    const rateStr  = rate || '—';
+
+    if (isSub || isSubSoft || isTotal) {
+      return `<tr ${rc}>
+        <td class="item-num">${item}</td>
+        <td colspan="4" style="font-weight:700;padding:6px 9px;">${desc}</td>
+        <td class="amt" style="${amtStyle}padding:6px 9px;">${amtStr}</td>
+      </tr>`;
+    }
+
+    return `<tr style="${isWarn ? 'background:#FFF5F5;' : ''}">
+      <td class="item-num">${item}</td>
+      <td style="color:var(--text);padding:6px 9px;">${desc}${tag}</td>
+      <td class="amt" style="padding:6px 9px;color:var(--text2);font-size:11px;">${qtyStr}</td>
+      <td style="padding:6px 9px;color:var(--text3);font-size:10px;white-space:nowrap;">${unitStr}</td>
+      <td class="amt" style="padding:6px 9px;color:var(--navy);font-size:11px;font-weight:600;">${rateStr}</td>
+      <td class="amt" style="${amtStyle}padding:6px 9px;">${amtStr}</td>
+    </tr>`;
   }).join('');
 
   // Cash flow table — ramp-up rows highlighted in amber
@@ -1503,6 +1703,26 @@ function updateRSTotals(){
   document.getElementById('rs-total-display').textContent = getVal('num_rs_train') + getVal('num_rs_yard');
 }
 
+function setLandMode(mode) {
+  const lumpBtn   = document.getElementById('land-mode-lump');
+  const acreBtn   = document.getElementById('land-mode-acre');
+  const lumpBlock = document.getElementById('land-block-lump');
+  const acreBlock = document.getElementById('land-block-acre');
+  if (mode === 'lump') {
+    lumpBtn.dataset.active = 'true';  acreBtn.dataset.active = 'false';
+    lumpBtn.style.background = 'var(--navy)'; lumpBtn.style.color = 'var(--yellow)';
+    acreBtn.style.background = 'var(--white)'; acreBtn.style.color = 'var(--text2)';
+    lumpBlock.style.display = 'block';
+    acreBlock.style.display = 'none';
+  } else {
+    acreBtn.dataset.active = 'true';  lumpBtn.dataset.active = 'false';
+    acreBtn.style.background = 'var(--navy)'; acreBtn.style.color = 'var(--yellow)';
+    lumpBtn.style.background = 'var(--white)'; lumpBtn.style.color = 'var(--text2)';
+    lumpBlock.style.display = 'none';
+    acreBlock.style.display = 'block';
+  }
+  run(); triggerAutosave();
+}
 function syncControls(){ run(); triggerAutosave(); }
 
 RANGE_IDS.forEach(id => {
@@ -1684,7 +1904,7 @@ const FACTORY_DEFAULTS = {
   mhp_rs:12, mhp_rmg:22, op_hours:16, dwell_time:7,
   train_load:85, moves_per_cycle:114, rev_per_teu:254, stack_density:500,
   min_stacking_acres:0, warehouse_acres:2, reefer_acres:0.5,
-  land_cost:15, u_site_prep:785663, u_infra_acre:206125,
+  land_cost:15, land_per_acre:500000, u_site_prep:785663, u_infra_acre:206125,
   u_rmg_runway:15000, u_rail_line:10935000, u_boom_gate:50000,
   u_cost_rs:3000000, u_cost_rmg:18000000, u_warehouse_sqm:1200,
   u_reefer_plug:15000, reefer_plugs_per_acre:20, overhead_pct:29,
