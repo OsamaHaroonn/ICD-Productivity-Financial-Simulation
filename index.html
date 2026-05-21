@@ -481,28 +481,116 @@
     </div>
     <div class="section-body">
 
+      <!-- Building coverage % — applied to all roofed structures -->
+      <div class="slider-row" style="background:var(--yellow-bg);border:1px solid #FDE68A;border-radius:6px;padding:8px 10px;margin-bottom:12px;">
+        <div class="slider-label">
+          <span class="slider-name" style="color:#92400E;font-weight:700;">Building Site Coverage (%)</span>
+          <input class="num-input warn-inp" id="val-bldg_coverage" type="number" min="30" max="100" step="5" value="70">
+        </div>
+        <input type="range" class="warn-sl" id="bldg_coverage" min="30" max="100" step="5" value="70">
+        <div class="slider-hint">Applied to all roofed structures (warehouses, offices, sheds). Open areas (stacking yard, roads, parking) always use 100%. Adam: ~70% for setbacks &amp; internal circulation.</div>
+      </div>
+
+      <div style="font-size:10px;color:var(--text3);font-family:Arial;text-transform:uppercase;letter-spacing:.07em;margin:6px 0 4px;font-weight:700;">Stacking Yard</div>
+
       <div class="slider-row">
         <div class="slider-label"><span class="slider-name">Min Stacking Yard (Acres)</span>
           <input class="num-input" id="val-min_stacking_acres" type="number" min="0" max="30" step="0.5" value="0">
         </div>
         <input type="range" id="min_stacking_acres" min="0" max="30" step="0.5" value="0">
-        <div class="slider-hint">Zone 2 floor. 0 = derived from throughput.</div>
+        <div class="slider-hint">Zone 2 floor. 0 = auto-derived from throughput. Open hardstand — 100% area costed.</div>
       </div>
 
+      <div style="font-size:10px;color:var(--text3);font-family:Arial;text-transform:uppercase;letter-spacing:.07em;margin:10px 0 4px;font-weight:700;">Roofed Structures — Building Coverage % applied</div>
+
       <div class="slider-row">
-        <div class="slider-label"><span class="slider-name">Warehouse / CFS (Acres)</span>
-          <input class="num-input warn-inp" id="val-warehouse_acres" type="number" min="0" max="10" step="0.5" value="2">
+        <div class="slider-label"><span class="slider-name">Bonded Warehouse (Acres)</span>
+          <input class="num-input warn-inp" id="val-bonded_wh_acres" type="number" min="0" max="15" step="0.25" value="1">
         </div>
-        <input type="range" class="warn-sl" id="warehouse_acres" min="0" max="10" step="0.5" value="2">
-        <div class="slider-hint">Zone 4 — CFS / warehouse footprint</div>
+        <input type="range" class="warn-sl" id="bonded_wh_acres" min="0" max="15" step="0.25" value="1">
+        <div class="slider-hint">Bonded CFS / customs-controlled warehouse. RM 2,500/m² build rate.</div>
       </div>
 
       <div class="slider-row">
-        <div class="slider-label"><span class="slider-name">Reefer Plug Zone (Acres)</span>
+        <div class="slider-label"><span class="slider-name">General Warehouse (Acres)</span>
+          <input class="num-input warn-inp" id="val-general_wh_acres" type="number" min="0" max="15" step="0.25" value="1">
+        </div>
+        <input type="range" class="warn-sl" id="general_wh_acres" min="0" max="15" step="0.25" value="1">
+        <div class="slider-hint">General-purpose storage warehouse. RM 2,500/m² build rate.</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Reefer / Cold Store (Acres)</span>
           <input class="num-input warn-inp" id="val-reefer_acres" type="number" min="0" max="5" step="0.25" value="0.5">
         </div>
         <input type="range" class="warn-sl" id="reefer_acres" min="0" max="5" step="0.25" value="0.5">
-        <div class="slider-hint">Zone 5 — reefer plug point area</div>
+        <div class="slider-hint">Enclosed reefer shed + plug points. Building coverage % applied.</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Customs Inspection Area (Acres)</span>
+          <input class="num-input warn-inp" id="val-customs_acres" type="number" min="0" max="5" step="0.25" value="0.5">
+        </div>
+        <input type="range" class="warn-sl" id="customs_acres" min="0" max="5" step="0.25" value="0.5">
+        <div class="slider-hint">Roofed inspection bays for customs. RM 2,500/m² build rate.</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Admin / Office Building (Acres)</span>
+          <input class="num-input warn-inp" id="val-admin_acres" type="number" min="0" max="3" step="0.1" value="0.5">
+        </div>
+        <input type="range" class="warn-sl" id="admin_acres" min="0" max="3" step="0.1" value="0.5">
+        <div class="slider-hint">Administration, control room, staff offices. RM 3,000/m² (Adam).</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Workshop / Maintenance Shop (Acres)</span>
+          <input class="num-input warn-inp" id="val-workshop_acres" type="number" min="0" max="5" step="0.25" value="0">
+        </div>
+        <input type="range" class="warn-sl" id="workshop_acres" min="0" max="5" step="0.25" value="0">
+        <div class="slider-hint">Equipment maintenance workshop. RM 2,500/m² build rate.</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Container Maintenance &amp; Repair (Acres)</span>
+          <input class="num-input warn-inp" id="val-cmr_acres" type="number" min="0" max="5" step="0.25" value="0">
+        </div>
+        <input type="range" class="warn-sl" id="cmr_acres" min="0" max="5" step="0.25" value="0">
+        <div class="slider-hint">CMR shed — basic shaded structure. RM 2,500/m² build rate.</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Gate Box / Guardhouse (Acres)</span>
+          <input class="num-input warn-inp" id="val-gatebox_acres" type="number" min="0" max="1" step="0.05" value="0.1">
+        </div>
+        <input type="range" class="warn-sl" id="gatebox_acres" min="0" max="1" step="0.05" value="0.1">
+        <div class="slider-hint">Gate control, weigh bridge, security post. RM 3,000/m² build rate.</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">DG / Dangerous Goods Area (Acres)</span>
+          <input class="num-input warn-inp" id="val-dg_acres" type="number" min="0" max="5" step="0.25" value="0">
+        </div>
+        <input type="range" class="warn-sl" id="dg_acres" min="0" max="5" step="0.25" value="0">
+        <div class="slider-hint">Hazmat/DG shed with security fencing. RM 2,500/m² build rate.</div>
+      </div>
+
+      <div style="font-size:10px;color:var(--text3);font-family:Arial;text-transform:uppercase;letter-spacing:.07em;margin:10px 0 4px;font-weight:700;">Open / Paved Areas — 100% area costed, no coverage reduction</div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Equipment Parking (Acres)</span>
+          <input class="num-input warn-inp" id="val-equip_parking_acres" type="number" min="0" max="5" step="0.25" value="0">
+        </div>
+        <input type="range" class="warn-sl" id="equip_parking_acres" min="0" max="5" step="0.25" value="0">
+        <div class="slider-hint">Open hardstand for RS/equipment parking. Civil rate (site prep + infra) — 100% area.</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Warehouse Provision / Reserve (Acres)</span>
+          <input class="num-input warn-inp" id="val-wh_provision_acres" type="number" min="0" max="15" step="0.5" value="0">
+        </div>
+        <input type="range" class="warn-sl" id="wh_provision_acres" min="0" max="15" step="0.5" value="0">
+        <div class="slider-hint">Land reserved for future warehouse — earthwork only, no building. Civil rate — 100% area.</div>
       </div>
 
     </div>
@@ -535,9 +623,9 @@
         <div id="land-block-lump">
           <div class="slider-label">
             <span class="slider-name" style="font-size:11px;">Total Cost (RM Million)</span>
-            <input class="num-input blue" id="val-land_cost" type="number" min="0" max="150" step="0.5" value="15">
+            <input class="num-input blue" id="val-land_cost" type="number" min="0" max="500" step="0.5" value="0">
           </div>
-          <input type="range" class="blue" id="land_cost" min="0" max="150" step="0.5" value="15">
+          <input type="range" class="blue" id="land_cost" min="0" max="500" step="0.5" value="0">
           <div class="slider-hint">Enter total land acquisition cost in RM Millions. Set 0 if TBC or govt-provided.</div>
         </div>
 
@@ -545,10 +633,10 @@
         <div id="land-block-acre" style="display:none;">
           <div class="slider-label">
             <span class="slider-name" style="font-size:11px;">Price per Acre (RM)</span>
-            <input class="num-input blue" id="val-land_per_acre" type="number" min="0" max="5000000" step="10000" value="500000">
+            <input class="num-input blue" id="val-land_per_acre" type="number" min="0" max="8000000" step="50000" value="3500000">
           </div>
-          <input type="range" class="blue" id="land_per_acre" min="0" max="5000000" step="10000" value="500000">
-          <div class="slider-hint" style="margin-top:4px;">Auto-calculates: Price/ac × Total Site Area (from 8-zone sum). Result shown in BQ as Land Acquisition.</div>
+          <input type="range" class="blue" id="land_per_acre" min="0" max="8000000" step="50000" value="3500000">
+          <div class="slider-hint" style="margin-top:4px;">Adam: ~RM 80/sqft converted = RM 3.5M/ac (Pulau Indah Industrial, raw industrial land). Source: market enquiry. Auto × total site area.</div>
           <div style="margin-top:7px;background:var(--yellow-bg);border:1px solid #FDE68A;border-radius:5px;padding:6px 10px;display:flex;justify-content:space-between;align-items:center;">
             <span style="font-size:10px;color:#92400E;font-weight:600;">Calculated Total:</span>
             <span style="font-family:Arial;font-size:12px;font-weight:700;color:var(--navy);" id="land-acre-total">—</span>
@@ -558,18 +646,18 @@
 
       <div class="slider-row">
         <div class="slider-label"><span class="slider-name">Site Prep (RM/Ac)</span>
-          <input class="num-input blue" id="val-u_site_prep" type="number" min="500000" max="1500000" step="10000" value="785663">
+          <input class="num-input blue" id="val-u_site_prep" type="number" min="100000" max="2000000" step="10000" value="800000">
         </div>
-        <input type="range" class="blue" id="u_site_prep" min="500000" max="1500000" step="10000" value="785663">
-        <div class="slider-hint">PCE BQ Item 5.0 — Earthworks &amp; clearing</div>
+        <input type="range" class="blue" id="u_site_prep" min="100000" max="2000000" step="10000" value="800000">
+        <div class="slider-hint">Earthworks &amp; clearing only. Rail corridor (Z1) uses this rate only — no pavement. Stacking yard (Z2) uses Site Prep + Infrastructure combined.</div>
       </div>
 
       <div class="slider-row">
         <div class="slider-label"><span class="slider-name">Infrastructure (RM/Ac)</span>
-          <input class="num-input blue" id="val-u_infra_acre" type="number" min="100000" max="500000" step="5000" value="206125">
+          <input class="num-input blue" id="val-u_infra_acre" type="number" min="50000" max="800000" step="5000" value="300000">
         </div>
-        <input type="range" class="blue" id="u_infra_acre" min="100000" max="500000" step="5000" value="206125">
-        <div class="slider-hint">PCE BQ Item 6.0 — Pavement, drainage, utilities</div>
+        <input type="range" class="blue" id="u_infra_acre" min="50000" max="800000" step="5000" value="300000">
+        <div class="slider-hint">Pavement, drainage, utilities — applied to Z2/Z3/Z6/Z7/Z8 only. NOT applied to Z1 rail corridor (no pavement on track bed).</div>
       </div>
 
       <div style="background:var(--gray-bg);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin-bottom:12px;">
@@ -590,10 +678,10 @@
 
       <div class="slider-row">
         <div class="slider-label"><span class="slider-name">Rail Cost (RM/Line)</span>
-          <input class="num-input blue" id="val-u_rail_line" type="number" min="5000" max="20000000" step="1000" value="10935000">
+          <input class="num-input blue" id="val-u_rail_line" type="number" min="1000" max="20000000" step="1000" value="1460000">
         </div>
-        <input type="range" class="blue" id="u_rail_line" min="5000" max="20000000" step="1000" value="10935000">
-        <div class="slider-hint">PCE BQ Item 4.0: RM 32.8M ÷ 3 lines</div>
+        <input type="range" class="blue" id="u_rail_line" min="1000" max="20000000" step="1000" value="1460000">
+        <div class="slider-hint">RM 2,000/m × 730m/siding = RM 1,460,000/line. Source: Mr Tung (KL concept engineer, confirmed in meeting).</div>
       </div>
 
       <div class="slider-row">
@@ -620,9 +708,26 @@
 
       <div class="slider-row">
         <div class="slider-label"><span class="slider-name">Warehouse Build (RM/m²)</span>
-          <input class="num-input warn-inp" id="val-u_warehouse_sqm" type="number" min="500" max="3000" step="50" value="1200">
+          <input class="num-input warn-inp" id="val-u_warehouse_sqm" type="number" min="500" max="5000" step="50" value="2500">
         </div>
-        <input type="range" class="warn-sl" id="u_warehouse_sqm" min="500" max="3000" step="50" value="1200">
+        <input type="range" class="warn-sl" id="u_warehouse_sqm" min="500" max="5000" step="50" value="2500">
+        <div class="slider-hint">Adam: RM 2,500/m² minimum for basic warehouse (not ETI distribution-grade).</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">Admin / Office Build (RM/m²)</span>
+          <input class="num-input warn-inp" id="val-u_admin_sqm" type="number" min="500" max="6000" step="50" value="3000">
+        </div>
+        <input type="range" class="warn-sl" id="u_admin_sqm" min="500" max="6000" step="50" value="3000">
+        <div class="slider-hint">Adam: RM 3,000/m² for admin/office block. Separate from warehouse rate.</div>
+      </div>
+
+      <div class="slider-row">
+        <div class="slider-label"><span class="slider-name">DG / Dangerous Goods Shed (RM/m²)</span>
+          <input class="num-input warn-inp" id="val-u_dg_sqm" type="number" min="500" max="4000" step="50" value="2500">
+        </div>
+        <input type="range" class="warn-sl" id="u_dg_sqm" min="500" max="4000" step="50" value="2500">
+        <div class="slider-hint">Adam: RM 2,500/m² for simple shaded DG shed with security fencing.</div>
       </div>
 
       <div class="slider-row">
@@ -641,10 +746,10 @@
 
       <div class="slider-row">
         <div class="slider-label"><span class="slider-name">Soft Costs (%)</span>
-          <input class="num-input blue" id="val-overhead_pct" type="number" min="10" max="50" step="1" value="29">
+          <input class="num-input blue" id="val-overhead_pct" type="number" min="5" max="50" step="1" value="20">
         </div>
-        <input type="range" class="blue" id="overhead_pct" min="10" max="50" step="1" value="29">
-        <div class="slider-hint">7% Prelims + 10% Prof Fees + 2% Regulatory + 10% Contingency = 29%</div>
+        <input type="range" class="blue" id="overhead_pct" min="5" max="50" step="1" value="20">
+        <div class="slider-hint">Adam (meeting): 20% for industrial ICD (vs 30% for commercial). Breakdown: ~7% Prelims + 6% Prof Fees + 2% Regulatory + 5% Contingency.</div>
       </div>
 
       <label class="toggle-box">
@@ -976,11 +1081,14 @@
     ¹ GDC: Land + 8-zone civil + Railway + Boom Gates + RMG Foundation + War Factor + Soft Costs (29%) + Financing Cost + Machinery.<br>
     ² OPEX Base: Civil Subtotal + Machinery ONLY — land and financing excluded.<br>
     ³ RMG Foundation: 20% of RMG value (Adam QS confirmed UNCTAD rule).<br>
-    ⁴ Regulatory &amp; Levies: updated to 2% (confirmed by Adam).<br>
+    ⁴ Regulatory &amp; Levies: 2% (Adam confirmed). Soft cost total revised to 20% for industrial ICD (Adam meeting).<br>
     ⁵ IRR &lt;0%: shown as "Negative" when total net cash flows cannot recover total GDC over project lifetime.<br>
     ⁶ War Factor: +12.6% on construction civil subtotal only, per Ministry of Economic.<br>
     ⁷ Ramp-up: revenue and variable OPEX scale linearly. Fixed OPEX is constant from year 1.<br>
     ⁸ Min Rev/TEU: auto-calculated breakeven — minimum RM/TEU for IRR ≥ 15% (Shariff threshold).
+  ⁹ Warehouse &amp; DG shed: 70% site coverage applied per Adam (setbacks, roads, etc).
+  ¹⁰ Rail track: RM 2,000/m confirmed by Mr Tung (KL concept engineer). 730m/siding = RM 1,460,000/line.
+  ¹¹ Land cost default = 0 (land provided by client/state). Use per-acre mode for sensitivity analysis at ~RM 3.5M/ac.
   </div>
 
 </main>
@@ -1009,9 +1117,12 @@ let costChartInst = null, sidingChartInst = null, scenChartInst = null;
 const RANGE_IDS = [
   'rail_lines','num_rs_train','num_rs_yard','num_rmg','mhp_rs','mhp_rmg',
   'op_hours','dwell_time','train_load','moves_per_cycle','rev_per_teu','stack_density',
-  'min_stacking_acres','warehouse_acres','reefer_acres',
+  'min_stacking_acres','bldg_coverage',
+  'bonded_wh_acres','general_wh_acres','reefer_acres','customs_acres',
+  'admin_acres','workshop_acres','cmr_acres','gatebox_acres','dg_acres',
+  'equip_parking_acres','wh_provision_acres',
   'land_cost','land_per_acre','u_site_prep','u_infra_acre','u_rmg_runway','u_rail_line','u_boom_gate',
-  'u_cost_rs','u_cost_rmg','u_warehouse_sqm','u_reefer_plug','reefer_plugs_per_acre',
+  'u_cost_rs','u_cost_rmg','u_warehouse_sqm','u_admin_sqm','u_dg_sqm','u_reefer_plug','reefer_plugs_per_acre',
   'overhead_pct',
   // Finance
   'project_years','rampup_years','discount_rate','util_rate','opex_rate','opex_per_teu','financing_rate',
@@ -1063,12 +1174,34 @@ function simulate(p){
   const z2_derived = (peak_inv / p.stack_density) / YARD_UTILIZATION;
   const z2 = Math.max(z2_derived, p.min_stacking_acres);
   const z3 = has_driveway ? (SIDING_LENGTH * DRIVEWAY_W_M) / SQM_PER_ACRE : 0;
-  const z4 = p.warehouse_acres;
-  const z5 = p.reefer_acres;
-  const z6 = p.rail_lines * TRUCK_AC_PER_SD;
+  // ── Building coverage fraction (slider %)
+  const bldg_cov = (p.bldg_coverage || 70) / 100;
+
+  // ── All building zones (coverage % applied for cost, full acres for site area)
+  const z4_bonded   = p.bonded_wh_acres    || 0;
+  const z4_general  = p.general_wh_acres   || 0;
+  const z4          = z4_bonded + z4_general;   // total warehouse acres (Z4 legacy)
+  const z5          = p.reefer_acres        || 0;
+  const z_customs   = p.customs_acres       || 0;
+  const z_admin     = p.admin_acres         || 0.5;  // replaces fixed ADMIN_ACRES
+  const z_workshop  = p.workshop_acres      || 0;
+  const z_cmr       = p.cmr_acres           || 0;
+  const z_gatebox   = p.gatebox_acres       || 0;
+  const z_dg        = p.dg_acres            || 0;
+
+  // ── Open / paved zones (no coverage reduction)
+  const z6          = p.rail_lines * TRUCK_AC_PER_SD;
+  const z_equip     = p.equip_parking_acres || 0;
+  const z_wh_prov   = p.wh_provision_acres  || 0;
+
+  // ── Derived zones
   const z7 = (z2 + z4) * ROAD_FRACTION;
-  const z8 = ADMIN_ACRES;
-  const total_acres = z1+z2+z3+z4+z5+z6+z7+z8;
+  const z8 = z_admin;  // Z8 now driven by admin slider (not fixed)
+
+  // ── Total acres (all zones, full site area)
+  const total_bldg_acres = z4 + z5 + z_customs + z_admin + z_workshop + z_cmr + z_gatebox + z_dg;
+  const total_open_acres = z6 + z_equip + z_wh_prov;
+  const total_acres = z1+z2+z3+total_bldg_acres+z7+total_open_acres;
   const storage_cap_teu = z2 * YARD_UTILIZATION * p.stack_density * annual_turns;
   const no_equip        = p.num_rs_train === 0 && p.num_rmg === 0;
   const actual_cap      = no_equip ? 0 : Math.min(rail_cap_teu, storage_cap_teu);
@@ -1077,26 +1210,58 @@ function simulate(p){
   // ── CAPEX Costing ──
   // Land cost — mode driven by hidden field
   const land_mode = (document.getElementById('land-mode-lump').dataset.active === 'true') ? 'lump' : 'acre';
-  const total_acres_for_land = z1+z2+z3+z4+z5+z6+z7+z8;
+  const total_acres_for_land = total_acres;
   const c_land_lump = p.land_cost * 1_000_000;
   const c_land_acre = (p.land_per_acre || 0) * total_acres_for_land;
   const c_land = land_mode === 'acre' ? c_land_acre : c_land_lump;
-  // Update the per-acre calculated display
   const landAcreEl = document.getElementById('land-acre-total');
   if (landAcreEl) landAcreEl.textContent = land_mode === 'acre'
     ? 'RM ' + c_land.toLocaleString('en-MY', {maximumFractionDigits:0})
     : '—';
-  const c_z1   = z1 * p.u_site_prep;
+
+  // Civil rates
   const civil  = p.u_site_prep + p.u_infra_acre;
+  const c_z1   = z1 * p.u_site_prep;   // rail corridor: earthwork only, no pavement
   const c_z2   = z2 * civil;
   const c_z3   = z3 * civil;
   const c_z6   = z6 * civil;
   const c_z7   = z7 * civil;
-  const c_z8   = (z8 * SQM_PER_ACRE) * p.u_warehouse_sqm;
-  const wh_sqm = z4 * SQM_PER_ACRE;
-  const c_z4   = wh_sqm * p.u_warehouse_sqm;
-  const num_plugs = z5 * p.reefer_plugs_per_acre;
-  const c_z5   = num_plugs * p.u_reefer_plug;
+
+  // Open paved areas — 100% civil rate
+  const c_equip   = z_equip   * civil;
+  const c_wh_prov = z_wh_prov * p.u_site_prep; // earthwork only for reserve land
+
+  // Roofed buildings — building coverage % applied
+  const u_wh    = p.u_warehouse_sqm || 2500;
+  const u_adm   = p.u_admin_sqm     || 3000;
+  const u_dg_r  = p.u_dg_sqm        || 2500;
+
+  const wh_sqm      = (z4_bonded + z4_general) * SQM_PER_ACRE * bldg_cov;
+  const c_z4        = wh_sqm * u_wh;
+  const c_bonded    = z4_bonded  * SQM_PER_ACRE * bldg_cov * u_wh;
+  const c_general   = z4_general * SQM_PER_ACRE * bldg_cov * u_wh;
+
+  const num_plugs   = z5 * p.reefer_plugs_per_acre;
+  const c_z5        = num_plugs * p.u_reefer_plug;   // reefer: per-plug basis
+  const reefer_bldg = z5 * SQM_PER_ACRE * bldg_cov * u_wh; // enclosed shed cost
+
+  const customs_sqm = z_customs  * SQM_PER_ACRE * bldg_cov;
+  const c_customs   = customs_sqm * u_wh;
+
+  const admin_sqm   = z_admin    * SQM_PER_ACRE * bldg_cov;
+  const c_z8        = admin_sqm  * u_adm;
+
+  const workshop_sqm= z_workshop * SQM_PER_ACRE * bldg_cov;
+  const c_workshop  = workshop_sqm * u_wh;
+
+  const cmr_sqm     = z_cmr      * SQM_PER_ACRE * bldg_cov;
+  const c_cmr       = cmr_sqm    * u_wh;
+
+  const gatebox_sqm = z_gatebox  * SQM_PER_ACRE * bldg_cov;
+  const c_gatebox   = gatebox_sqm * u_adm;  // same rate as admin
+
+  const dg_sqm      = z_dg       * SQM_PER_ACRE * bldg_cov;
+  const c_dg        = dg_sqm     * u_dg_r;
   const c_rail = p.rail_lines * p.u_rail_line;
   const c_gates = p.rail_lines * 2 * p.u_boom_gate;
 
@@ -1108,7 +1273,10 @@ function simulate(p){
     : 0;
 
   // Civil subtotal before war factor
-  let civil_sub = c_z1+c_z2+c_z3+c_z4+c_z5+c_z6+c_z7+c_z8+c_rail+c_gates+c_rmg_civil;
+  let civil_sub = c_z1+c_z2+c_z3+c_z4+c_z5+c_z6+c_z7+c_z8
+    +c_customs+c_workshop+c_cmr+c_gatebox+c_dg
+    +c_equip+c_wh_prov
+    +c_rail+c_gates+c_rmg_civil;
 
   // Middle East war factor applied to civil subtotal only
   const c_war = p.war_factor ? civil_sub * 0.126 : 0;
@@ -1250,9 +1418,13 @@ function simulate(p){
     breakeven_rev_teu, rampYears,
     bottleneck, bn_color, storage_binding,
     z1,z2,z2_derived,z3,z4,z5,z6,z7,z8,
+    z_customs,z_admin,z_workshop,z_cmr,z_gatebox,z_dg,z_equip,z_wh_prov,
+    z4_bonded,z4_general,
     c_land,c_z1,c_z2,c_z3,c_z4,c_z5,c_z6,c_z7,c_z8,
+    c_bonded,c_general,c_customs,c_workshop,c_cmr,c_gatebox,c_dg,c_equip,c_wh_prov,
+    dg_sqm,wh_sqm,customs_sqm,admin_sqm,workshop_sqm,cmr_sqm,gatebox_sqm,bldg_cov,
     c_rail,c_gates,c_rmg_civil,c_war,const_sub,c_soft,c_financing,c_mach,
-    siding_details, num_plugs, wh_sqm, p,
+    siding_details, num_plugs, p,
     land_mode, total_acres_for_land
   };
 }
@@ -1391,10 +1563,10 @@ function updateUI(r){
       'm²', `RM ${Math.round(p.u_site_prep/SQM_PER_ACRE).toLocaleString()}/m²`,
       `${p.rail_lines} sidings × ${SIDING_LENGTH}m × ${RAIL_CLEARANCE_M}m ÷ ${SQM_PER_ACRE} × RM ${p.u_site_prep.toLocaleString()}/ac`,
       r.c_z1, false],
-    ['B.2', 'Railway Track Works',
+    ['B.2', 'Railway Track Works (Ballasted Track)',
       `${p.rail_lines} lines × ${SIDING_LENGTH} m`,
       'm', `RM ${railRatePerM.toLocaleString()}/m`,
-      `${p.rail_lines} lines × ${SIDING_LENGTH} m × RM ${railRatePerM.toLocaleString()}/m`,
+      `${p.rail_lines} sidings × ${SIDING_LENGTH}m × RM ${railRatePerM.toLocaleString()}/m  ·  Ref: Mr Tung @ RM 2,000/m`,
       r.c_rail, false],
     ['B.3', 'RS Driveway Reserve',
       `${p.rail_lines >= 3 ? SIDING_LENGTH+'m × '+DRIVEWAY_W_M+'m' : 'N/A (< 3 tracks)'}`,
@@ -1434,30 +1606,78 @@ function updateUI(r){
       `(${r.z2.toFixed(2)} + ${r.z4.toFixed(2)}) × 15% × RM ${(p.u_site_prep+p.u_infra_acre).toLocaleString()}/ac`,
       r.c_z7, false],
 
-    // ── SECTION D: BUILDINGS ─────────────────────────────────────────────────
-    ['', 'D. BUILDINGS', '', '', '', '', null, 'section'],
-    ['D.1', 'Warehouse / CFS Build (Zone 4)',
-      `${Math.round(r.wh_sqm).toLocaleString()} m²`,
-      'm²', `RM ${p.u_warehouse_sqm.toLocaleString()}/m² ⚠ Under review`,
-      `${p.warehouse_acres} ac × ${SQM_PER_ACRE} m²/ac × RM ${p.u_warehouse_sqm.toLocaleString()}/m²`,
-      r.c_z4, false],
-    ['D.2', 'Admin & Office Block (Zone 8)',
-      `${Math.round(ADMIN_ACRES*SQM_PER_ACRE).toLocaleString()} m² (fixed 0.5 ac)`,
-      'm²', `RM ${p.u_warehouse_sqm.toLocaleString()}/m²`,
-      `0.5 ac × ${SQM_PER_ACRE} m²/ac × RM ${p.u_warehouse_sqm.toLocaleString()}/m²`,
-      r.c_z8, false],
+    // ── SECTION D: BUILDINGS & STRUCTURES ───────────────────────────────────
+    ['', 'D. BUILDINGS & STRUCTURES  ·  Coverage % applied to all', '', '', '', '', null, 'section'],
+    ['D.1', 'Bonded Warehouse',
+      r.z4_bonded>0?`${Math.round(r.z4_bonded*SQM_PER_ACRE*r.bldg_cov).toLocaleString()} m² (${r.z4_bonded}ac × ${Math.round(r.bldg_cov*100)}%)`:'0 — not included',
+      'm²', `RM ${(p.u_warehouse_sqm||2500).toLocaleString()}/m²`,
+      `${r.z4_bonded}ac × ${SQM_PER_ACRE.toFixed(0)}m²/ac × ${Math.round((r.bldg_cov||0.7)*100)}% × RM ${(p.u_warehouse_sqm||2500).toLocaleString()}/m²`,
+      r.c_bonded||0, false],
+    ['D.2', 'General Warehouse',
+      r.z4_general>0?`${Math.round(r.z4_general*SQM_PER_ACRE*r.bldg_cov).toLocaleString()} m² (${r.z4_general}ac × ${Math.round(r.bldg_cov*100)}%)`:'0 — not included',
+      'm²', `RM ${(p.u_warehouse_sqm||2500).toLocaleString()}/m²`,
+      `${r.z4_general}ac × ${SQM_PER_ACRE.toFixed(0)}m²/ac × ${Math.round((r.bldg_cov||0.7)*100)}% × RM ${(p.u_warehouse_sqm||2500).toLocaleString()}/m²`,
+      r.c_general||0, false],
+    ['D.3', 'Reefer / Cold Store Shed',
+      r.z5>0?`${Math.round(r.z5*SQM_PER_ACRE*r.bldg_cov).toLocaleString()} m² (${r.z5}ac × ${Math.round(r.bldg_cov*100)}%) + ${Math.round(r.num_plugs)} plug pts`:'0 — not included',
+      'm²+pts', `RM ${(p.u_warehouse_sqm||2500).toLocaleString()}/m² + RM ${p.u_reefer_plug.toLocaleString()}/pt`,
+      `Shed: ${r.z5}ac × ${Math.round((r.bldg_cov||0.7)*100)}% coverage · Plugs: ${r.z5}ac × ${p.reefer_plugs_per_acre}pts/ac`,
+      r.c_z5, false],
+    ['D.4', 'Customs Inspection Area',
+      r.z_customs>0?`${Math.round(r.customs_sqm||0).toLocaleString()} m² (${r.z_customs}ac × ${Math.round(r.bldg_cov*100)}%)`:'0 — not included',
+      'm²', `RM ${(p.u_warehouse_sqm||2500).toLocaleString()}/m²`,
+      `${r.z_customs}ac × ${SQM_PER_ACRE.toFixed(0)}m²/ac × ${Math.round((r.bldg_cov||0.7)*100)}% × RM ${(p.u_warehouse_sqm||2500).toLocaleString()}/m²`,
+      r.c_customs||0, false],
+    ['D.5', 'Administration & Office Building',
+      r.z_admin>0?`${Math.round(r.admin_sqm||0).toLocaleString()} m² (${r.z_admin}ac × ${Math.round(r.bldg_cov*100)}%)`:'0 — not included',
+      'm²', `RM ${(p.u_admin_sqm||3000).toLocaleString()}/m² (Adam: separate admin rate)`,
+      `${r.z_admin}ac × ${SQM_PER_ACRE.toFixed(0)}m²/ac × ${Math.round((r.bldg_cov||0.7)*100)}% × RM ${(p.u_admin_sqm||3000).toLocaleString()}/m²`,
+      r.c_z8||0, false],
+    ['D.6', 'Workshop / Maintenance Shop',
+      r.z_workshop>0?`${Math.round(r.workshop_sqm||0).toLocaleString()} m² (${r.z_workshop}ac × ${Math.round(r.bldg_cov*100)}%)`:'0 — not included',
+      'm²', `RM ${(p.u_warehouse_sqm||2500).toLocaleString()}/m²`,
+      `${r.z_workshop}ac × ${SQM_PER_ACRE.toFixed(0)}m²/ac × ${Math.round((r.bldg_cov||0.7)*100)}% × RM ${(p.u_warehouse_sqm||2500).toLocaleString()}/m²`,
+      r.c_workshop||0, false],
+    ['D.7', 'Container Maintenance & Repair (CMR)',
+      r.z_cmr>0?`${Math.round(r.cmr_sqm||0).toLocaleString()} m² (${r.z_cmr}ac × ${Math.round(r.bldg_cov*100)}%)`:'0 — not included',
+      'm²', `RM ${(p.u_warehouse_sqm||2500).toLocaleString()}/m²`,
+      `${r.z_cmr}ac × ${SQM_PER_ACRE.toFixed(0)}m²/ac × ${Math.round((r.bldg_cov||0.7)*100)}% × RM ${(p.u_warehouse_sqm||2500).toLocaleString()}/m²`,
+      r.c_cmr||0, false],
+    ['D.8', 'Gate Box / Weigh Bridge / Guardhouse',
+      r.z_gatebox>0?`${Math.round(r.gatebox_sqm||0).toLocaleString()} m² (${r.z_gatebox}ac × ${Math.round(r.bldg_cov*100)}%)`:'0 — not included',
+      'm²', `RM ${(p.u_admin_sqm||3000).toLocaleString()}/m²`,
+      `${r.z_gatebox}ac × ${SQM_PER_ACRE.toFixed(0)}m²/ac × ${Math.round((r.bldg_cov||0.7)*100)}% × RM ${(p.u_admin_sqm||3000).toLocaleString()}/m²`,
+      r.c_gatebox||0, false],
+    ['D.9', 'DG / Dangerous Goods Hazmat Shed',
+      r.z_dg>0?`${Math.round(r.dg_sqm||0).toLocaleString()} m² (${r.z_dg}ac × ${Math.round(r.bldg_cov*100)}%)`:'0 — not included',
+      'm²', r.z_dg>0?`RM ${(p.u_dg_sqm||2500).toLocaleString()}/m²`:'—',
+      `${r.z_dg}ac × ${SQM_PER_ACRE.toFixed(0)}m²/ac × ${Math.round((r.bldg_cov||0.7)*100)}% × RM ${(p.u_dg_sqm||2500).toLocaleString()}/m²`,
+      r.c_dg||0, r.z_dg>0?'unc':false],
 
-    // ── SECTION E: MEP / SPECIALIST ──────────────────────────────────────────
-    ['', 'E. MEP & SPECIALIST', '', '', '', '', null, 'section'],
-    ['E.1', 'Reefer Plug Points (Zone 5)',
+    // ── SECTION E: OPEN / PAVED AREAS ──────────────────────────────────────
+    ['', 'E. OPEN / PAVED AREAS  ·  100% area costed (no coverage reduction)', '', '', '', '', null, 'section'],
+    ['E.1', 'Equipment Parking (Open Hardstand)',
+      r.z_equip>0?`${r.z_equip.toFixed(2)} ac — 100% area`:'0 — not included',
+      'acre', `RM ${(p.u_site_prep+p.u_infra_acre).toLocaleString()}/ac`,
+      `${r.z_equip}ac × RM ${(p.u_site_prep+p.u_infra_acre).toLocaleString()}/ac (civil rate, open paved)`,
+      r.c_equip||0, false],
+    ['E.2', 'Warehouse Provision / Land Reserve',
+      r.z_wh_prov>0?`${r.z_wh_prov.toFixed(2)} ac — earthwork only`:'0 — not included',
+      'acre', `RM ${p.u_site_prep.toLocaleString()}/ac`,
+      `${r.z_wh_prov}ac × RM ${p.u_site_prep.toLocaleString()}/ac (site prep only, future use)`,
+      r.c_wh_prov||0, false],
+
+    // ── SECTION F: MEP / SPECIALIST ─────────────────────────────────────────
+    ['', 'F. MEP & SPECIALIST', '', '', '', '', null, 'section'],
+    ['F.1', 'Reefer Plug Points (Electrical)',
       `${Math.round(r.num_plugs)} points`,
       'point', `RM ${p.u_reefer_plug.toLocaleString()}/point`,
-      `${p.reefer_acres} ac × ${p.reefer_plugs_per_acre} pts/ac × RM ${p.u_reefer_plug.toLocaleString()}`,
+      `${r.z5}ac × ${p.reefer_plugs_per_acre} pts/ac × RM ${p.u_reefer_plug.toLocaleString()} (note: reefer shed cost in D.3)`,
       r.c_z5, false],
 
-    // ── SECTION F: WAR FACTOR ────────────────────────────────────────────────
-    ['', 'F. ESCALATION', '', '', '', '', null, 'section'],
-    ['F.1', 'Middle East War Cost Escalation',
+    // ── SECTION G: WAR FACTOR ────────────────────────────────────────────────
+    ['', 'G. ESCALATION', '', '', '', '', null, 'section'],
+    ['H.1', 'Middle East War Cost Escalation',
       p.war_factor ? '+12.6% on civil subtotal' : 'OFF — not applied',
       p.war_factor ? '%' : '—',
       p.war_factor ? '12.6%' : '—',
@@ -1467,53 +1687,53 @@ function updateUI(r){
       r.c_war, r.c_war > 0 ? 'warn-row' : false],
 
     // ── CONSTRUCTION SUBTOTAL ─────────────────────────────────────────────────
-    ['—', 'CONSTRUCTION SUBTOTAL (A to F)', '', '', '', 'Sum of sections A through F', r.const_sub, 'sub'],
+    ['—', 'CONSTRUCTION SUBTOTAL (A to G)', '', '', '', 'Sum of sections A through G', r.const_sub, 'sub'],
 
     // ── SECTION G: SOFT COSTS ───────────────────────────────────────────────
-    ['', 'G. SOFT COSTS (29% TOTAL — Adam QS Confirmed)', '', '', '', '', null, 'section'],
+    ['', 'H. SOFT COSTS (29% TOTAL — Adam QS Confirmed)', '', '', '', '', null, 'section'],
     ['G.1', 'Contractor Preliminaries',
       'PCE BQ Item 1.0', '%', '7% of Const. Subtotal',
       `RM ${Math.round(r.const_sub).toLocaleString()} × 7%`,
       c_prelims, false],
-    ['G.2', 'Professional & Consultancy Fees',
+    ['H.2', 'Professional & Consultancy Fees',
       'C&S, MEP, Surveyors, PM', '%', '10% of Const. Subtotal',
       `RM ${Math.round(r.const_sub).toLocaleString()} × 10%`,
       c_profees, false],
-    ['G.3', 'Regulatory & Levies',
+    ['H.3', 'Regulatory & Levies',
       'Adam confirmed', '%', '2% of Const. Subtotal',
       `RM ${Math.round(r.const_sub).toLocaleString()} × 2%`,
       c_regul, false],
-    ['G.4', 'Physical Contingency',
+    ['H.4', 'Physical Contingency',
       'Pulau Indah peat/soil conditions', '%', '10% of Const. Subtotal',
       `RM ${Math.round(r.const_sub).toLocaleString()} × 10%`,
       c_conting, false],
-    ['—', 'Soft Costs Subtotal (G.1–G.4)', '', '', '', 'G.1 + G.2 + G.3 + G.4', r.c_soft, 'sub-soft'],
+    ['—', 'Soft Costs Subtotal (H.1–H.4)', '', '', '', 'G.1 + G.2 + G.3 + G.4', r.c_soft, 'sub-soft'],
 
     // ── SECTION H: FINANCING ─────────────────────────────────────────────────
-    ['', 'H. FINANCING COST', '', '', '', '', null, 'section'],
-    ['H.1', 'Financing / Interest During Construction',
+    ['', 'I. FINANCING COST', '', '', '', '', null, 'section'],
+    ['J.1', 'Financing / Interest During Construction',
       'Applied to (Const. + Soft Costs)', '%', `${p.financing_rate}% — Adam default`,
       `(RM ${Math.round(r.const_sub).toLocaleString()} + RM ${Math.round(r.c_soft).toLocaleString()}) × ${p.financing_rate}%`,
       r.c_financing, false],
 
     // ── SECTION I: MACHINERY ─────────────────────────────────────────────────
-    ['', 'I. HANDLING EQUIPMENT', '', '', '', '', null, 'section'],
+    ['', 'J. HANDLING EQUIPMENT', '', '', '', '', null, 'section'],
     ['I.1', 'Reach Stackers — Train Side',
       `${p.num_rs_train} units`, 'unit', `RM ${p.u_cost_rs.toLocaleString()}/unit`,
       `${p.num_rs_train} × RM ${p.u_cost_rs.toLocaleString()}`,
       p.num_rs_train * p.u_cost_rs, false],
-    ['I.2', 'Reach Stackers — Yard / Other',
+    ['J.2', 'Reach Stackers — Yard / Other',
       `${p.num_rs_yard} units`, 'unit', `RM ${p.u_cost_rs.toLocaleString()}/unit`,
       `${p.num_rs_yard} × RM ${p.u_cost_rs.toLocaleString()}`,
       p.num_rs_yard * p.u_cost_rs, false],
-    ['I.3', 'Rail Mounted Gantry (RMG)',
+    ['J.3', 'Rail Mounted Gantry (RMG)',
       `${p.num_rmg} units`, 'unit', `RM ${p.u_cost_rmg.toLocaleString()}/unit`,
       `${p.num_rmg} × RM ${p.u_cost_rmg.toLocaleString()}`,
       p.num_rmg * p.u_cost_rmg, false],
-    ['—', 'Equipment Subtotal (I.1–I.3)', '', '', '', 'I.1 + I.2 + I.3', r.c_mach, 'sub'],
+    ['—', 'Equipment Subtotal (I.1–I.3)', '', '', '', 'J.1 + J.2 + J.3', r.c_mach, 'sub'],
 
     // ── GRAND TOTAL ───────────────────────────────────────────────────────────
-    ['', 'TOTAL GROSS DEVELOPMENT COST', '', '', '', 'A + B + C + D + E + F + G + H + I', r.total_gdc, 'total'],
+    ['', 'TOTAL GROSS DEVELOPMENT COST', '', '', '', 'A + B + C + D + E + F + G + H + I + J', r.total_gdc, 'total'],
   ];
 
   document.getElementById('bqBody').innerHTML = bqRows.map(([item, desc, qty, unit, rate, eq, amt, flag]) => {
@@ -1911,11 +2131,16 @@ const FACTORY_DEFAULTS = {
   rail_lines:1, num_rs_train:4, num_rs_yard:0, num_rmg:0,
   mhp_rs:12, mhp_rmg:22, op_hours:16, dwell_time:7,
   train_load:85, moves_per_cycle:114, rev_per_teu:254, stack_density:500,
-  min_stacking_acres:0, warehouse_acres:2, reefer_acres:0.5,
-  land_cost:15, land_per_acre:500000, u_site_prep:785663, u_infra_acre:206125,
-  u_rmg_runway:15000, u_rail_line:10935000, u_boom_gate:50000,
-  u_cost_rs:3000000, u_cost_rmg:18000000, u_warehouse_sqm:1200,
-  u_reefer_plug:15000, reefer_plugs_per_acre:20, overhead_pct:29,
+  min_stacking_acres:0, bldg_coverage:70,
+  bonded_wh_acres:1, general_wh_acres:1, reefer_acres:0.5,
+  customs_acres:0.5, admin_acres:0.5, workshop_acres:0, cmr_acres:0,
+  gatebox_acres:0.1, dg_acres:0, equip_parking_acres:0, wh_provision_acres:0,
+  land_cost:0, land_per_acre:3500000,
+  u_site_prep:800000, u_infra_acre:300000,
+  u_rmg_runway:15000, u_rail_line:1460000, u_boom_gate:50000,
+  u_cost_rs:3000000, u_cost_rmg:18000000,
+  u_warehouse_sqm:2500, u_admin_sqm:3000, u_dg_sqm:2500,
+  u_reefer_plug:15000, reefer_plugs_per_acre:20, overhead_pct:20,
   project_years:15, rampup_years:5, discount_rate:10, util_rate:80,
   opex_rate:4, opex_per_teu:70, financing_rate:5,
   opex_inflation:0, opex_inf_every:1, rev_growth_step:10, rev_growth_every:5,
