@@ -495,9 +495,9 @@
 
       <div class="slider-row">
         <div class="slider-label"><span class="slider-name">Min Stacking Yard (Acres)</span>
-          <input class="num-input" id="val-min_stacking_acres" type="number" min="0" max="30" step="0.5" value="0">
+          <input class="num-input" id="val-min_stacking_acres" type="number" min="0" max="30" step="0.01" value="0">
         </div>
-        <input type="range" id="min_stacking_acres" min="0" max="30" step="0.5" value="0">
+        <input type="range" id="min_stacking_acres" min="0" max="30" step="0.01" value="0">
         <div class="slider-hint">Zone 2 floor. 0 = auto-derived from throughput. Open hardstand — 100% area costed.</div>
       </div>
 
@@ -505,73 +505,73 @@
 
       <div class="slider-row">
         <div class="slider-label"><span class="slider-name">Bonded Warehouse (Acres)</span>
-          <input class="num-input warn-inp" id="val-bonded_wh_acres" type="number" min="0" max="15" step="0.25" value="1">
+          <input class="num-input warn-inp" id="val-bonded_wh_acres" type="number" min="0" max="15" step="0.01" value="1">
         </div>
-        <input type="range" class="warn-sl" id="bonded_wh_acres" min="0" max="15" step="0.25" value="1">
+        <input type="range" class="warn-sl" id="bonded_wh_acres" min="0" max="15" step="0.01" value="1">
         <div class="slider-hint">Bonded CFS / customs-controlled warehouse. RM 2,500/m² build rate.</div>
       </div>
 
       <div class="slider-row">
         <div class="slider-label"><span class="slider-name">General Warehouse (Acres)</span>
-          <input class="num-input warn-inp" id="val-general_wh_acres" type="number" min="0" max="15" step="0.25" value="1">
+          <input class="num-input warn-inp" id="val-general_wh_acres" type="number" min="0" max="15" step="0.01" value="1">
         </div>
-        <input type="range" class="warn-sl" id="general_wh_acres" min="0" max="15" step="0.25" value="1">
+        <input type="range" class="warn-sl" id="general_wh_acres" min="0" max="15" step="0.01" value="1">
         <div class="slider-hint">General-purpose storage warehouse. RM 2,500/m² build rate.</div>
       </div>
 
       <div class="slider-row">
         <div class="slider-label"><span class="slider-name">Reefer / Cold Store (Acres)</span>
-          <input class="num-input warn-inp" id="val-reefer_acres" type="number" min="0" max="5" step="0.25" value="0.5">
+          <input class="num-input warn-inp" id="val-reefer_acres" type="number" min="0" max="5" step="0.01" value="0.5">
         </div>
-        <input type="range" class="warn-sl" id="reefer_acres" min="0" max="5" step="0.25" value="0.5">
+        <input type="range" class="warn-sl" id="reefer_acres" min="0" max="5" step="0.01" value="0.5">
         <div class="slider-hint">Enclosed reefer shed + plug points. Building coverage % applied.</div>
       </div>
 
       <div class="slider-row">
         <div class="slider-label"><span class="slider-name">Customs Inspection Area (Acres)</span>
-          <input class="num-input warn-inp" id="val-customs_acres" type="number" min="0" max="5" step="0.25" value="0.5">
+          <input class="num-input warn-inp" id="val-customs_acres" type="number" min="0" max="5" step="0.01" value="0.5">
         </div>
-        <input type="range" class="warn-sl" id="customs_acres" min="0" max="5" step="0.25" value="0.5">
+        <input type="range" class="warn-sl" id="customs_acres" min="0" max="5" step="0.01" value="0.5">
         <div class="slider-hint">Roofed inspection bays for customs. RM 2,500/m² build rate.</div>
       </div>
 
       <div class="slider-row">
         <div class="slider-label"><span class="slider-name">Admin / Office Building (Acres)</span>
-          <input class="num-input warn-inp" id="val-admin_acres" type="number" min="0" max="3" step="0.1" value="0.5">
+          <input class="num-input warn-inp" id="val-admin_acres" type="number" min="0" max="3" step="0.01" value="0.5">
         </div>
-        <input type="range" class="warn-sl" id="admin_acres" min="0" max="3" step="0.1" value="0.5">
+        <input type="range" class="warn-sl" id="admin_acres" min="0" max="3" step="0.01" value="0.5">
         <div class="slider-hint">Administration, control room, staff offices. RM 3,000/m² (Adam).</div>
       </div>
 
       <div class="slider-row">
         <div class="slider-label"><span class="slider-name">Workshop / Maintenance Shop (Acres)</span>
-          <input class="num-input warn-inp" id="val-workshop_acres" type="number" min="0" max="5" step="0.25" value="0">
+          <input class="num-input warn-inp" id="val-workshop_acres" type="number" min="0" max="5" step="0.01" value="0">
         </div>
-        <input type="range" class="warn-sl" id="workshop_acres" min="0" max="5" step="0.25" value="0">
+        <input type="range" class="warn-sl" id="workshop_acres" min="0" max="5" step="0.01" value="0">
         <div class="slider-hint">Equipment maintenance workshop. RM 2,500/m² build rate.</div>
       </div>
 
       <div class="slider-row">
         <div class="slider-label"><span class="slider-name">Container Maintenance &amp; Repair (Acres)</span>
-          <input class="num-input warn-inp" id="val-cmr_acres" type="number" min="0" max="5" step="0.25" value="0">
+          <input class="num-input warn-inp" id="val-cmr_acres" type="number" min="0" max="5" step="0.01" value="0">
         </div>
-        <input type="range" class="warn-sl" id="cmr_acres" min="0" max="5" step="0.25" value="0">
+        <input type="range" class="warn-sl" id="cmr_acres" min="0" max="5" step="0.01" value="0">
         <div class="slider-hint">CMR shed — basic shaded structure. RM 2,500/m² build rate.</div>
       </div>
 
       <div class="slider-row">
         <div class="slider-label"><span class="slider-name">Gate Box / Guardhouse (Acres)</span>
-          <input class="num-input warn-inp" id="val-gatebox_acres" type="number" min="0" max="1" step="0.05" value="0.1">
+          <input class="num-input warn-inp" id="val-gatebox_acres" type="number" min="0" max="1" step="0.01" value="0.1">
         </div>
-        <input type="range" class="warn-sl" id="gatebox_acres" min="0" max="1" step="0.05" value="0.1">
+        <input type="range" class="warn-sl" id="gatebox_acres" min="0" max="1" step="0.01" value="0.1">
         <div class="slider-hint">Gate control, weigh bridge, security post. RM 3,000/m² build rate.</div>
       </div>
 
       <div class="slider-row">
         <div class="slider-label"><span class="slider-name">DG / Dangerous Goods Area (Acres)</span>
-          <input class="num-input warn-inp" id="val-dg_acres" type="number" min="0" max="5" step="0.25" value="0">
+          <input class="num-input warn-inp" id="val-dg_acres" type="number" min="0" max="5" step="0.01" value="0">
         </div>
-        <input type="range" class="warn-sl" id="dg_acres" min="0" max="5" step="0.25" value="0">
+        <input type="range" class="warn-sl" id="dg_acres" min="0" max="5" step="0.01" value="0">
         <div class="slider-hint">Hazmat/DG shed with security fencing. RM 2,500/m² build rate.</div>
       </div>
 
