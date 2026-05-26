@@ -495,9 +495,9 @@
 
       <div class="slider-row">
         <div class="slider-label"><span class="slider-name">Min Stacking Yard (Acres)</span>
-          <input class="num-input" id="val-min_stacking_acres" type="number" min="0" max="30" step="0.01" value="0">
+          <input class="num-input" id="val-min_stacking_acres" type="number" min="0" max="30" step="0.01" value="4.2">
         </div>
-        <input type="range" id="min_stacking_acres" min="0" max="30" step="0.01" value="0">
+        <input type="range" id="min_stacking_acres" min="0" max="30" step="0.01" value="4.2">
         <div class="slider-hint">Zone 2 floor. 0 = auto-derived from throughput. Open hardstand — 100% area costed.</div>
       </div>
 
@@ -579,17 +579,17 @@
 
       <div class="slider-row">
         <div class="slider-label"><span class="slider-name">Equipment Parking (Acres)</span>
-          <input class="num-input warn-inp" id="val-equip_parking_acres" type="number" min="0" max="5" step="0.25" value="0">
+          <input class="num-input warn-inp" id="val-equip_parking_acres" type="number" min="0" max="5" step="0.01" value="0">
         </div>
-        <input type="range" class="warn-sl" id="equip_parking_acres" min="0" max="5" step="0.25" value="0">
+        <input type="range" class="warn-sl" id="equip_parking_acres" min="0" max="5" step="0.01" value="0">
         <div class="slider-hint">Open hardstand for RS/equipment parking. Civil rate (site prep + infra) — 100% area.</div>
       </div>
 
       <div class="slider-row">
         <div class="slider-label"><span class="slider-name">Warehouse Provision / Reserve (Acres)</span>
-          <input class="num-input warn-inp" id="val-wh_provision_acres" type="number" min="0" max="15" step="0.5" value="0">
+          <input class="num-input warn-inp" id="val-wh_provision_acres" type="number" min="0" max="15" step="0.01" value="0">
         </div>
-        <input type="range" class="warn-sl" id="wh_provision_acres" min="0" max="15" step="0.5" value="0">
+        <input type="range" class="warn-sl" id="wh_provision_acres" min="0" max="15" step="0.01" value="0">
         <div class="slider-hint">Land reserved for future warehouse — earthwork only, no building. Civil rate — 100% area.</div>
       </div>
 
@@ -2132,9 +2132,9 @@ const FACTORY_DEFAULTS = {
   mhp_rs:12, mhp_rmg:22, op_hours:16, dwell_time:7,
   train_load:85, moves_per_cycle:114, rev_per_teu:254, stack_density:500,
   min_stacking_acres:0, bldg_coverage:70,
-  bonded_wh_acres:1, general_wh_acres:1, reefer_acres:0.5,
-  customs_acres:0.5, admin_acres:0.5, workshop_acres:0, cmr_acres:0,
-  gatebox_acres:0.1, dg_acres:0, equip_parking_acres:0, wh_provision_acres:0,
+  bonded_wh_acres:0.62, general_wh_acres:0.79, reefer_acres:0.5,
+  customs_acres:0.3, admin_acres:0.3, workshop_acres:0.16, cmr_acres:0,
+  gatebox_acres:0.12, dg_acres:0.5, equip_parking_acres:0.35, wh_provision_acres:0,
   land_cost:0, land_per_acre:1960200,
   u_site_prep:800000, u_infra_acre:300000,
   u_rmg_runway:15000, u_rail_line:1460000, u_boom_gate:50000,
